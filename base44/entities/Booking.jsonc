@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "properties": {
+    "guest_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "check_in": {
+      "type": "string",
+      "format": "date"
+    },
+    "check_out": {
+      "type": "string",
+      "format": "date"
+    },
+    "room_name": {
+      "type": "string"
+    },
+    "room_type": {
+      "type": "string"
+    },
+    "guests": {
+      "type": "number"
+    },
+    "nights": {
+      "type": "number"
+    },
+    "total_price": {
+      "type": "number"
+    },
+    "special_requests": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "cancelled"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": [
+    "guest_name",
+    "email",
+    "phone",
+    "check_in",
+    "check_out"
+  ],
+  "name": "Booking"
+}

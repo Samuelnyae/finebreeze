@@ -8,6 +8,11 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
+import Rooms from './pages/Rooms';
+import Restaurant from './pages/Restaurant';
+import Gallery from './pages/Gallery';
+import Booking from './pages/Booking';
+import Admin from './pages/Admin';
 import Layout from './components/Layout';
 // Add page imports here
 
@@ -35,6 +40,11 @@ const AuthenticatedApp = () => {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/Rooms" element={<Rooms />} />
+        <Route path="/Restaurant" element={<Restaurant />} />
+        <Route path="/Gallery" element={<Gallery />} />
+        <Route path="/Booking" element={<Booking />} />
+        <Route path="/Admin" element={<Admin />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
         {/* Add your page Route elements here */}

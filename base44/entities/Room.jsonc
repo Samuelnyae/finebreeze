@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "price_per_night": {
+      "type": "number"
+    },
+    "capacity": {
+      "type": "number"
+    },
+    "amenities": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "room_type": {
+      "type": "string"
+    }
+  },
+  "required": [],
+  "name": "Room"
+}

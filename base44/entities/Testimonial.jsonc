@@ -1,0 +1,22 @@
+{
+  "type": "object",
+  "properties": {
+    "guest_name": {
+      "type": "string"
+    },
+    "review": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "number"
+    },
+    "country": {
+      "type": "string"
+    },
+    "stay_type": {
+      "type": "string"
+    }
+  },
+  "required": [],
+  "name": "Testimonial"
+}
