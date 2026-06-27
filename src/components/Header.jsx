@@ -76,7 +76,7 @@ export default function Header() {
               to="/Rooms"
               className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/Rooms") ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
             >
-              Rooms & Suites
+              Rooms
             </Link>
             <Link
               to="/Restaurant"
@@ -143,7 +143,7 @@ export default function Header() {
                     Home
                   </Link>
                   <Link to="/Rooms" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Rooms") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
-                    Rooms & Suites
+                    Rooms
                   </Link>
                   <Link to="/Restaurant" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Restaurant") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
                     Restaurant & Menu

@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { LayoutDashboard, BedDouble, Utensils, CalendarCheck, Plus, Pencil, Trash2, X, Loader2 } from "lucide-react";
+import { LayoutDashboard, BedDouble, Utensils, CalendarCheck, Plus, Pencil, Trash2, X, Loader2, Image as ImageIcon, Star } from "lucide-react";
 
 const ADMIN_PASS = "admin";
 const PIE_COLORS = ["hsl(var(--primary))", "hsl(var(--accent))", "#10b981", "#f59e0b", "#ef4444"];
@@ -40,6 +40,8 @@ export default function Admin() {
     { key: "rooms", label: "Rooms", icon: BedDouble },
     { key: "menu", label: "Menu Items", icon: Utensils },
     { key: "bookings", label: "Bookings", icon: CalendarCheck },
+    { key: "gallery", label: "Gallery", icon: ImageIcon },
+    { key: "reviews", label: "Reviews", icon: Star },
   ];
 
   return (
@@ -62,6 +64,8 @@ export default function Admin() {
         {tab === "rooms" && <RoomsManager />}
         {tab === "menu" && <MenuManager />}
         {tab === "bookings" && <BookingsManager />}
+        {tab === "gallery" && <GalleryManager />}
+        {tab === "reviews" && <ReviewsManager />}
       </div>
     </div>
   );
@@ -308,6 +312,153 @@ function MenuForm({ initial, onSave }) {
       <div className="space-y-2"><Label>Image URL</Label><Input value={data.image_url || ""} onChange={(e) => set("image_url", e.target.value)} /></div>
       <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!data.is_featured} onChange={(e) => set("is_featured", e.target.checked)} /> Featured item</label>
       <Button type="submit" disabled={saving} className="w-full">{saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Save Item"}</Button>
+    </form>
+  );
+}
+
+function GalleryManager() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const load = () => { setLoading(true); base44.entities.GalleryImage.list().then(setItems).finally(() => setLoading(false)); };
+  useEffect(load, []);
+
+  const blank = { title: "", category: "Facilities", image_url: "", description: "" };
+  const save = async (data) => {
+    if (editing?.id) await base44.entities.GalleryImage.update(editing.id, data);
+    else await base44.entities.GalleryImage.create(data);
+    setOpen(false); setEditing(null); load();
+  };
+  const remove = async (id) => { if (confirm("Delete this image?")) { await base44.entities.GalleryImage.delete(id); load(); } };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-black">Gallery ({items.length})</h2>
+        <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) setEditing(null); }}>
+          <DialogTrigger asChild><Button onClick={() => { setEditing(blank); setOpen(true); }}><Plus className="w-4 h-4 mr-2" /> Add Image</Button></DialogTrigger>
+          <DialogContent className="max-w-lg"><DialogHeader><DialogTitle>{editing?.id ? "Edit Image" : "Add Image"}</DialogTitle></DialogHeader>{editing && <GalleryForm initial={editing} onSave={save} />}</DialogContent>
+        </Dialog>
+      </div>
+      {loading ? <p className="text-muted-foreground">Loading…</p> : (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {items.map((g) => (
+            <div key={g.id} className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+              {g.image_url && <img src={g.image_url} alt={g.title} className="w-full h-32 object-cover" />}
+              <div className="p-3">
+                <div className="flex justify-between items-start mb-1">
+                  <h3 className="font-bold text-sm">{g.title}</h3>
+                  <Badge className="text-xs">{g.category}</Badge>
+                </div>
+                <div className="flex justify-end gap-2 mt-2">
+                  <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => { setEditing(g); setOpen(true); }}><Pencil className="w-3.5 h-3.5" /></Button>
+                  <Button size="icon" variant="ghost" className="h-8 w-8" onClick={() => remove(g.id)}><Trash2 className="w-3.5 h-3.5 text-destructive" /></Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GalleryForm({ initial, onSave }) {
+  const [data, setData] = useState(initial);
+  const [saving, setSaving] = useState(false);
+  const set = (k, v) => setData((d) => ({ ...d, [k]: v }));
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); setSaving(true); onSave(data).finally(() => setSaving(false)); }} className="space-y-4">
+      <div className="space-y-2"><Label>Title</Label><Input value={data.title || ""} onChange={(e) => set("title", e.target.value)} required /></div>
+      <div className="space-y-2"><Label>Category</Label>
+        <Select value={data.category || "Facilities"} onValueChange={(v) => set("category", v)}>
+          <SelectTrigger><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="Facilities">Facilities</SelectItem>
+            <SelectItem value="Restaurant">Restaurant</SelectItem>
+            <SelectItem value="Property">Property</SelectItem>
+            <SelectItem value="Rooms">Rooms</SelectItem>
+            <SelectItem value="Cuisine">Cuisine</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="space-y-2"><Label>Image URL</Label><Input value={data.image_url || ""} onChange={(e) => set("image_url", e.target.value)} required /></div>
+      <div className="space-y-2"><Label>Description</Label><Textarea value={data.description || ""} onChange={(e) => set("description", e.target.value)} rows={2} /></div>
+      <Button type="submit" disabled={saving} className="w-full">{saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Save Image"}</Button>
+    </form>
+  );
+}
+
+function ReviewsManager() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const load = () => { setLoading(true); base44.entities.Testimonial.list().then(setItems).finally(() => setLoading(false)); };
+  useEffect(load, []);
+
+  const blank = { guest_name: "", review: "", rating: 5, country: "", stay_type: "" };
+  const save = async (data) => {
+    if (editing?.id) await base44.entities.Testimonial.update(editing.id, data);
+    else await base44.entities.Testimonial.create(data);
+    setOpen(false); setEditing(null); load();
+  };
+  const remove = async (id) => { if (confirm("Delete this review?")) { await base44.entities.Testimonial.delete(id); load(); } };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-black">Reviews ({items.length})</h2>
+        <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) setEditing(null); }}>
+          <DialogTrigger asChild><Button onClick={() => { setEditing(blank); setOpen(true); }}><Plus className="w-4 h-4 mr-2" /> Add Review</Button></DialogTrigger>
+          <DialogContent className="max-w-lg"><DialogHeader><DialogTitle>{editing?.id ? "Edit Review" : "Add Review"}</DialogTitle></DialogHeader>{editing && <ReviewForm initial={editing} onSave={save} />}</DialogContent>
+        </Dialog>
+      </div>
+      {loading ? <p className="text-muted-foreground">Loading…</p> : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {items.map((t) => (
+            <div key={t.id} className="bg-card rounded-2xl border border-border/50 p-5">
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <h3 className="font-bold">{t.guest_name}</h3>
+                  <p className="text-xs text-muted-foreground">{t.stay_type} · {t.country}</p>
+                </div>
+                <div className="flex gap-1">
+                  {Array.from({ length: Math.round(t.rating || 5) }).map((_, j) => <Star key={j} className="w-4 h-4 fill-primary text-primary" />)}
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground italic mb-3">"{t.review}"</p>
+              <div className="flex justify-end gap-2">
+                <Button size="icon" variant="ghost" onClick={() => { setEditing(t); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
+                <Button size="icon" variant="ghost" onClick={() => remove(t.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ReviewForm({ initial, onSave }) {
+  const [data, setData] = useState(initial);
+  const [saving, setSaving] = useState(false);
+  const set = (k, v) => setData((d) => ({ ...d, [k]: v }));
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); setSaving(true); onSave(data).finally(() => setSaving(false)); }} className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2"><Label>Guest Name</Label><Input value={data.guest_name || ""} onChange={(e) => set("guest_name", e.target.value)} required /></div>
+        <div className="space-y-2"><Label>Country</Label><Input value={data.country || ""} onChange={(e) => set("country", e.target.value)} /></div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2"><Label>Stay Type</Label><Input value={data.stay_type || ""} onChange={(e) => set("stay_type", e.target.value)} placeholder="Deluxe Room" /></div>
+        <div className="space-y-2"><Label>Rating (1-5)</Label><Input type="number" min="1" max="5" value={data.rating || 5} onChange={(e) => set("rating", Number(e.target.value))} /></div>
+      </div>
+      <div className="space-y-2"><Label>Review</Label><Textarea value={data.review || ""} onChange={(e) => set("review", e.target.value)} rows={3} required /></div>
+      <Button type="submit" disabled={saving} className="w-full">{saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Save Review"}</Button>
     </form>
   );
 }
