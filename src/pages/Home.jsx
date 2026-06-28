@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, MapPin, Phone, Mail, Wifi, Coffee, Utensils, Car, Wind, Tv, ChevronRight, ArrowRight, MessageCircle, Quote } from "lucide-react";
+import { Star, MapPin, Phone, Mail, Wifi, Coffee, Utensils, Car, Wind, Tv, ChevronRight, ArrowRight, MessageCircle, Quote, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const AnimatedElement = ({ children, className, delay = 0 }) => {
@@ -44,17 +44,36 @@ function GlobalStyles() {
 }
 
 function HeroSection() {
+  const heroImages = [
+    "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/dbd4a4e59_u.png",
+    "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/8061288ba_9.png",
+    "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fef98d97e_7.png",
+    "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02cdb469c_8.png",
+  ];
+  const [heroIdx, setHeroIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setHeroIdx((i) => (i + 1) % heroImages.length), 5000);
+    return () => clearInterval(t);
+  }, [heroImages.length]);
   return (
     <section className="relative min-h-[100dvh] flex items-center justify-center">
       <div className="absolute inset-0 z-0">
+        {heroImages.map((src, i) => (
+          <img
+            key={i}
+            src={src}
+            alt="Fine Breeze Hotel Voi Kenya"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
+            style={{ opacity: i === heroIdx ? 1 : 0, animation: "slowZoom 12s ease-in-out infinite alternate" }}
+          />
+        ))}
         <div className="absolute inset-0 bg-background/80 z-10" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/60 to-background z-10" />
-        <img
-          src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/4ba5a5b13_generated_dc80709f.png"
-          alt="Fine Breeze Hotel Voi Kenya"
-          className="w-full h-full object-cover"
-          style={{ animation: "slowZoom 25s ease-in-out infinite alternate" }}
-        />
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+          {heroImages.map((_, i) => (
+            <button key={i} onClick={() => setHeroIdx(i)} className={`h-2 rounded-full transition-all ${i === heroIdx ? "w-8 bg-primary" : "w-2 bg-foreground/40"}`} />
+          ))}
+        </div>
       </div>
 
       {/* 3D floating orbs */}
@@ -377,7 +396,8 @@ function TestimonialsSection() {
     { guest_name: "Dr. Amelia Thompson", review: "An extraordinary oasis in the heart of Voi. The staff were warm and the Swahili Seafood Feast was a revelation. Highly recommended!", rating: 5, country: "United Kingdom", stay_type: "Deluxe Room" },
     { guest_name: "Mohamed Al-Rashid", review: "Outstanding hospitality. Immaculate rooms, world-class food, and the Taita Hills backdrop is truly magical. Fine Breeze sets the gold standard.", rating: 5, country: "UAE", stay_type: "Executive Suite" },
   ];
-  const items = testimonials.length > 0 ? testimonials.slice(0, 3) : staticFallback;
+  const items = testimonials.length > 0 ? testimonials : staticFallback;
+  const [reviewIdx, setReviewIdx] = useState(0);
 
   return (
     <section className="py-32 bg-secondary relative overflow-hidden">
@@ -389,34 +409,53 @@ function TestimonialsSection() {
           <div className="text-center mb-20">
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Guest Experiences</p>
             <h2 className="text-5xl md:text-6xl font-black text-foreground">What Our Guests Say</h2>
+            <p className="text-sm text-muted-foreground mt-3">Swipe to browse reviews →</p>
           </div>
         </AnimatedElement>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {items.map((t, i) => (
-            <AnimatedElement key={t.guest_name} delay={i * 150}>
-              <div className="p-px rounded-[2rem] bg-gradient-to-br from-primary/30 via-transparent to-accent/20 h-full group hover:shadow-[0_20px_40px_-15px_hsl(var(--primary)/0.15)] transition-all duration-500 hover:-translate-y-2">
-                <div className="bg-card/90 backdrop-blur-xl rounded-[31px] p-10 h-full flex flex-col border border-border/30">
-                  <div className="flex mb-8 gap-1">
-                    {Array.from({ length: Math.round(t.rating || 5) }).map((_, j) => (
-                      <Star key={j} className="w-5 h-5 fill-primary text-primary drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]" />
-                    ))}
-                  </div>
-                  <Quote className="w-10 h-10 text-primary/20 mb-6 group-hover:text-primary/40 transition-colors duration-500" />
-                  <p className="text-foreground/80 text-lg leading-relaxed flex-1 mb-10 font-light italic">"{t.review}"</p>
-                  <div className="border-t border-border/50 pt-6 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-black text-lg">
-                      {t.guest_name.charAt(0)}
+        <div className="relative cursor-grab active:cursor-grabbing">
+          <motion.div
+            className="flex"
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            onDragEnd={(_, { offset, velocity }) => {
+              const swipe = offset.x < -50 || velocity.x < -300 ? 1 : offset.x > 50 || velocity.x > 300 ? -1 : 0;
+              if (swipe !== 0) setReviewIdx((i) => Math.max(0, Math.min(items.length - 1, i + swipe)));
+            }}
+            animate={{ x: `-${reviewIdx * 100}%` }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          >
+            {items.map((t, i) => (
+              <div key={i} className="min-w-full px-4">
+                <div className="p-px rounded-[2rem] bg-gradient-to-br from-primary/30 via-transparent to-accent/20">
+                  <div className="bg-card/90 backdrop-blur-xl rounded-[31px] p-10 md:p-14 flex flex-col border border-border/30 max-w-2xl mx-auto">
+                    <div className="flex mb-8 gap-1">
+                      {Array.from({ length: Math.round(t.rating || 5) }).map((_, j) => (
+                        <Star key={j} className="w-5 h-5 fill-primary text-primary drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]" />
+                      ))}
                     </div>
-                    <div>
-                      <div className="font-bold text-card-foreground text-base mb-1">{t.guest_name}</div>
-                      <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t.stay_type} · {t.country}</div>
+                    <Quote className="w-10 h-10 text-primary/20 mb-6" />
+                    <p className="text-foreground/80 text-lg md:text-2xl leading-relaxed flex-1 mb-10 font-light italic">"{t.review}"</p>
+                    <div className="border-t border-border/50 pt-6 flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-black text-lg">
+                        {t.guest_name.charAt(0)}
+                      </div>
+                      <div>
+                        <div className="font-bold text-card-foreground text-base mb-1">{t.guest_name}</div>
+                        <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t.stay_type} · {t.country}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </AnimatedElement>
-          ))}
+            ))}
+          </motion.div>
+
+          <div className="flex justify-center gap-2 mt-8">
+            {items.map((_, i) => (
+              <button key={i} onClick={() => setReviewIdx(i)} className={`h-2.5 rounded-full transition-all ${i === reviewIdx ? "w-8 bg-primary" : "w-2.5 bg-muted-foreground/40"}`} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -435,6 +474,7 @@ function GallerySection() {
     { title: "Taita Hills Suite", category: "Rooms", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/20788029e_generated_88f01059.png" },
   ];
   const items = gallery.length > 0 ? gallery : staticFallback;
+  const [lightbox, setLightbox] = useState(null);
 
   return (
     <section className="py-32 bg-background relative overflow-hidden">
@@ -449,7 +489,7 @@ function GallerySection() {
         <AnimatedElement>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {items.map((img, i) => (
-              <div key={img.title} className={`group rounded-[2rem] overflow-hidden ${i === 0 ? "col-span-2 row-span-2" : ""} aspect-square relative shadow-lg`}>
+              <div key={img.title} onClick={() => setLightbox(img)} className={`group rounded-[2rem] overflow-hidden ${i === 0 ? "col-span-2 row-span-2" : ""} aspect-square relative shadow-lg cursor-pointer`}>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <img src={img.image_url} alt={img.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out" />
                 <div className="absolute bottom-0 left-0 p-8 z-20 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
@@ -461,6 +501,22 @@ function GallerySection() {
           </div>
         </AnimatedElement>
       </div>
+
+      {lightbox && (
+        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 md:p-8" onClick={() => setLightbox(null)}>
+          <button className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors" onClick={(e) => { e.stopPropagation(); setLightbox(null); }}>
+            <X className="w-6 h-6" />
+          </button>
+          <div className="max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
+            <img src={lightbox.image_url} alt={lightbox.title} className="w-full max-h-[80vh] object-contain rounded-2xl" />
+            <div className="text-center mt-4">
+              <Badge className="bg-primary/90 text-primary-foreground border-0 mb-2">{lightbox.category}</Badge>
+              <h3 className="text-white font-bold text-2xl">{lightbox.title}</h3>
+              {lightbox.description && <p className="text-white/70 mt-2">{lightbox.description}</p>}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
