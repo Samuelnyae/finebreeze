@@ -56,7 +56,7 @@ function HeroSection() {
     return () => clearInterval(t);
   }, [heroImages.length]);
   return (
-    <section className="relative min-h-[100dvh] flex items-center justify-center">
+    <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         {heroImages.map((src, i) => (
           <img
@@ -87,7 +87,7 @@ function HeroSection() {
             <MapPin className="w-4 h-4 mr-2" /> Voi, Taita Taveta County, Kenya
           </Badge>
           
-          <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] mb-8 drop-shadow-2xl">
+          <h1 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] mb-8 drop-shadow-2xl">
             <span className="block text-foreground mb-2">Where the</span>
             <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-gradient-x text-glow pb-2">Fine Breeze</span>
             <span className="block text-foreground">Blows Free</span>
@@ -117,7 +117,7 @@ function HeroSection() {
             </Link>
           </div>
 
-          <div className="flex items-center justify-center gap-8 sm:gap-16 mt-20 text-sm">
+          <div className="flex items-center justify-center gap-6 sm:gap-16 mt-16 text-sm">
             {[["4.9★", "Guest Rating"], ["50+", "Luxury Rooms"], ["15+", "Menu Items"]].map(([val, label], i) => (
               <motion.div 
                 key={label} 
@@ -153,7 +153,7 @@ function AmenitiesSection() {
     { icon: Tv, label: "Smart Entertainment", desc: "Premium screens with international streaming services." },
   ];
   return (
-    <section className="py-32 bg-secondary relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-secondary relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
       
@@ -199,7 +199,7 @@ function RoomsSection() {
   const items = rooms.length > 0 ? rooms.slice(0, 3) : staticFallback;
 
   return (
-    <section className="py-32 bg-background relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-background relative overflow-hidden">
       <div className="absolute top-20 left-0 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-20 right-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[100px] pointer-events-none" />
       
@@ -269,7 +269,7 @@ function RestaurantSection() {
   const items = featured.length > 0 ? featured : staticFallback;
 
   return (
-    <section className="py-32 bg-muted relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-muted relative overflow-hidden">
       <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
       
@@ -330,7 +330,7 @@ function RestaurantSection() {
 
 function AboutSection() {
   return (
-    <section className="py-32 bg-background relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-background relative overflow-hidden">
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27/%3E%3C/svg%3E")' }} />
       <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px] pointer-events-none" />
       
@@ -400,7 +400,7 @@ function TestimonialsSection() {
   const [reviewIdx, setReviewIdx] = useState(0);
 
   return (
-    <section className="py-32 bg-secondary relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-secondary relative overflow-hidden">
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[150px] pointer-events-none" />
       
@@ -477,10 +477,10 @@ function GallerySection() {
   const [lightbox, setLightbox] = useState(null);
 
   return (
-    <section className="py-32 bg-background relative overflow-hidden">
+    <section className="py-20 md:py-20 md:py-32 bg-background relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <AnimatedElement>
-          <div className="text-center mb-20">
+          <div className="text-center mb-16">
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Visual Tour</p>
             <h2 className="text-5xl md:text-6xl font-black text-foreground">A Glimpse of Paradise</h2>
           </div>
@@ -523,7 +523,7 @@ function GallerySection() {
 
 function CTASection() {
   return (
-    <section className="py-32 bg-primary relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-primary relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/30 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-background/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute inset-0 bg-[radial-gradient(circle,_hsl(var(--primary-foreground))_1px,_transparent_1px)] bg-[length:32px_32px] opacity-[0.03]" />
