@@ -50,9 +50,8 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3.5 group">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary via-accent to-primary flex items-center justify-center shadow-lg shadow-primary/20 group-hover:shadow-primary/40 group-hover:scale-105 transition-all duration-500 relative overflow-hidden" style={{ transform: "perspective(400px) rotateX(5deg)" }}>
-              <span className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <span className="text-primary-foreground font-black text-lg leading-none z-10">FB</span>
+            <div className="w-14 h-14 rounded-full overflow-hidden shadow-lg shadow-primary/20 group-hover:shadow-primary/40 group-hover:scale-105 transition-all duration-500 ring-2 ring-primary/30">
+              <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02538d30c_generated_image.png" alt="Fine Breeze Hotel Logo" className="w-full h-full object-cover" />
             </div>
             <div className="flex flex-col justify-center">
               <div className="font-black text-foreground text-xl leading-none tracking-tight group-hover:text-primary transition-colors duration-300" style={{ fontFamily: "'Helvetica Neue', system-ui, sans-serif" }}>
@@ -130,9 +129,9 @@ export default function Header() {
               </SheetTrigger>
               <SheetContent side="right" className="bg-card/95 backdrop-blur-xl border-border w-80 flex flex-col">
                 <div className="flex items-center gap-3 mb-8 mt-4">
-                   <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
-                    <span className="text-primary-foreground font-black text-sm">FB</span>
-                  </div>
+                   <div className="w-11 h-11 rounded-full overflow-hidden shadow-lg ring-2 ring-primary/30">
+                     <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02538d30c_generated_image.png" alt="Fine Breeze Hotel Logo" className="w-full h-full object-cover" />
+                   </div>
                   <div>
                     <div className="font-black text-foreground text-lg leading-none">Fine Breeze</div>
                     <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">Hotel & Restaurant</div>
