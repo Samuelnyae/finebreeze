@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { LayoutDashboard, BedDouble, Utensils, CalendarCheck, Plus, Pencil, Trash2, X, Loader2, Image as ImageIcon, Star } from "lucide-react";
 
@@ -478,31 +479,51 @@ function BookingsManager() {
   return (
     <div>
       <h2 className="text-2xl font-black mb-6">Bookings ({bookings.length})</h2>
-      <div className="space-y-3">
-        {bookings.map((b) => (
-          <div key={b.id} className="bg-card rounded-2xl border border-border/50 p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-1">
-                <h3 className="font-bold">{b.guest_name}</h3>
-                <Badge className={b.status === "confirmed" ? "bg-green-500" : b.status === "cancelled" ? "bg-destructive" : "bg-yellow-500"}>{b.status}</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground">{b.room_name} · {b.check_in} → {b.check_out} · {b.guests} guests · {b.nights} nights</p>
-              <p className="text-xs text-muted-foreground mt-1">{b.email} · {b.phone}</p>
-              {b.special_requests && <p className="text-xs text-muted-foreground mt-1 italic">"{b.special_requests}"</p>}
-            </div>
-            <div className="flex flex-col items-end gap-2">
-              <span className="font-black text-primary text-lg">KES {(b.total_price || 0).toLocaleString()}</span>
-              <Select value={b.status || "pending"} onValueChange={(v) => updateStatus(b.id, v)}>
-                <SelectTrigger className="w-36 h-9"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="confirmed">Confirmed</SelectItem>
-                  <SelectItem value="cancelled">Cancelled</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        ))}
+      <div className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="whitespace-nowrap">Guest</TableHead>
+                <TableHead className="whitespace-nowrap">Room</TableHead>
+                <TableHead className="whitespace-nowrap">Check-in</TableHead>
+                <TableHead className="whitespace-nowrap">Check-out</TableHead>
+                <TableHead className="text-center whitespace-nowrap">Guests</TableHead>
+                <TableHead className="text-center whitespace-nowrap">Nights</TableHead>
+                <TableHead className="text-right whitespace-nowrap">Total</TableHead>
+                <TableHead className="whitespace-nowrap">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {bookings.map((b) => (
+                <TableRow key={b.id}>
+                  <TableCell className="whitespace-nowrap">
+                    <div className="font-semibold">{b.guest_name}</div>
+                    <div className="text-xs text-muted-foreground">{b.email}</div>
+                    <div className="text-xs text-muted-foreground">{b.phone}</div>
+                    {b.special_requests && <div className="text-xs text-muted-foreground italic mt-1 max-w-[220px]">"{b.special_requests}"</div>}
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">{b.room_name || "—"}</TableCell>
+                  <TableCell className="whitespace-nowrap">{b.check_in}</TableCell>
+                  <TableCell className="whitespace-nowrap">{b.check_out}</TableCell>
+                  <TableCell className="text-center whitespace-nowrap">{b.guests || "—"}</TableCell>
+                  <TableCell className="text-center whitespace-nowrap">{b.nights || "—"}</TableCell>
+                  <TableCell className="text-right whitespace-nowrap font-black text-primary">KES {(b.total_price || 0).toLocaleString()}</TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    <Select value={b.status || "pending"} onValueChange={(v) => updateStatus(b.id, v)}>
+                      <SelectTrigger className="w-32 h-9"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="pending">Pending</SelectItem>
+                        <SelectItem value="confirmed">Confirmed</SelectItem>
+                        <SelectItem value="cancelled">Cancelled</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   );
