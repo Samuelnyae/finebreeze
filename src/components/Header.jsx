@@ -3,11 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Menu, MessageCircle, Phone, Mail, MapPin } from "lucide-react";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -95,12 +98,14 @@ export default function Header() {
             >
               Book
             </Link>
+            {isAdmin && (
             <Link
               to="/Admin"
               className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/Admin") ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
             >
               Admin
             </Link>
+            )}
             <a
               href="https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20would%20like%20to%20make%20a%20booking."
               target="_blank"
@@ -153,9 +158,11 @@ export default function Header() {
                   <Link to="/Booking" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Booking") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
                     Book a Stay
                   </Link>
+                  {isAdmin && (
                   <Link to="/Admin" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Admin") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
                     Admin Dashboard
                   </Link>
+                  )}
                 </nav>
                 <div className="border-t border-border/50 mt-auto pt-6 space-y-4 pb-6">
                   <a href="tel:0714447638" className="flex items-center gap-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
