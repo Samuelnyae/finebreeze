@@ -53,16 +53,8 @@ export default function Header() {
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3.5 group">
-            <div className="w-14 h-14 rounded-full overflow-hidden shadow-lg shadow-primary/20 group-hover:shadow-primary/40 group-hover:scale-105 transition-all duration-500 ring-2 ring-primary/30">
+            <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg shadow-primary/20 group-hover:shadow-primary/40 group-hover:scale-105 transition-all duration-500 ring-2 ring-primary/30">
               <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02538d30c_generated_image.png" alt="Fine Breeze Hotel Logo" className="w-full h-full object-cover" />
-            </div>
-            <div className="flex flex-col justify-center">
-              <div className="font-black text-foreground text-xl leading-none tracking-tight group-hover:text-primary transition-colors duration-300" style={{ fontFamily: "'Helvetica Neue', system-ui, sans-serif" }}>
-                Fine Breeze
-              </div>
-              <div className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mt-1 group-hover:text-accent transition-colors duration-300">
-                Hotel & Restaurant
-              </div>
             </div>
           </Link>
 
