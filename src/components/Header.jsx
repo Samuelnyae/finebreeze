@@ -98,6 +98,12 @@ export default function Header() {
             >
               Book
             </Link>
+            <Link
+              to="/Contact"
+              className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/Contact") ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
+            >
+              Contact
+            </Link>
             {isAdmin && (
             <Link
               to="/Admin"
@@ -157,6 +163,9 @@ export default function Header() {
                   </Link>
                   <Link to="/Booking" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Booking") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
                     Book a Stay
+                  </Link>
+                  <Link to="/Contact" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Contact") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
+                    Contact
                   </Link>
                   {isAdmin && (
                   <Link to="/Admin" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Admin") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
