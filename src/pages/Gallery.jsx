@@ -34,13 +34,16 @@ export default function Gallery() {
 
   return (
     <div className="bg-background min-h-screen">
-      <section className="relative pt-32 pb-16 bg-secondary overflow-hidden">
-        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px]" />
+      <section className="relative pt-32 pb-16 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/856595890_generated_image.png" alt="Our Rooms" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-background/80" />
+        </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
           <AnimatedElement>
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Visual Tour</p>
-            <h1 className="text-5xl md:text-6xl font-black text-foreground mb-6">Gallery</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light">
+            <h1 className="text-3xl md:text-4xl font-black text-foreground mb-5">Gallery</h1>
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto font-light">
               A glimpse of paradise — explore our rooms, cuisine, and the breathtaking surroundings of Voi.
             </p>
           </AnimatedElement>

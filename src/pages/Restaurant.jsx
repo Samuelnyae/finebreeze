@@ -38,14 +38,16 @@ export default function Restaurant() {
 
   return (
     <div className="bg-background min-h-screen">
-      <section className="relative pt-32 pb-16 bg-muted overflow-hidden">
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "url(https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/c653ddfeb_generated_b1c83de0.png)", backgroundSize: "cover", backgroundPosition: "center" }} />
-        <div className="absolute inset-0 bg-background/70" />
+      <section className="relative pt-32 pb-16 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/db37a39df_generated_image.png" alt="Food & Drinks" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-background/80" />
+        </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
           <AnimatedElement>
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Fine Dining</p>
-            <h1 className="text-5xl md:text-6xl font-black text-foreground mb-6">Our Restaurant & Menu</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light">
+            <h1 className="text-3xl md:text-4xl font-black text-foreground mb-5">Our Restaurant & Menu</h1>
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto font-light">
               A culinary journey through Kenya — from coastal Swahili traditions to hearty Taita specialties, plus a curated minibar.
             </p>
           </AnimatedElement>

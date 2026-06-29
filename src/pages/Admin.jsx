@@ -10,6 +10,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { LayoutDashboard, BedDouble, Utensils, CalendarCheck, Plus, Pencil, Trash2, X, Loader2, Image as ImageIcon, Star } from "lucide-react";
+import ImageUpload from "@/components/ImageUpload";
 
 const ADMIN_PASS = "admin";
 const PIE_COLORS = ["hsl(var(--primary))", "hsl(var(--accent))", "#10b981", "#f59e0b", "#ef4444"];
@@ -232,7 +233,7 @@ function RoomForm({ initial, onSave }) {
         <div className="space-y-2"><Label>Room Type</Label><Input value={data.room_type || ""} onChange={(e) => set("room_type", e.target.value)} /></div>
         <div className="space-y-2"><Label>Amenities</Label><Input value={data.amenities || ""} onChange={(e) => set("amenities", e.target.value)} placeholder="WiFi, AC, TV" /></div>
       </div>
-      <div className="space-y-2"><Label>Image URL</Label><Input value={data.image_url || ""} onChange={(e) => set("image_url", e.target.value)} /></div>
+      <ImageUpload value={data.image_url || ""} onChange={(v) => set("image_url", v)} />
       <Button type="submit" disabled={saving} className="w-full">{saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Save Room"}</Button>
     </form>
   );
@@ -310,7 +311,7 @@ function MenuForm({ initial, onSave }) {
           </Select>
         </div>
       </div>
-      <div className="space-y-2"><Label>Image URL</Label><Input value={data.image_url || ""} onChange={(e) => set("image_url", e.target.value)} /></div>
+      <ImageUpload value={data.image_url || ""} onChange={(v) => set("image_url", v)} />
       <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!data.is_featured} onChange={(e) => set("is_featured", e.target.checked)} /> Featured item</label>
       <Button type="submit" disabled={saving} className="w-full">{saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Save Item"}</Button>
     </form>
@@ -385,7 +386,7 @@ function GalleryForm({ initial, onSave }) {
           </SelectContent>
         </Select>
       </div>
-      <div className="space-y-2"><Label>Image URL</Label><Input value={data.image_url || ""} onChange={(e) => set("image_url", e.target.value)} required /></div>
+      <ImageUpload value={data.image_url || ""} onChange={(v) => set("image_url", v)} />
       <div className="space-y-2"><Label>Description</Label><Textarea value={data.description || ""} onChange={(e) => set("description", e.target.value)} rows={2} /></div>
       <Button type="submit" disabled={saving} className="w-full">{saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Save Image"}</Button>
     </form>
