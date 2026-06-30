@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Star, MapPin, Phone, Mail, Wifi, Coffee, Utensils, Car, Wind, Tv, ChevronRight, ArrowRight, MessageCircle, Quote, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import PromotionWidget from "@/components/PromotionWidget";
+import MapSection from "@/components/MapSection";
 
 const AnimatedElement = ({ children, className, delay = 0 }) => {
   const ref = useRef(null);
@@ -570,6 +571,7 @@ export default function Home() {
       <AboutSection />
       <TestimonialsSection />
       <GallerySection />
+      <MapSection />
       <CTASection />
     </div>
   );

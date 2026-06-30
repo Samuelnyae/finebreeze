@@ -14,6 +14,7 @@ import Gallery from './pages/Gallery';
 import Booking from './pages/Booking';
 import Admin from './pages/Admin';
 import Contact from './pages/Contact';
+import About from './pages/About';
 import Layout from './components/Layout';
 // Add page imports here
 
@@ -44,6 +45,7 @@ const AuthenticatedApp = () => {
         <Route path="/Rooms" element={<Rooms />} />
         <Route path="/Restaurant" element={<Restaurant />} />
         <Route path="/Gallery" element={<Gallery />} />
+        <Route path="/About" element={<About />} />
         <Route path="/Booking" element={<Booking />} />
         <Route path="/Admin" element={<Admin />} />
         <Route path="/Contact" element={<Contact />} />

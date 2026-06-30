@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
-import { Menu, MessageCircle, Phone, Mail, MapPin } from "lucide-react";
+import { Menu, MessageCircle, Phone, Mail, MapPin, Home as HomeIcon, BedDouble, Utensils, Images, Info, CalendarCheck, Phone as PhoneIcon, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
 
 export default function Header() {
@@ -85,6 +85,12 @@ export default function Header() {
               Gallery
             </Link>
             <Link
+              to="/About"
+              className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/About") ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
+            >
+              About
+            </Link>
+            <Link
               to="/Booking"
               className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/Booking") ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
             >
@@ -140,30 +146,28 @@ export default function Header() {
                     <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">Hotel & Restaurant</div>
                   </div>
                 </div>
-                <nav className="flex flex-col gap-2 flex-1">
-                  <Link to="/" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/") && location.pathname === "/" ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
-                    Home
-                  </Link>
-                  <Link to="/Rooms" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Rooms") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
-                    Rooms
-                  </Link>
-                  <Link to="/Restaurant" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Restaurant") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
-                    Restaurant & Menu
-                  </Link>
-                  <Link to="/Gallery" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Gallery") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
-                    Gallery
-                  </Link>
-                  <Link to="/Booking" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Booking") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
-                    Book a Stay
-                  </Link>
-                  <Link to="/Contact" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Contact") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
-                    Contact
-                  </Link>
-                  {isAdmin && (
-                  <Link to="/Admin" onClick={() => setOpen(false)} className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-colors ${isActive("/Admin") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-secondary"}`}>
-                    Admin Dashboard
-                  </Link>
-                  )}
+                <nav className="flex flex-col gap-1.5 flex-1 overflow-y-auto">
+                  {[
+                    { to: "/", label: "Home", icon: HomeIcon, active: isActive("/") && location.pathname === "/" },
+                    { to: "/Rooms", label: "Rooms", icon: BedDouble, active: isActive("/Rooms") },
+                    { to: "/Restaurant", label: "Restaurant & Menu", icon: Utensils, active: isActive("/Restaurant") },
+                    { to: "/Gallery", label: "Gallery", icon: Images, active: isActive("/Gallery") },
+                    { to: "/About", label: "About Us", icon: Info, active: isActive("/About") },
+                    { to: "/Booking", label: "Book a Stay", icon: CalendarCheck, active: isActive("/Booking") },
+                    { to: "/Contact", label: "Contact", icon: PhoneIcon, active: isActive("/Contact") },
+                    ...(isAdmin ? [{ to: "/Admin", label: "Admin Dashboard", icon: ShieldCheck, active: isActive("/Admin") }] : []),
+                  ].map((item, i) => (
+                    <Link
+                      key={item.to}
+                      to={item.to}
+                      onClick={() => setOpen(false)}
+                      style={{ animationDelay: `${i * 50}ms` }}
+                      className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all animate-[fade-in_0.4s_ease-out_both] ${item.active ? "bg-primary/10 text-primary border-l-2 border-primary" : "text-foreground hover:bg-secondary hover:translate-x-1"}`}
+                    >
+                      <item.icon className="w-5 h-5 flex-shrink-0" />
+                      {item.label}
+                    </Link>
+                  ))}
                 </nav>
                 <div className="border-t border-border/50 mt-auto pt-6 space-y-4 pb-6">
                   <a href="tel:0714447638" className="flex items-center gap-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
