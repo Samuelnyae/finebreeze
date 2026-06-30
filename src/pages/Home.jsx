@@ -191,12 +191,7 @@ function RoomsSection() {
   useEffect(() => {
     base44.entities.Room.list().then(setRooms).catch(() => {});
   }, []);
-  const staticFallback = [
-    { name: "Savanna Deluxe", description: "Spacious room with panoramic Taita Hills views, king-size bed, luxury linens, and a stunning marble bathroom.", price_per_night: 8500, capacity: 2, room_type: "Deluxe", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/8bc1a552c_generated_968f02a0.png" },
-    { name: "Taita Hills Suite", description: "Our flagship suite featuring floor-to-ceiling windows, a deep soaking tub, private terrace, and personal butler service.", price_per_night: 15000, capacity: 2, room_type: "Suite", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/20788029e_generated_88f01059.png" },
-    { name: "Garden Twin", description: "Charming twin room overlooking our lush tropical gardens, featuring vibrant Kenyan cultural décor and modern amenities.", price_per_night: 5500, capacity: 3, room_type: "Standard", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/c07c2f68b_generated_4aaae307.png" },
-  ];
-  const items = rooms.length > 0 ? rooms.slice(0, 3) : staticFallback;
+  const items = rooms.slice(0, 3);
 
   return (
     <section className="py-20 md:py-32 bg-background relative overflow-hidden">
@@ -260,13 +255,7 @@ function RestaurantSection() {
   useEffect(() => {
     base44.entities.MenuItem.list().then(setMenuItems).catch(() => {});
   }, []);
-  const staticFallback = [
-    { name: "Nyama Choma Platter", description: "Tender slow-roasted goat meat with ugali and kachumbari salad.", price: 1200, category: "Main Course", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/0c40aa756_generated_454c8724.png", is_featured: true },
-    { name: "Swahili Seafood Feast", description: "Fresh coastal prawns in coconut-tamarind sauce with saffron pilau rice.", price: 1800, category: "Main Course", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/709942548_generated_71a76177.png", is_featured: true },
-    { name: "Taita Spice Chicken", description: "Charcoal-grilled chicken in Taita spice blend with sweet potato wedges.", price: 1100, category: "Main Course", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/0c40aa756_generated_454c8724.png", is_featured: true },
-  ];
-  const featured = menuItems.filter(m => m.is_featured).slice(0, 3);
-  const items = featured.length > 0 ? featured : staticFallback;
+  const items = menuItems.filter(m => m.is_featured).slice(0, 3);
 
   return (
     <section className="py-20 md:py-32 bg-muted relative overflow-hidden">
@@ -391,12 +380,7 @@ function TestimonialsSection() {
   useEffect(() => {
     base44.entities.Testimonial.list().then(setTestimonials).catch(() => {});
   }, []);
-  const staticFallback = [
-    { guest_name: "James & Sarah Omondi", review: "Fine Breeze exceeded every expectation. The views of the Taita Hills from our suite were absolutely breathtaking, and the Nyama Choma is the best we've had!", rating: 5, country: "Kenya", stay_type: "Honeymoon Suite" },
-    { guest_name: "Dr. Amelia Thompson", review: "An extraordinary oasis in the heart of Voi. The staff were warm and the Swahili Seafood Feast was a revelation. Highly recommended!", rating: 5, country: "United Kingdom", stay_type: "Deluxe Room" },
-    { guest_name: "Mohamed Al-Rashid", review: "Outstanding hospitality. Immaculate rooms, world-class food, and the Taita Hills backdrop is truly magical. Fine Breeze sets the gold standard.", rating: 5, country: "UAE", stay_type: "Executive Suite" },
-  ];
-  const items = testimonials.length > 0 ? testimonials : staticFallback;
+  const items = testimonials;
   const [reviewIdx, setReviewIdx] = useState(0);
 
   return (
@@ -467,13 +451,7 @@ function GallerySection() {
   useEffect(() => {
     base44.entities.GalleryImage.list().then(setGallery).catch(() => {});
   }, []);
-  const staticFallback = [
-    { title: "Infinity Pool at Sunset", category: "Facilities", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png" },
-    { title: "Fine Dining Restaurant", category: "Restaurant", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/c653ddfeb_generated_b1c83de0.png" },
-    { title: "Hotel Exterior", category: "Property", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/4ba5a5b13_generated_dc80709f.png" },
-    { title: "Taita Hills Suite", category: "Rooms", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/20788029e_generated_88f01059.png" },
-  ];
-  const items = gallery.length > 0 ? gallery : staticFallback;
+  const items = gallery;
   const [lightbox, setLightbox] = useState(null);
 
   return (
