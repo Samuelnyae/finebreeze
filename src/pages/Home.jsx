@@ -190,6 +190,10 @@ function RoomsSection() {
   const [rooms, setRooms] = useState([]);
   useEffect(() => {
     base44.entities.Room.list().then(setRooms).catch(() => {});
+    const unsub = base44.entities.Room.subscribe(() => {
+      base44.entities.Room.list().then(setRooms).catch(() => {});
+    });
+    return unsub;
   }, []);
   const items = rooms.slice(0, 3);
 
@@ -254,6 +258,10 @@ function RestaurantSection() {
   const [menuItems, setMenuItems] = useState([]);
   useEffect(() => {
     base44.entities.MenuItem.list().then(setMenuItems).catch(() => {});
+    const unsub = base44.entities.MenuItem.subscribe(() => {
+      base44.entities.MenuItem.list().then(setMenuItems).catch(() => {});
+    });
+    return unsub;
   }, []);
   const items = menuItems.filter(m => m.is_featured).slice(0, 3);
 
@@ -379,6 +387,10 @@ function TestimonialsSection() {
   const [testimonials, setTestimonials] = useState([]);
   useEffect(() => {
     base44.entities.Testimonial.list().then(setTestimonials).catch(() => {});
+    const unsub = base44.entities.Testimonial.subscribe(() => {
+      base44.entities.Testimonial.list().then(setTestimonials).catch(() => {});
+    });
+    return unsub;
   }, []);
   const items = testimonials;
   const [reviewIdx, setReviewIdx] = useState(0);
@@ -450,6 +462,10 @@ function GallerySection() {
   const [gallery, setGallery] = useState([]);
   useEffect(() => {
     base44.entities.GalleryImage.list().then(setGallery).catch(() => {});
+    const unsub = base44.entities.GalleryImage.subscribe(() => {
+      base44.entities.GalleryImage.list().then(setGallery).catch(() => {});
+    });
+    return unsub;
   }, []);
   const items = gallery;
   const [lightbox, setLightbox] = useState(null);
