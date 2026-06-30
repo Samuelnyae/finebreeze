@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
-import { MapPin, Phone, Mail, MessageCircle, Instagram, Facebook, Twitter, Heart } from "lucide-react";
+import { MapPin, Phone, Mail, MessageCircle, Instagram, Facebook, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+const TikTokIcon = ({ className }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692 6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z" />
+  </svg>
+);
 
 export default function Footer() {
   return (
@@ -11,8 +17,8 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                <span className="text-primary-foreground font-black text-sm">FB</span>
+              <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg ring-2 ring-primary/30 flex-shrink-0">
+                <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02538d30c_generated_image.png" alt="Fine Breeze Hotel Logo" className="w-full h-full object-cover" />
               </div>
               <div>
                 <div className="font-black text-background text-lg leading-none">Fine Breeze</div>
@@ -31,6 +37,9 @@ export default function Footer() {
               </a>
               <a href="#" className="w-9 h-9 rounded-lg bg-background/10 hover:bg-primary/30 flex items-center justify-center transition-colors">
                 <Twitter className="w-4 h-4 text-background" />
+              </a>
+              <a href="#" className="w-9 h-9 rounded-lg bg-background/10 hover:bg-primary/30 flex items-center justify-center transition-colors">
+                <TikTokIcon className="w-4 h-4 text-background" />
               </a>
             </div>
           </div>
@@ -98,12 +107,9 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-background/10">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-center">
           <p className="text-background/50 text-xs">
             &copy; {new Date().getFullYear()} Fine Breeze Hotel & Restaurant, Voi, Kenya. All rights reserved.
-          </p>
-          <p className="text-background/40 text-xs flex items-center gap-1">
-            Made with <Heart className="w-3 h-3 text-primary fill-primary" /> in Kenya
           </p>
         </div>
       </div>

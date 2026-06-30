@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, MapPin, Phone, Mail, Wifi, Coffee, Utensils, Car, Wind, Tv, ChevronRight, ArrowRight, MessageCircle, Quote, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import PromotionWidget from "@/components/PromotionWidget";
 
 const AnimatedElement = ({ children, className, delay = 0 }) => {
   const ref = useRef(null);
@@ -562,6 +563,7 @@ export default function Home() {
     <div className="bg-background min-h-screen selection:bg-primary selection:text-primary-foreground">
       <GlobalStyles />
       <HeroSection />
+      <PromotionWidget />
       <AmenitiesSection />
       <RoomsSection />
       <RestaurantSection />

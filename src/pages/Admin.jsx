@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { LayoutDashboard, BedDouble, Utensils, CalendarCheck, Plus, Pencil, Trash2, X, Loader2, Image as ImageIcon, Star } from "lucide-react";
+import { LayoutDashboard, BedDouble, Utensils, CalendarCheck, Plus, Pencil, Trash2, X, Loader2, Image as ImageIcon, Star, Megaphone } from "lucide-react";
 import ImageUpload from "@/components/ImageUpload";
 
 const ADMIN_PASS = "admin";
@@ -44,6 +44,7 @@ export default function Admin() {
     { key: "bookings", label: "Bookings", icon: CalendarCheck },
     { key: "gallery", label: "Gallery", icon: ImageIcon },
     { key: "reviews", label: "Reviews", icon: Star },
+    { key: "promotions", label: "Promotions", icon: Megaphone },
   ];
 
   return (
@@ -68,6 +69,7 @@ export default function Admin() {
         {tab === "bookings" && <BookingsManager />}
         {tab === "gallery" && <GalleryManager />}
         {tab === "reviews" && <ReviewsManager />}
+        {tab === "promotions" && <PromotionsManager />}
       </div>
     </div>
   );
@@ -461,6 +463,80 @@ function ReviewForm({ initial, onSave }) {
       </div>
       <div className="space-y-2"><Label>Review</Label><Textarea value={data.review || ""} onChange={(e) => set("review", e.target.value)} rows={3} required /></div>
       <Button type="submit" disabled={saving} className="w-full">{saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Save Review"}</Button>
+    </form>
+  );
+}
+
+function PromotionsManager() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(null);
+  const [open, setOpen] = useState(false);
+
+  const load = () => { setLoading(true); base44.entities.Promotion.list().then(setItems).finally(() => setLoading(false)); };
+  useEffect(load, []);
+
+  const blank = { title: "", description: "", badge_label: "", image_url: "", is_active: true, cta_text: "", cta_link: "" };
+  const save = async (data) => {
+    if (editing?.id) await base44.entities.Promotion.update(editing.id, data);
+    else await base44.entities.Promotion.create(data);
+    setOpen(false); setEditing(null); load();
+  };
+  const remove = async (id) => { if (confirm("Delete this promotion?")) { await base44.entities.Promotion.delete(id); load(); } };
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-black">Promotions ({items.length})</h2>
+        <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) setEditing(null); }}>
+          <DialogTrigger asChild><Button onClick={() => { setEditing(blank); setOpen(true); }}><Plus className="w-4 h-4 mr-2" /> Add Promotion</Button></DialogTrigger>
+          <DialogContent className="max-w-lg"><DialogHeader><DialogTitle>{editing?.id ? "Edit Promotion" : "Add Promotion"}</DialogTitle></DialogHeader>{editing && <PromotionForm initial={editing} onSave={save} />}</DialogContent>
+        </Dialog>
+      </div>
+      <p className="text-sm text-muted-foreground mb-4">The most recently created active promotion will display on the homepage. Only one shows at a time.</p>
+      {loading ? <p className="text-muted-foreground">Loading…</p> : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {items.map((p) => (
+            <div key={p.id} className="bg-card rounded-2xl border border-border/50 overflow-hidden">
+              {p.image_url && <img src={p.image_url} alt={p.title} className="w-full h-32 object-cover" />}
+              <div className="p-4">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="font-bold">{p.title}</h3>
+                  <div className="flex gap-1">
+                    {p.badge_label && <Badge>{p.badge_label}</Badge>}
+                    <Badge className={p.is_active !== false ? "bg-accent text-accent-foreground" : ""}>{p.is_active !== false ? "Active" : "Inactive"}</Badge>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{p.description}</p>
+                <div className="flex justify-end gap-2">
+                  <Button size="icon" variant="ghost" onClick={() => { setEditing(p); setOpen(true); }}><Pencil className="w-4 h-4" /></Button>
+                  <Button size="icon" variant="ghost" onClick={() => remove(p.id)}><Trash2 className="w-4 h-4 text-destructive" /></Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PromotionForm({ initial, onSave }) {
+  const [data, setData] = useState(initial);
+  const [saving, setSaving] = useState(false);
+  const set = (k, v) => setData((d) => ({ ...d, [k]: v }));
+  return (
+    <form onSubmit={(e) => { e.preventDefault(); setSaving(true); onSave(data).finally(() => setSaving(false)); }} className="space-y-4">
+      <div className="space-y-2"><Label>Title</Label><Input value={data.title || ""} onChange={(e) => set("title", e.target.value)} required /></div>
+      <div className="space-y-2"><Label>Description</Label><Textarea value={data.description || ""} onChange={(e) => set("description", e.target.value)} rows={2} /></div>
+      <div className="space-y-2"><Label>Badge Label</Label><Input value={data.badge_label || ""} onChange={(e) => set("badge_label", e.target.value)} placeholder="Limited Time, Special Offer" /></div>
+      <ImageUpload value={data.image_url || ""} onChange={(v) => set("image_url", v)} />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2"><Label>CTA Text</Label><Input value={data.cta_text || ""} onChange={(e) => set("cta_text", e.target.value)} placeholder="Claim Offer" /></div>
+        <div className="space-y-2"><Label>CTA Link</Label><Input value={data.cta_link || ""} onChange={(e) => set("cta_link", e.target.value)} placeholder="https://wa.me/..." /></div>
+      </div>
+      <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!data.is_active} onChange={(e) => set("is_active", e.target.checked)} /> Active (show on homepage)</label>
+      <Button type="submit" disabled={saving} className="w-full">{saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Save Promotion"}</Button>
     </form>
   );
 }

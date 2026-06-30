@@ -1,0 +1,31 @@
+{
+  "name": "Promotion",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "badge_label": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    },
+    "cta_text": {
+      "type": "string"
+    },
+    "cta_link": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title"
+  ]
+}
