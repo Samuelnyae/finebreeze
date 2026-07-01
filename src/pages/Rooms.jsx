@@ -6,6 +6,7 @@ import { MessageCircle, Users, ArrowRight, Wifi, Wind, Car, Coffee } from "lucid
 import { Link } from "react-router-dom";
 import AnimatedElement from "@/components/AnimatedElement";
 import LazyImage from "@/components/LazyImage";
+import { useCurrency } from "@/lib/CurrencyContext";
 
 const staticFallback = [
   { name: "Savanna Deluxe", description: "Spacious room with panoramic Taita Hills views, king-size bed, luxury linens, and a stunning marble bathroom.", price_per_night: 8500, capacity: 2, room_type: "Deluxe", amenities: "WiFi, AC, Smart TV, Room Service", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/8bc1a552c_generated_968f02a0.png" },
@@ -17,6 +18,7 @@ export default function Rooms() {
   const [rooms, setRooms] = useState([]);
   const [filter, setFilter] = useState("All");
   const [loading, setLoading] = useState(true);
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     base44.entities.Room.list()
@@ -86,7 +88,7 @@ export default function Rooms() {
                     </div>
                     <div className="p-8 flex flex-col flex-1 relative">
                       <div className="absolute -top-8 right-8 z-20 bg-primary text-primary-foreground font-black px-6 py-3 rounded-xl shadow-xl">
-                        KES {(room.price_per_night || 0).toLocaleString()} <span className="text-xs font-normal opacity-80">/night</span>
+                        {formatPrice(room.price_per_night || 0)} <span className="text-xs font-normal opacity-80">/night</span>
                       </div>
                       <h3 className="text-2xl font-black text-card-foreground mb-3 pr-24">{room.name}</h3>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
+import { CurrencyProvider } from "@/lib/CurrencyContext";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -14,12 +15,14 @@ export default function Layout() {
   }, [location.pathname]);
 
   return (
-    <div className="bg-background text-foreground min-h-screen">
-      <Header />
-      <main>
-        <Outlet />
-      </main>
-      <Footer />
-    </div>
+    <CurrencyProvider>
+      <div className="bg-background text-foreground min-h-screen">
+        <Header />
+        <main>
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+    </CurrencyProvider>
   );
 }

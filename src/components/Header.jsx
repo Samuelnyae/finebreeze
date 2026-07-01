@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Menu, MessageCircle, Phone, Mail, MapPin, Home as HomeIcon, BedDouble, Utensils, Images, Info, CalendarCheck, Phone as PhoneIcon, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/lib/AuthContext";
+import CurrencySelector from "@/components/CurrencySelector";
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -110,6 +111,7 @@ export default function Header() {
               Admin
             </Link>
             )}
+            <CurrencySelector />
             <a
               href="https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20would%20like%20to%20make%20a%20booking."
               target="_blank"
@@ -179,7 +181,11 @@ export default function Header() {
                   <a href="mailto:fynbriz@gmail.com" className="flex items-center gap-3 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center"><Mail className="w-4 h-4 text-primary" /></div> fynbriz@gmail.com
                   </a>
-                  <a href="https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20would%20like%20to%20book." target="_blank" rel="noopener noreferrer" className="block mt-6">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-xs font-medium text-muted-foreground">Currency</span>
+                    <CurrencySelector />
+                  </div>
+                  <a href="https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20would%20like%20to%20book." target="_blank" rel="noopener noreferrer" className="block mt-4">
                     <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 h-12 rounded-xl font-bold shadow-lg shadow-accent/20 relative overflow-hidden">
                       <span className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/20 to-transparent animate-[shimmer_3s_ease-in-out_infinite] bg-[length:200%_100%]" />
                       <MessageCircle className="w-5 h-5 mr-2" /> Book via WhatsApp

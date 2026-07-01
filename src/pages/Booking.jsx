@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Calendar, Users, CheckCircle2, MessageCircle, Loader2 } from "lucide-react";
 import AnimatedElement from "@/components/AnimatedElement";
+import { useCurrency } from "@/lib/CurrencyContext";
 
 export default function Booking() {
   const location = useLocation();
@@ -15,6 +16,7 @@ export default function Booking() {
   const [rooms, setRooms] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(null);
+  const { formatPrice } = useCurrency();
   const [form, setForm] = useState({
     guest_name: "",
     email: "",
@@ -82,7 +84,7 @@ export default function Booking() {
               <div className="flex justify-between"><span className="text-muted-foreground">Check-in</span><span className="font-semibold">{success.check_in}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Check-out</span><span className="font-semibold">{success.check_out}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">Guests</span><span className="font-semibold">{success.guests}</span></div>
-              <div className="flex justify-between border-t border-border pt-2 mt-2"><span className="text-muted-foreground">Estimated Total</span><span className="font-black text-primary text-lg">KES {success.total_price?.toLocaleString()}</span></div>
+              <div className="flex justify-between border-t border-border pt-2 mt-2"><span className="text-muted-foreground">Estimated Total</span><span className="font-black text-primary text-lg">{formatPrice(success.total_price || 0)}</span></div>
             </div>
             <a href={`https://wa.me/254714447638?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer">
               <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 h-12 mb-3">
@@ -140,7 +142,7 @@ export default function Booking() {
                   <SelectTrigger className="h-12"><SelectValue placeholder="Select a room" /></SelectTrigger>
                   <SelectContent>
                     {(rooms.length > 0 ? rooms : [{ name: "Savanna Deluxe", price_per_night: 8500 }, { name: "Taita Hills Suite", price_per_night: 15000 }, { name: "Garden Twin", price_per_night: 5500 }]).map((r) => (
-                      <SelectItem key={r.name} value={r.name}>{r.name} — KES {(r.price_per_night || 0).toLocaleString()}/night</SelectItem>
+                      <SelectItem key={r.name} value={r.name}>{r.name} — {formatPrice(r.price_per_night || 0)}/night</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -167,8 +169,8 @@ export default function Booking() {
               {nights > 0 && selectedRoom && (
                 <div className="bg-primary/5 rounded-2xl p-5 border border-primary/20">
                   <div className="flex justify-between text-sm mb-1"><span className="text-muted-foreground">Nights</span><span className="font-semibold">{nights}</span></div>
-                  <div className="flex justify-between text-sm mb-2"><span className="text-muted-foreground">Rate</span><span className="font-semibold">KES {(selectedRoom.price_per_night || 0).toLocaleString()}/night</span></div>
-                  <div className="flex justify-between border-t border-primary/20 pt-2"><span className="font-bold">Estimated Total</span><span className="font-black text-primary text-xl">KES {total.toLocaleString()}</span></div>
+                  <div className="flex justify-between text-sm mb-2"><span className="text-muted-foreground">Rate</span><span className="font-semibold">{formatPrice(selectedRoom.price_per_night || 0)}/night</span></div>
+                  <div className="flex justify-between border-t border-primary/20 pt-2"><span className="font-bold">Estimated Total</span><span className="font-black text-primary text-xl">{formatPrice(total)}</span></div>
                 </div>
               )}
 

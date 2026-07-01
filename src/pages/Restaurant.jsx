@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Utensils, Wine, Coffee, Cake, Salad } from "lucide-react";
 import AnimatedElement from "@/components/AnimatedElement";
 import LazyImage from "@/components/LazyImage";
+import { useCurrency } from "@/lib/CurrencyContext";
 
 const staticFallback = [
   { name: "Nyama Choma Platter", description: "Tender slow-roasted goat meat with ugali and kachumbari salad.", price: 1200, category: "Main Course", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/0c40aa756_generated_454c8724.png", is_featured: true },
@@ -26,6 +27,7 @@ export default function Restaurant() {
   const [items, setItems] = useState([]);
   const [filter, setFilter] = useState("All");
   const [loading, setLoading] = useState(true);
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     base44.entities.MenuItem.list()
@@ -92,7 +94,7 @@ export default function Restaurant() {
                       <p className="text-muted-foreground text-sm mb-4 leading-relaxed flex-1">{item.description}</p>
                       <div className="flex items-center justify-between pt-4 border-t border-border/30">
                         <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Price</span>
-                        <span className="text-2xl font-black text-primary">KES {(item.price || 0).toLocaleString()}</span>
+                        <span className="text-2xl font-black text-primary">{formatPrice(item.price || 0)}</span>
                       </div>
                     </div>
                   </div>
