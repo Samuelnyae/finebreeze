@@ -63,14 +63,14 @@ function HeroSection() {
     <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         {heroImages.map((src, i) => (
-          <LazyImage
+          <img
             key={i}
             src={src}
             alt="Fine Breeze Hotel Voi Kenya"
-            eager
-            priority={i === 0}
-            className="absolute inset-0 w-full h-full transition-opacity duration-1000"
-            skeletonClass="bg-background"
+            loading="eager"
+            decoding="async"
+            fetchpriority={i === 0 ? "high" : "auto"}
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
             style={{ opacity: i === heroIdx ? 1 : 0, animation: i === heroIdx ? "slowZoom 12s ease-in-out infinite alternate" : "none" }}
           />
         ))}
