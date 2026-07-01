@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, ArrowRight, MessageCircle } from "lucide-react";
+import LazyImage from "@/components/LazyImage";
 
 export default function PromotionWidget() {
   const [promo, setPromo] = useState(null);
@@ -39,7 +40,7 @@ export default function PromotionWidget() {
         >
           {promo.image_url ? (
             <div className="relative">
-              <img src={promo.image_url} alt={promo.title} className="w-full h-[280px] md:h-[340px] object-cover" />
+              <LazyImage src={promo.image_url} alt={promo.title} eager className="h-[280px] md:h-[340px]" skeletonClass="bg-muted" />
               <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
               <div className="absolute inset-0 flex items-center">
                 <div className="p-8 md:p-14 max-w-xl">

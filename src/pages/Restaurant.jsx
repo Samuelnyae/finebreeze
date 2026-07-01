@@ -3,6 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { Badge } from "@/components/ui/badge";
 import { Utensils, Wine, Coffee, Cake, Salad } from "lucide-react";
 import AnimatedElement from "@/components/AnimatedElement";
+import LazyImage from "@/components/LazyImage";
 
 const staticFallback = [
   { name: "Nyama Choma Platter", description: "Tender slow-roasted goat meat with ugali and kachumbari salad.", price: 1200, category: "Main Course", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/0c40aa756_generated_454c8724.png", is_featured: true },
@@ -40,7 +41,7 @@ export default function Restaurant() {
     <div className="bg-background min-h-screen">
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0">
-          <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/db37a39df_generated_image.png" alt="Food & Drinks" className="w-full h-full object-cover" />
+          <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/db37a39df_generated_image.png" alt="Food & Drinks" eager className="w-full h-full" skeletonClass="bg-background" />
           <div className="absolute inset-0 bg-background/80" />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
@@ -77,7 +78,7 @@ export default function Restaurant() {
                   <div className="group bg-card rounded-[2rem] overflow-hidden border border-border/50 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_hsl(var(--accent)/0.2)] transition-all duration-500 flex flex-col h-full">
                     {item.image_url ? (
                       <div className="aspect-[4/3] overflow-hidden relative">
-                        <img src={item.image_url} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                        <LazyImage src={item.image_url} alt={item.name} className="group-hover:scale-110 transition-transform duration-1000" skeletonClass="bg-card" />
                         <Badge className="absolute top-4 left-4 z-20 bg-background/80 backdrop-blur-md text-foreground border-0 px-3 py-1">{item.category}</Badge>
                       </div>
                     ) : (

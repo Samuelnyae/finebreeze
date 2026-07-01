@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { MessageCircle, Users, ArrowRight, Wifi, Wind, Car, Coffee } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnimatedElement from "@/components/AnimatedElement";
+import LazyImage from "@/components/LazyImage";
 
 const staticFallback = [
   { name: "Savanna Deluxe", description: "Spacious room with panoramic Taita Hills views, king-size bed, luxury linens, and a stunning marble bathroom.", price_per_night: 8500, capacity: 2, room_type: "Deluxe", amenities: "WiFi, AC, Smart TV, Room Service", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/8bc1a552c_generated_968f02a0.png" },
@@ -42,7 +43,7 @@ export default function Rooms() {
     <div className="bg-background min-h-screen">
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0">
-          <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/20788029e_generated_88f01059.png" alt="Executive Suite" className="w-full h-full object-cover" />
+          <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/20788029e_generated_88f01059.png" alt="Executive Suite" eager className="w-full h-full" skeletonClass="bg-background" />
           <div className="absolute inset-0 bg-background/80" />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
@@ -78,7 +79,7 @@ export default function Rooms() {
                 <AnimatedElement key={room.name + i} delay={i * 100}>
                   <div className="group rounded-[2rem] overflow-hidden bg-card border border-border/50 hover:-translate-y-3 hover:shadow-[0_30px_60px_-15px_hsl(var(--primary)/0.2)] transition-all duration-500 h-full flex flex-col">
                     <div className="relative aspect-[4/3] overflow-hidden">
-                      <img src={room.image_url} alt={room.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                      <LazyImage src={room.image_url} alt={room.name} className="group-hover:scale-110 transition-transform duration-1000" skeletonClass="bg-card" />
                       <div className="absolute top-4 right-4 z-20">
                         <Badge className="bg-background/80 backdrop-blur-md text-foreground border-0 px-4 py-1.5 text-sm font-bold">{room.room_type}</Badge>
                       </div>

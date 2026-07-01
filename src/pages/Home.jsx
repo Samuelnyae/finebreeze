@@ -7,6 +7,7 @@ import { Star, MapPin, Phone, Mail, Wifi, Coffee, Utensils, Car, Wind, Tv, Chevr
 import { Link } from "react-router-dom";
 import PromotionWidget from "@/components/PromotionWidget";
 import MapSection from "@/components/MapSection";
+import LazyImage from "@/components/LazyImage";
 
 const AnimatedElement = ({ children, className, delay = 0 }) => {
   const ref = useRef(null);
@@ -61,11 +62,14 @@ function HeroSection() {
     <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         {heroImages.map((src, i) => (
-          <img
+          <LazyImage
             key={i}
             src={src}
             alt="Fine Breeze Hotel Voi Kenya"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
+            eager={i === 0}
+            priority={i === 0}
+            className="absolute inset-0 w-full h-full transition-opacity duration-1000"
+            skeletonClass="bg-background"
             style={{ opacity: i === heroIdx ? 1 : 0, animation: "slowZoom 12s ease-in-out infinite alternate" }}
           />
         ))}
@@ -225,7 +229,7 @@ function RoomsSection() {
               <div className="group rounded-[2rem] overflow-hidden bg-card border border-border/50 hover:-translate-y-3 hover:shadow-[0_30px_60px_-15px_hsl(var(--primary)/0.2)] transition-all duration-500 h-full flex flex-col">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
-                  <img src={room.image_url} alt={room.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out" />
+                  <LazyImage src={room.image_url} alt={room.name} className="group-hover:scale-110 transition-transform duration-1000 ease-out" skeletonClass="bg-card" />
                   <div className="absolute top-4 right-4 z-20">
                     <Badge className="bg-background/80 backdrop-blur-md text-foreground border-0 px-4 py-1.5 text-sm font-bold shadow-xl">
                       {room.room_type}
@@ -293,7 +297,7 @@ function RestaurantSection() {
             <div className="relative group">
               <div className="absolute -inset-4 bg-gradient-to-tr from-primary/30 to-accent/30 rounded-[2.5rem] blur-2xl opacity-50 group-hover:opacity-80 transition-opacity duration-700" />
               <div className="relative rounded-[2rem] overflow-hidden aspect-[4/3] border border-border/50 shadow-2xl">
-                <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/c653ddfeb_generated_b1c83de0.png" alt="Fine Breeze Restaurant" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out" />
+                <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/c653ddfeb_generated_b1c83de0.png" alt="Fine Breeze Restaurant" className="group-hover:scale-105 transition-transform duration-1000 ease-out" skeletonClass="bg-card" />
               </div>
             </div>
           </div>
@@ -305,7 +309,7 @@ function RestaurantSection() {
               <div className="group bg-card rounded-[2rem] overflow-hidden border border-border/50 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_hsl(var(--accent)/0.2)] transition-all duration-500 flex flex-col h-full">
                 <div className="aspect-[4/3] overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent z-10 opacity-60" />
-                  <img src={item.image_url} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out" />
+                  <LazyImage src={item.image_url} alt={item.name} className="group-hover:scale-110 transition-transform duration-1000 ease-out" skeletonClass="bg-card" />
                   <Badge className="absolute top-4 left-4 z-20 bg-background/80 backdrop-blur-md text-foreground border-0 px-3 py-1 font-semibold">
                     {item.category}
                   </Badge>
@@ -339,7 +343,7 @@ function AboutSection() {
             <div className="relative group">
               <div className="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative rounded-[2.5rem] overflow-hidden aspect-[4/3] border-4 border-background shadow-2xl">
-                <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png" alt="Fine Breeze Pool" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png" alt="Fine Breeze Pool" className="group-hover:scale-105 transition-transform duration-1000" skeletonClass="bg-card" />
               </div>
               <div className="absolute -bottom-10 -right-4 md:-right-10 bg-card/90 backdrop-blur-xl border border-border/50 rounded-3xl p-8 shadow-2xl group-hover:-translate-y-4 transition-transform duration-500">
                 <div className="text-5xl font-black bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent mb-2">10+</div>
@@ -487,7 +491,7 @@ function GallerySection() {
             {items.map((img, i) => (
               <div key={img.title} onClick={() => setLightbox(img)} className={`group rounded-[2rem] overflow-hidden ${i === 0 ? "col-span-2 row-span-2" : ""} aspect-square relative shadow-lg cursor-pointer`}>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <img src={img.image_url} alt={img.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out" />
+                <LazyImage src={img.image_url} alt={img.title} className="group-hover:scale-110 transition-transform duration-1000 ease-out" skeletonClass="bg-card" />
                 <div className="absolute bottom-0 left-0 p-8 z-20 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                   <Badge className="bg-primary/90 text-primary-foreground border-0 mb-3 backdrop-blur-md">{img.category}</Badge>
                   <h3 className="text-white font-bold text-xl md:text-2xl">{img.title}</h3>
@@ -504,7 +508,7 @@ function GallerySection() {
             <X className="w-6 h-6" />
           </button>
           <div className="max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
-            <img src={lightbox.image_url} alt={lightbox.title} className="w-full max-h-[80vh] object-contain rounded-2xl" />
+            <LazyImage src={lightbox.image_url} alt={lightbox.title} eager className="max-h-[80vh] object-contain rounded-2xl" skeletonClass="bg-muted" />
             <div className="text-center mt-4">
               <Badge className="bg-primary/90 text-primary-foreground border-0 mb-2">{lightbox.category}</Badge>
               <h3 className="text-white font-bold text-2xl">{lightbox.title}</h3>

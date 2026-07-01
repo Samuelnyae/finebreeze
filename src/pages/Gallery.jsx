@@ -3,6 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import AnimatedElement from "@/components/AnimatedElement";
+import LazyImage from "@/components/LazyImage";
 
 const staticFallback = [
   { title: "Infinity Pool at Sunset", category: "Facilities", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png" },
@@ -36,7 +37,7 @@ export default function Gallery() {
     <div className="bg-background min-h-screen">
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute inset-0">
-          <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/856595890_generated_image.png" alt="Our Rooms" className="w-full h-full object-cover" />
+          <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/856595890_generated_image.png" alt="Our Rooms" eager className="w-full h-full" skeletonClass="bg-background" />
           <div className="absolute inset-0 bg-background/80" />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
@@ -75,7 +76,7 @@ export default function Gallery() {
                     className="group rounded-2xl overflow-hidden cursor-pointer aspect-square relative shadow-lg hover:shadow-2xl transition-all duration-500"
                   >
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <img src={img.image_url} alt={img.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                    <LazyImage src={img.image_url} alt={img.title} className="group-hover:scale-110 transition-transform duration-1000" skeletonClass="bg-card" />
                     <div className="absolute bottom-0 left-0 p-5 z-20 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                       <Badge className="bg-primary/90 text-primary-foreground border-0 mb-2">{img.category}</Badge>
                       <h3 className="text-white font-bold text-lg">{img.title}</h3>
@@ -94,7 +95,7 @@ export default function Gallery() {
             <X className="w-8 h-8" />
           </button>
           <div className="max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
-            <img src={lightbox.image_url} alt={lightbox.title} className="w-full max-h-[80vh] object-contain rounded-2xl" />
+            <LazyImage src={lightbox.image_url} alt={lightbox.title} eager className="max-h-[80vh] object-contain rounded-2xl" skeletonClass="bg-muted" />
             <div className="text-center mt-4">
               <Badge className="bg-primary text-primary-foreground border-0 mb-2">{lightbox.category}</Badge>
               <h3 className="text-white font-bold text-xl">{lightbox.title}</h3>
