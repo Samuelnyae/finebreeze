@@ -9,29 +9,48 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { LayoutDashboard, BedDouble, Utensils, CalendarCheck, Plus, Pencil, Trash2, X, Loader2, Image as ImageIcon, Star, Megaphone } from "lucide-react";
+import { LayoutDashboard, BedDouble, Utensils, CalendarCheck, Plus, Pencil, Trash2, X, Loader2, Image as ImageIcon, Star, Megaphone, ShieldAlert, Lock } from "lucide-react";
 import ImageUpload from "@/components/ImageUpload";
+import { useAuth } from "@/lib/AuthContext";
 
-const ADMIN_PASS = "admin";
 const PIE_COLORS = ["hsl(var(--primary))", "hsl(var(--accent))", "#10b981", "#f59e0b", "#ef4444"];
 
 export default function Admin() {
-  const [authed, setAuthed] = useState(false);
-  const [pass, setPass] = useState("");
+  const { user, isAuthenticated, isLoadingAuth } = useAuth();
   const [tab, setTab] = useState("dashboard");
 
-  if (!authed) {
+  if (isLoadingAuth) {
+    return (
+      <div className="bg-background min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-muted border-t-foreground rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
     return (
       <div className="bg-background min-h-screen flex items-center justify-center px-6 py-32">
-        <div className="max-w-sm w-full bg-card rounded-3xl border border-border/50 shadow-2xl p-8">
+        <div className="max-w-sm w-full bg-card rounded-3xl border border-border/50 shadow-2xl p-8 text-center">
           <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-5">
-            <LayoutDashboard className="w-7 h-7 text-primary-foreground" />
+            <Lock className="w-7 h-7 text-primary-foreground" />
           </div>
           <h1 className="text-2xl font-black text-center mb-2">Admin Access</h1>
-          <p className="text-sm text-muted-foreground text-center mb-6">Enter the admin password to continue.</p>
-          <Input type="password" value={pass} onChange={(e) => setPass(e.target.value)} placeholder="Password" className="h-12 mb-4" onKeyDown={(e) => e.key === "Enter" && setAuthed(pass === ADMIN_PASS)} />
-          <Button className="w-full h-12" onClick={() => { if (pass === ADMIN_PASS) setAuthed(true); else alert("Wrong password"); }}>Enter Dashboard</Button>
-          <p className="text-xs text-muted-foreground text-center mt-4">Default password: <code className="font-mono">admin</code></p>
+          <p className="text-sm text-muted-foreground text-center mb-6">Please sign in with an admin account to access the dashboard.</p>
+          <Button className="w-full h-12" onClick={() => { window.location.href = "/Login"; }}>Sign In</Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (user?.role !== "admin") {
+    return (
+      <div className="bg-background min-h-screen flex items-center justify-center px-6 py-32">
+        <div className="max-w-sm w-full bg-card rounded-3xl border border-border/50 shadow-2xl p-8 text-center">
+          <div className="w-14 h-14 rounded-2xl bg-destructive flex items-center justify-center mx-auto mb-5">
+            <ShieldAlert className="w-7 h-7 text-destructive-foreground" />
+          </div>
+          <h1 className="text-2xl font-black text-center mb-2">Access Restricted</h1>
+          <p className="text-sm text-muted-foreground text-center">You do not have permission to view this page. Admin access is required.</p>
         </div>
       </div>
     );

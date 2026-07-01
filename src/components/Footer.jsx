@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, MessageCircle, Instagram, Facebook, Twitter } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/AuthContext";
 
 const TikTokIcon = ({ className }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -9,6 +10,9 @@ const TikTokIcon = ({ className }) => (
 );
 
 export default function Footer() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
+
   return (
     <footer className="bg-foreground text-background">
       {/* Main footer */}
@@ -53,7 +57,7 @@ export default function Footer() {
               <li><Link to="/About" className="text-background/70 text-sm hover:text-primary transition-colors">About Us</Link></li>
               <li><a href="#" className="text-background/70 text-sm hover:text-primary transition-colors">Restaurant & Menu</a></li>
               <li><a href="#" className="text-background/70 text-sm hover:text-primary transition-colors">Gallery</a></li>
-              <li><Link to="/Admin" className="text-background/70 text-sm hover:text-primary transition-colors">Admin Dashboard</Link></li>
+              {isAdmin && <li><Link to="/Admin" className="text-background/70 text-sm hover:text-primary transition-colors">Admin Dashboard</Link></li>}
             </ul>
           </div>
 
