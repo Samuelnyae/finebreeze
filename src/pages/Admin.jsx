@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { base44 } from "@/api/base44Client";
+import { useEntityList } from "@/hooks/useEntityCache";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -95,15 +96,9 @@ export default function Admin() {
 }
 
 function Dashboard() {
-  const [rooms, setRooms] = useState([]);
-  const [menu, setMenu] = useState([]);
-  const [bookings, setBookings] = useState([]);
-
-  useEffect(() => {
-    base44.entities.Room.list().then(setRooms).catch(() => {});
-    base44.entities.MenuItem.list().then(setMenu).catch(() => {});
-    base44.entities.Booking.list().then(setBookings).catch(() => {});
-  }, []);
+  const { items: rooms } = useEntityList("Room");
+  const { items: menu } = useEntityList("MenuItem");
+  const { items: bookings } = useEntityList("Booking");
 
   const stats = [
     { label: "Total Rooms", value: rooms.length, icon: BedDouble },
@@ -184,23 +179,19 @@ function Dashboard() {
 }
 
 function RoomsManager() {
-  const [rooms, setRooms] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { items: rooms, loading, invalidate } = useEntityList("Room");
   const [editing, setEditing] = useState(null);
   const [open, setOpen] = useState(false);
-
-  const load = () => { setLoading(true); base44.entities.Room.list().then(setRooms).finally(() => setLoading(false)); };
-  useEffect(load, []);
 
   const blank = { name: "", description: "", price_per_night: 0, capacity: 2, amenities: "", image_url: "", room_type: "Standard" };
 
   const save = async (data) => {
     if (editing?.id) await base44.entities.Room.update(editing.id, data);
     else await base44.entities.Room.create(data);
-    setOpen(false); setEditing(null); load();
+    setOpen(false); setEditing(null); invalidate();
   };
 
-  const remove = async (id) => { if (confirm("Delete this room?")) { await base44.entities.Room.delete(id); load(); } };
+  const remove = async (id) => { if (confirm("Delete this room?")) { await base44.entities.Room.delete(id); invalidate(); } };
 
   return (
     <div>
@@ -261,21 +252,17 @@ function RoomForm({ initial, onSave }) {
 }
 
 function MenuManager() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { items, loading, invalidate } = useEntityList("MenuItem");
   const [editing, setEditing] = useState(null);
   const [open, setOpen] = useState(false);
-
-  const load = () => { setLoading(true); base44.entities.MenuItem.list().then(setItems).finally(() => setLoading(false)); };
-  useEffect(load, []);
 
   const blank = { name: "", description: "", price: 0, category: "Main Course", image_url: "", is_featured: false };
   const save = async (data) => {
     if (editing?.id) await base44.entities.MenuItem.update(editing.id, data);
     else await base44.entities.MenuItem.create(data);
-    setOpen(false); setEditing(null); load();
+    setOpen(false); setEditing(null); invalidate();
   };
-  const remove = async (id) => { if (confirm("Delete this item?")) { await base44.entities.MenuItem.delete(id); load(); } };
+  const remove = async (id) => { if (confirm("Delete this item?")) { await base44.entities.MenuItem.delete(id); invalidate(); } };
 
   return (
     <div>
@@ -340,21 +327,17 @@ function MenuForm({ initial, onSave }) {
 }
 
 function GalleryManager() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { items, loading, invalidate } = useEntityList("GalleryImage");
   const [editing, setEditing] = useState(null);
   const [open, setOpen] = useState(false);
-
-  const load = () => { setLoading(true); base44.entities.GalleryImage.list().then(setItems).finally(() => setLoading(false)); };
-  useEffect(load, []);
 
   const blank = { title: "", category: "Facilities", image_url: "", description: "" };
   const save = async (data) => {
     if (editing?.id) await base44.entities.GalleryImage.update(editing.id, data);
     else await base44.entities.GalleryImage.create(data);
-    setOpen(false); setEditing(null); load();
+    setOpen(false); setEditing(null); invalidate();
   };
-  const remove = async (id) => { if (confirm("Delete this image?")) { await base44.entities.GalleryImage.delete(id); load(); } };
+  const remove = async (id) => { if (confirm("Delete this image?")) { await base44.entities.GalleryImage.delete(id); invalidate(); } };
 
   return (
     <div>
@@ -415,21 +398,17 @@ function GalleryForm({ initial, onSave }) {
 }
 
 function ReviewsManager() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { items, loading, invalidate } = useEntityList("Testimonial");
   const [editing, setEditing] = useState(null);
   const [open, setOpen] = useState(false);
-
-  const load = () => { setLoading(true); base44.entities.Testimonial.list().then(setItems).finally(() => setLoading(false)); };
-  useEffect(load, []);
 
   const blank = { guest_name: "", review: "", rating: 5, country: "", stay_type: "" };
   const save = async (data) => {
     if (editing?.id) await base44.entities.Testimonial.update(editing.id, data);
     else await base44.entities.Testimonial.create(data);
-    setOpen(false); setEditing(null); load();
+    setOpen(false); setEditing(null); invalidate();
   };
-  const remove = async (id) => { if (confirm("Delete this review?")) { await base44.entities.Testimonial.delete(id); load(); } };
+  const remove = async (id) => { if (confirm("Delete this review?")) { await base44.entities.Testimonial.delete(id); invalidate(); } };
 
   return (
     <div>
@@ -487,21 +466,17 @@ function ReviewForm({ initial, onSave }) {
 }
 
 function PromotionsManager() {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { items, loading, invalidate } = useEntityList("Promotion");
   const [editing, setEditing] = useState(null);
   const [open, setOpen] = useState(false);
-
-  const load = () => { setLoading(true); base44.entities.Promotion.list().then(setItems).finally(() => setLoading(false)); };
-  useEffect(load, []);
 
   const blank = { title: "", description: "", badge_label: "", image_url: "", is_active: true, cta_text: "", cta_link: "" };
   const save = async (data) => {
     if (editing?.id) await base44.entities.Promotion.update(editing.id, data);
     else await base44.entities.Promotion.create(data);
-    setOpen(false); setEditing(null); load();
+    setOpen(false); setEditing(null); invalidate();
   };
-  const remove = async (id) => { if (confirm("Delete this promotion?")) { await base44.entities.Promotion.delete(id); load(); } };
+  const remove = async (id) => { if (confirm("Delete this promotion?")) { await base44.entities.Promotion.delete(id); invalidate(); } };
 
   return (
     <div>
@@ -561,13 +536,9 @@ function PromotionForm({ initial, onSave }) {
 }
 
 function BookingsManager() {
-  const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { items: bookings, loading, invalidate } = useEntityList("Booking", { sort: "-created_date" });
 
-  const load = () => { setLoading(true); base44.entities.Booking.list("-created_date").then(setBookings).finally(() => setLoading(false)); };
-  useEffect(load, []);
-
-  const updateStatus = async (id, status) => { await base44.entities.Booking.update(id, { status }); load(); };
+  const updateStatus = async (id, status) => { await base44.entities.Booking.update(id, { status }); invalidate(); };
 
   if (loading) return <p className="text-muted-foreground">Loading bookings…</p>;
   if (bookings.length === 0) return <p className="text-muted-foreground">No bookings yet.</p>;
