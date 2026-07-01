@@ -3,11 +3,12 @@ import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, MapPin, Phone, Mail, Wifi, Coffee, Utensils, Car, Wind, Tv, ChevronRight, ArrowRight, MessageCircle, Quote, X } from "lucide-react";
+import { Star, MapPin, Phone, Mail, Wifi, Coffee, Utensils, Car, Wind, Tv, ChevronRight, ArrowRight, MessageCircle, Quote, X, Images } from "lucide-react";
 import { Link } from "react-router-dom";
 import PromotionWidget from "@/components/PromotionWidget";
 import MapSection from "@/components/MapSection";
 import LazyImage from "@/components/LazyImage";
+import { useCurrency } from "@/lib/CurrencyContext";
 
 const AnimatedElement = ({ children, className, delay = 0 }) => {
   const ref = useRef(null);
@@ -194,6 +195,7 @@ function AmenitiesSection() {
 
 function RoomsSection() {
   const [rooms, setRooms] = useState([]);
+  const { formatPrice } = useCurrency();
   useEffect(() => {
     base44.entities.Room.list().then(setRooms).catch(() => {});
     const unsub = base44.entities.Room.subscribe(() => {
@@ -202,6 +204,17 @@ function RoomsSection() {
     return unsub;
   }, []);
   const items = rooms.slice(0, 3);
+
+  const amenityIcons = (amenities) => {
+    const list = (amenities || "").toLowerCase();
+    return [
+      { icon: Wifi, show: list.includes("wifi") },
+      { icon: Wind, show: list.includes("ac") || list.includes("air") },
+      { icon: Coffee, show: list.includes("minibar") || list.includes("room service") },
+      { icon: Car, show: list.includes("parking") },
+      { icon: Tv, show: list.includes("tv") || list.includes("smart") },
+    ].filter((a) => a.show);
+  };
 
   return (
     <section className="py-20 md:py-32 bg-background relative overflow-hidden">
@@ -238,11 +251,16 @@ function RoomsSection() {
                 </div>
                 <div className="p-8 flex flex-col flex-1 relative">
                   <div className="absolute -top-8 right-8 z-20 bg-primary text-primary-foreground font-black px-6 py-3 rounded-xl shadow-xl shadow-primary/30 group-hover:scale-110 transition-transform duration-500">
-                    KES {(room.price_per_night || 0).toLocaleString()} <span className="text-xs font-normal opacity-80">/night</span>
+                    {formatPrice(room.price_per_night || 0)} <span className="text-xs font-normal opacity-80">/night</span>
                   </div>
                   
                   <h3 className="text-2xl font-black text-card-foreground mb-3 pr-24">{room.name}</h3>
-                  <p className="text-muted-foreground mb-8 leading-relaxed line-clamp-3 flex-1">{room.description}</p>
+                  <p className="text-muted-foreground mb-4 leading-relaxed line-clamp-3 flex-1">{room.description}</p>
+                  {room.amenities && (
+                    <div className="flex items-center gap-3 mb-6 text-primary">
+                      {amenityIcons(room.amenities).map((a, j) => <a.icon key={j} className="w-5 h-5" />)}
+                    </div>
+                  )}
                   
                   <a href={`https://wa.me/254714447638?text=Hello%2C%20I%20would%20like%20to%20book%20the%20${encodeURIComponent(room.name)}%20room.`} target="_blank" rel="noopener noreferrer" className="mt-auto">
                     <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 relative overflow-hidden h-14 rounded-xl text-base font-bold group/btn shadow-lg shadow-accent/20">
@@ -262,6 +280,7 @@ function RoomsSection() {
 
 function RestaurantSection() {
   const [menuItems, setMenuItems] = useState([]);
+  const { formatPrice } = useCurrency();
   useEffect(() => {
     base44.entities.MenuItem.list().then(setMenuItems).catch(() => {});
     const unsub = base44.entities.MenuItem.subscribe(() => {
@@ -319,7 +338,7 @@ function RestaurantSection() {
                   <p className="text-muted-foreground mb-6 leading-relaxed flex-1">{item.description}</p>
                   <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/30">
                     <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Price</span>
-                    <span className="text-2xl font-black text-primary">KES {(item.price || 0).toLocaleString()}</span>
+                    <span className="text-2xl font-black text-primary">{formatPrice(item.price || 0)}</span>
                   </div>
                 </div>
               </div>
@@ -473,7 +492,7 @@ function GallerySection() {
     });
     return unsub;
   }, []);
-  const items = gallery;
+  const items = gallery.slice(0, 5);
   const [lightbox, setLightbox] = useState(null);
 
   return (
@@ -498,6 +517,16 @@ function GallerySection() {
                 </div>
               </div>
             ))}
+          </div>
+        </AnimatedElement>
+
+        <AnimatedElement>
+          <div className="text-center mt-12">
+            <Link to="/Gallery">
+              <Button size="lg" variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 hover:scale-105 active:scale-95 transition-all duration-300 rounded-xl px-8">
+                <Images className="w-5 h-5 mr-2" /> View Full Gallery <ChevronRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
           </div>
         </AnimatedElement>
       </div>
