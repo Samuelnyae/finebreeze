@@ -67,11 +67,11 @@ function HeroSection() {
             key={i}
             src={src}
             alt="Fine Breeze Hotel Voi Kenya"
-            eager={i === 0}
+            eager
             priority={i === 0}
             className="absolute inset-0 w-full h-full transition-opacity duration-1000"
             skeletonClass="bg-background"
-            style={{ opacity: i === heroIdx ? 1 : 0, animation: "slowZoom 12s ease-in-out infinite alternate" }}
+            style={{ opacity: i === heroIdx ? 1 : 0, animation: i === heroIdx ? "slowZoom 12s ease-in-out infinite alternate" : "none" }}
           />
         ))}
         <div className="absolute inset-0 bg-background/80 z-10" />
