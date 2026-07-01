@@ -50,77 +50,29 @@ export default function Header() {
         </div>
       </div>
 
-      <header className={`sticky top-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/90 backdrop-blur-xl border-b border-border shadow-2xl shadow-background/20 py-2" : "bg-background/50 backdrop-blur-md border-b border-border/30 py-4"}`}>
+      <header className={`sticky top-0 z-50 transition-all duration-500 ${scrolled ? "bg-background/90 backdrop-blur-xl border-b border-border shadow-2xl shadow-background/20 py-1.5" : "bg-background/50 backdrop-blur-md border-b border-border/30 py-2.5"}`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3.5 group">
-            <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg shadow-primary/20 group-hover:shadow-primary/40 group-hover:scale-105 transition-all duration-500 ring-2 ring-primary/30">
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 rounded-full overflow-hidden shadow-md shadow-primary/20 group-hover:shadow-primary/40 group-hover:scale-105 transition-all duration-500 ring-2 ring-primary/20">
               <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02538d30c_generated_image.png" alt="Fine Breeze Hotel Logo" className="w-full h-full object-cover" />
             </div>
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden sm:flex items-center gap-2">
-            <Link
-              to="/"
-              className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/") && location.pathname === "/" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
-            >
-              Home
-            </Link>
-            <Link
-              to="/Rooms"
-              className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/Rooms") ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
-            >
-              Rooms
-            </Link>
-            <Link
-              to="/Restaurant"
-              className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/Restaurant") ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
-            >
-              Restaurant
-            </Link>
-            <Link
-              to="/Gallery"
-              className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/Gallery") ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
-            >
-              Gallery
-            </Link>
-            <Link
-              to="/About"
-              className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/About") ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
-            >
-              About
-            </Link>
-            <Link
-              to="/Booking"
-              className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/Booking") ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
-            >
-              Book
-            </Link>
-            <Link
-              to="/Contact"
-              className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/Contact") ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
-            >
-              Contact
-            </Link>
+          <nav className="hidden sm:flex items-center gap-1">
+            <Link to="/" className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 ${isActive("/") && location.pathname === "/" ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>Home</Link>
+            <Link to="/Rooms" className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 ${isActive("/Rooms") ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>Rooms</Link>
+            <Link to="/Restaurant" className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 ${isActive("/Restaurant") ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>Dining</Link>
+            <Link to="/Gallery" className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 ${isActive("/Gallery") ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>Gallery</Link>
+            <Link to="/About" className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 ${isActive("/About") ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>About</Link>
+            <Link to="/Contact" className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 ${isActive("/Contact") ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>Contact</Link>
             {isAdmin && (
-            <Link
-              to="/Admin"
-              className={`px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive("/Admin") ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary"}`}
-            >
-              Admin
-            </Link>
+              <Link to="/Admin" className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 ${isActive("/Admin") ? "text-primary" : "text-muted-foreground hover:text-foreground"}`}>Admin</Link>
             )}
-            <CurrencySelector />
-            <a
-              href="https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20would%20like%20to%20make%20a%20booking."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-2"
-            >
-              <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90 relative overflow-hidden hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-accent/20 h-10 px-5 rounded-xl font-bold">
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/20 to-transparent animate-[shimmer_3s_ease-in-out_infinite] bg-[length:200%_100%]" />
-                <MessageCircle className="w-4 h-4 mr-2" /> Book Now
+            <a href="https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20would%20like%20to%20make%20a%20booking." target="_blank" rel="noopener noreferrer" className="ml-3">
+              <Button size="sm" className="bg-accent/80 text-accent-foreground hover:bg-accent/70 transition-all duration-300 h-9 px-5 rounded-lg text-sm font-semibold">
+                Book Now
               </Button>
             </a>
           </nav>
@@ -152,7 +104,7 @@ export default function Header() {
                   {[
                     { to: "/", label: "Home", icon: HomeIcon, active: isActive("/") && location.pathname === "/" },
                     { to: "/Rooms", label: "Rooms", icon: BedDouble, active: isActive("/Rooms") },
-                    { to: "/Restaurant", label: "Restaurant & Menu", icon: Utensils, active: isActive("/Restaurant") },
+                    { to: "/Restaurant", label: "Dining", icon: Utensils, active: isActive("/Restaurant") },
                     { to: "/Gallery", label: "Gallery", icon: Images, active: isActive("/Gallery") },
                     { to: "/About", label: "About Us", icon: Info, active: isActive("/About") },
                     { to: "/Booking", label: "Book a Stay", icon: CalendarCheck, active: isActive("/Booking") },

@@ -88,38 +88,36 @@ function HeroSection() {
       <div className="absolute bottom-[10%] right-[5%] w-[500px] h-[500px] bg-accent/20 rounded-full blur-[140px] pointer-events-none z-10" style={{ animation: "floatB 8s ease-in-out 2s infinite" }} />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-primary/10 rounded-full blur-[100px] pointer-events-none z-10" style={{ animation: "floatC 12s ease-in-out 1s infinite" }} />
 
-      <div className="relative z-20 text-center px-6 max-w-6xl mx-auto w-full pt-20">
+      <div className="relative z-20 text-center px-6 max-w-4xl mx-auto w-full pt-16">
         <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeOut" }}>
-          <Badge className="mb-8 bg-background/40 text-primary border-primary/30 text-xs sm:text-sm uppercase tracking-widest px-6 py-2.5 backdrop-blur-md shadow-xl shadow-primary/5 hover:bg-background/60 transition-colors cursor-default">
-            <MapPin className="w-4 h-4 mr-2" /> Voi, Taita Taveta County, Kenya
-          </Badge>
-          
-          <h1 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.9] mb-8 drop-shadow-2xl">
-            <span className="block text-foreground mb-2">Where the</span>
-            <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-gradient-x text-glow pb-2">Fine Breeze</span>
-            <span className="block text-foreground">Blows Free</span>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-heading font-bold tracking-tight leading-[1.05] mb-6 drop-shadow-2xl">
+            <span className="block text-foreground">Experience Comfort</span>
+            <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-gradient-x">in the Heart of Voi</span>
           </h1>
           
-          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground/90 max-w-3xl mx-auto mb-12 leading-relaxed font-light">
-            A luxury hotel & restaurant nestled at the foot of the Taita Hills. Experience world-class hospitality, authentic Kenyan cuisine, and breathtaking landscapes.
+          <p className="text-base sm:text-lg text-muted-foreground/90 max-w-2xl mx-auto mb-6 leading-relaxed font-light">
+            Luxury Rooms &bull; Restaurant &bull; Events
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
+          <p className="text-sm text-muted-foreground/60 max-w-xl mx-auto mb-10 leading-relaxed font-light">
+            <MapPin className="w-3.5 h-3.5 inline mr-1.5 -translate-y-0.5" />Voi, Taita Taveta County, Kenya
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href={`https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20would%20like%20to%20make%20a%20booking.`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto"
             >
-              <Button size="lg" className="w-full sm:w-auto relative overflow-hidden bg-accent text-accent-foreground hover:bg-accent/90 font-bold text-lg px-10 py-7 shadow-[0_0_40px_-10px_hsl(var(--accent))] hover:shadow-[0_0_60px_-15px_hsl(var(--accent))] hover:scale-105 active:scale-95 transition-all duration-300 rounded-2xl">
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/20 to-transparent animate-[shimmer_3s_ease-in-out_infinite] bg-[length:200%_100%]" />
-                <MessageCircle className="w-6 h-6 mr-3" />
-                Book via WhatsApp
+              <Button size="lg" className="w-full sm:w-auto bg-accent/85 text-accent-foreground hover:bg-accent/75 font-semibold text-base px-8 py-6 shadow-lg shadow-accent/10 hover:scale-105 active:scale-95 transition-all duration-300 rounded-xl">
+                <MessageCircle className="w-5 h-5 mr-2" />
+                Book Your Stay
               </Button>
             </a>
             <Link to="/Rooms" className="w-full sm:w-auto">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto border-primary/50 text-primary hover:bg-primary/10 font-semibold text-lg px-10 py-7 backdrop-blur-md hover:scale-105 active:scale-95 transition-all duration-300 rounded-2xl shadow-xl shadow-black/20">
-                Explore Rooms <ArrowRight className="w-5 h-5 ml-2" />
+              <Button size="lg" variant="outline" className="w-full sm:w-auto border-primary/40 text-primary hover:bg-primary/10 font-medium text-base px-8 py-6 backdrop-blur-md hover:scale-105 active:scale-95 transition-all duration-300 rounded-xl">
+                View Rooms <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
           </div>
