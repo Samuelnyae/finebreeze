@@ -1,8 +1,18 @@
-import { Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import { base44 } from "@/api/base44Client";
 import Header from "./Header";
 import Footer from "./Footer";
 
 export default function Layout() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const page = location.pathname || "/";
+    const source = new URLSearchParams(window.location.search).get("ref") || "direct";
+    base44.functions.invoke("trackSiteVisit", { page, source }).catch(() => {});
+  }, [location.pathname]);
+
   return (
     <div className="bg-background text-foreground min-h-screen">
       <Header />

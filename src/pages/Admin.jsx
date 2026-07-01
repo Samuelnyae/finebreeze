@@ -68,7 +68,7 @@ export default function Admin() {
   ];
 
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-background min-h-screen admin-dashboard">
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="mb-8">
           <h1 className="text-4xl font-black text-foreground">Admin Dashboard</h1>

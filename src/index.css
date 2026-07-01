@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -69,6 +69,16 @@
 
 body { font-family: var(--font-body) !important; }
 h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading) !important; }
+
+/* Inter font for Admin Dashboard — geometric sans-serif */
+.admin-dashboard, .admin-dashboard h1, .admin-dashboard h2, .admin-dashboard h3,
+.admin-dashboard h4, .admin-dashboard h5, .admin-dashboard h6,
+.admin-dashboard p, .admin-dashboard span, .admin-dashboard label,
+.admin-dashboard td, .admin-dashboard th, .admin-dashboard button,
+.admin-dashboard input, .admin-dashboard select, .admin-dashboard textarea {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
+  letter-spacing: -0.01em;
+}
 
 
 

@@ -32,6 +32,7 @@ export default function Contact() {
     setSaving(true);
     try {
       await base44.entities.ContactMessage.create(form);
+      base44.functions.invoke("sendContactAlert", { data: form }).catch(() => {});
       setDone(true);
       setForm({ name: "", email: "", phone: "", category: "General Info", message: "" });
     } finally {
