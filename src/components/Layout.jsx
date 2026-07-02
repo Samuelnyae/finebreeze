@@ -5,6 +5,7 @@ import { CurrencyProvider } from "@/lib/CurrencyContext";
 import Header from "./Header";
 import Footer from "./Footer";
 import StructuredData from "./StructuredData";
+import ConnectionBanner from "./ConnectionBanner";
 
 export default function Layout() {
   const location = useLocation();
@@ -19,6 +20,7 @@ export default function Layout() {
     <CurrencyProvider>
       <div className="bg-background text-foreground min-h-screen">
         <StructuredData />
+        <ConnectionBanner />
         <Header />
         <main>
           <Outlet />
