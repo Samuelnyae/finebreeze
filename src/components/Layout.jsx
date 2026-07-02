@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import { CurrencyProvider } from "@/lib/CurrencyContext";
 import Header from "./Header";
 import Footer from "./Footer";
+import StructuredData from "./StructuredData";
 
 export default function Layout() {
   const location = useLocation();
@@ -17,6 +18,7 @@ export default function Layout() {
   return (
     <CurrencyProvider>
       <div className="bg-background text-foreground min-h-screen">
+        <StructuredData />
         <Header />
         <main>
           <Outlet />
