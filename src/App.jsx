@@ -7,6 +7,8 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import Layout from './components/Layout';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import { Navigate } from 'react-router-dom';
 
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
@@ -50,8 +52,11 @@ const AuthenticatedApp = () => {
           <Route path="/Gallery" element={<Gallery />} />
           <Route path="/About" element={<About />} />
           <Route path="/Booking" element={<Booking />} />
-          <Route path="/Admin" element={<Admin />} />
           <Route path="/Contact" element={<Contact />} />
+          {/* Admin-only routes — login required */}
+          <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/Login" replace />} />}>
+            <Route path="/Admin" element={<Admin />} />
+          </Route>
           <Route path="/Login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
           {/* Add your page Route elements here */}
