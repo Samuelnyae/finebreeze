@@ -92,7 +92,7 @@ export default function Rooms() {
                       </div>
                       <h3 className="text-2xl font-black text-card-foreground mb-3 pr-24">{room.name}</h3>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                        <Users className="w-4 h-4 text-primary" /> Sleeps {room.capacity || 2}
+                        <Users className="w-4 h-4 text-primary" /> {room.capacity ? `Sleeps ${room.capacity}` : "Capacity varies"}
                       </div>
                       <p className="text-muted-foreground mb-5 leading-relaxed line-clamp-3 flex-1">{room.description}</p>
                       <div className="flex items-center gap-3 mb-6 text-primary">
