@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, MapPin, Phone, Mail, Wifi, Coffee, Utensils, Car, Wind, Tv, ChevronRight, ArrowRight, MessageCircle, Quote, X, Images } from "lucide-react";
+import { Star, MapPin, Phone, Mail, Wifi, Coffee, Utensils, Car, Wind, Tv, ChevronRight, ChevronLeft, ArrowRight, MessageCircle, Quote, X, Images } from "lucide-react";
 import { Link } from "react-router-dom";
 import PromotionWidget from "@/components/PromotionWidget";
 import MapSection from "@/components/MapSection";
@@ -415,43 +415,57 @@ function TestimonialsSection() {
           </div>
         </AnimatedElement>
         
-        <div className="relative cursor-grab active:cursor-grabbing">
-          <motion.div
-            className="flex"
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            onDragEnd={(_, { offset, velocity }) => {
-              const swipe = offset.x < -50 || velocity.x < -300 ? 1 : offset.x > 50 || velocity.x > 300 ? -1 : 0;
-              if (swipe !== 0) setReviewIdx((i) => Math.max(0, Math.min(items.length - 1, i + swipe)));
-            }}
-            animate={{ x: `-${reviewIdx * 100}%` }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          >
-            {items.map((t, i) => (
-              <div key={i} className="min-w-full px-4">
-                <div className="p-px rounded-[2rem] bg-gradient-to-br from-primary/30 via-transparent to-accent/20">
-                  <div className="bg-card/90 backdrop-blur-xl rounded-[31px] p-10 md:p-14 flex flex-col border border-border/30 max-w-2xl mx-auto">
-                    <div className="flex mb-8 gap-1">
-                      {Array.from({ length: Math.round(t.rating || 5) }).map((_, j) => (
-                        <Star key={j} className="w-5 h-5 fill-primary text-primary drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]" />
-                      ))}
-                    </div>
-                    <Quote className="w-10 h-10 text-primary/20 mb-6" />
-                    <p className="text-foreground/80 text-lg md:text-2xl leading-relaxed flex-1 mb-10 font-light italic">"{t.review}"</p>
-                    <div className="border-t border-border/50 pt-6 flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-black text-lg">
-                        {t.guest_name.charAt(0)}
+        <div className="relative">
+          {reviewIdx > 0 && (
+            <button onClick={() => setReviewIdx((i) => Math.max(0, i - 1))} className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-30 w-12 h-12 rounded-full bg-card border border-border/50 shadow-xl items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 active:scale-95">
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+          )}
+          {reviewIdx < items.length - 1 && (
+            <button onClick={() => setReviewIdx((i) => Math.min(items.length - 1, i + 1))} className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-30 w-12 h-12 rounded-full bg-card border border-border/50 shadow-xl items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 active:scale-95">
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          )}
+
+          <div className="overflow-hidden cursor-grab active:cursor-grabbing">
+            <motion.div
+              className="flex"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.16}
+              onDragEnd={(_, { offset, velocity }) => {
+                const swipe = offset.x < -50 || velocity.x < -300 ? 1 : offset.x > 50 || velocity.x > 300 ? -1 : 0;
+                if (swipe !== 0) setReviewIdx((i) => Math.max(0, Math.min(items.length - 1, i + swipe)));
+              }}
+              animate={{ x: `-${reviewIdx * 100}%` }}
+              transition={{ type: "spring", stiffness: 260, damping: 28 }}
+            >
+              {items.map((t, i) => (
+                <div key={i} className="min-w-full px-4">
+                  <div className="p-px rounded-[2rem] bg-gradient-to-br from-primary/30 via-transparent to-accent/20">
+                    <div className="bg-card/90 backdrop-blur-xl rounded-[31px] p-10 md:p-14 flex flex-col border border-border/30 max-w-2xl mx-auto">
+                      <div className="flex mb-8 gap-1">
+                        {Array.from({ length: Math.round(t.rating || 5) }).map((_, j) => (
+                          <Star key={j} className="w-5 h-5 fill-primary text-primary drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]" />
+                        ))}
                       </div>
-                      <div>
-                        <div className="font-bold text-card-foreground text-base mb-1">{t.guest_name}</div>
-                        <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t.stay_type} · {t.country}</div>
+                      <Quote className="w-10 h-10 text-primary/20 mb-6" />
+                      <p className="text-foreground/80 text-lg md:text-2xl leading-relaxed flex-1 mb-10 font-light italic">"{t.review}"</p>
+                      <div className="border-t border-border/50 pt-6 flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-black text-lg">
+                          {t.guest_name.charAt(0)}
+                        </div>
+                        <div>
+                          <div className="font-bold text-card-foreground text-base mb-1">{t.guest_name}</div>
+                          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t.stay_type} · {t.country}</div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </motion.div>
+              ))}
+            </motion.div>
+          </div>
 
           <div className="flex justify-center gap-2 mt-8">
             {items.map((_, i) => (
