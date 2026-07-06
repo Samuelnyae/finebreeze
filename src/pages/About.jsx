@@ -7,6 +7,7 @@ import { base44 } from "@/api/base44Client";
 import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import LazyImage from "@/components/LazyImage";
+import ParallaxImage from "@/components/ParallaxImage";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
@@ -69,7 +70,7 @@ function StorySection() {
           <div className="relative group">
             <div className="absolute -inset-4 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-[2.5rem] blur-2xl opacity-50 group-hover:opacity-80 transition-opacity duration-700" />
             <div className="relative rounded-[2rem] overflow-hidden aspect-[4/3] border border-border/50 shadow-2xl">
-              <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/dbd4a4e59_u.png" alt="Fine Breeze Hotel" className="group-hover:scale-105 transition-transform duration-1000" skeletonClass="bg-card" />
+              <ParallaxImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/dbd4a4e59_u.png" alt="Fine Breeze Hotel" skeletonClass="bg-card" />
             </div>
           </div>
         </div>

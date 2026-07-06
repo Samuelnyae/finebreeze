@@ -41,7 +41,7 @@ export default function Gallery() {
           <div className="absolute inset-0 bg-background/80" />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <AnimatedElement>
+          <AnimatedElement variant="fade-down">
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Visual Tour</p>
             <h1 className="text-3xl md:text-4xl font-black text-foreground mb-5">Gallery</h1>
             <p className="text-base text-muted-foreground max-w-2xl mx-auto font-light">
@@ -70,7 +70,7 @@ export default function Gallery() {
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {filtered.map((img, i) => (
-                <AnimatedElement key={img.title + i} delay={i * 60}>
+                <AnimatedElement key={img.title + i} delay={i * 60} variant="scale-in">
                   <div
                     onClick={() => setLightbox(img)}
                     className="group rounded-2xl overflow-hidden cursor-pointer aspect-square relative shadow-lg hover:shadow-2xl transition-all duration-500"

@@ -6,6 +6,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import StructuredData from "./StructuredData";
 import ConnectionBanner from "./ConnectionBanner";
+import ScrollProgress from "./ScrollProgress";
 
 export default function Layout() {
   const location = useLocation();
@@ -19,6 +20,7 @@ export default function Layout() {
   return (
     <CurrencyProvider>
       <div className="bg-background text-foreground min-h-screen">
+        <ScrollProgress />
         <StructuredData />
         <ConnectionBanner />
         <Header />

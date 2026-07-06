@@ -1,23 +1,26 @@
-import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 
-export default function AnimatedElement({ children, className, delay = 0 }) {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight) { setIsVisible(true); return; }
-    const fallback = setTimeout(() => setIsVisible(true), 800 + delay);
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { clearTimeout(fallback); setTimeout(() => setIsVisible(true), delay); observer.unobserve(el); }
-    }, { threshold: 0.05, rootMargin: "0px 0px 200px 0px" });
-    observer.observe(el);
-    return () => { observer.disconnect(); clearTimeout(fallback); };
-  }, [delay]);
+const variants = {
+  "fade-up": { hidden: { opacity: 0, y: 60 }, visible: { opacity: 1, y: 0 } },
+  "fade-down": { hidden: { opacity: 0, y: -60 }, visible: { opacity: 1, y: 0 } },
+  "fade-left": { hidden: { opacity: 0, x: -80 }, visible: { opacity: 1, x: 0 } },
+  "fade-right": { hidden: { opacity: 0, x: 80 }, visible: { opacity: 1, x: 0 } },
+  "scale-in": { hidden: { opacity: 0, scale: 0.85 }, visible: { opacity: 1, scale: 1 } },
+  "blur-in": { hidden: { opacity: 0, filter: "blur(14px)" }, visible: { opacity: 1, filter: "blur(0px)" } },
+};
+
+export default function AnimatedElement({ children, className, delay = 0, variant = "fade-up" }) {
+  const v = variants[variant] || variants["fade-up"];
   return (
-    <div ref={ref} className={`transition-all duration-1000 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"} ${className || ""}`}>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "0px 0px -80px 0px" }}
+      variants={v}
+      transition={{ duration: 0.7, delay: delay / 1000, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }

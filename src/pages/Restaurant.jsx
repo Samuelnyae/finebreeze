@@ -47,7 +47,7 @@ export default function Restaurant() {
           <div className="absolute inset-0 bg-background/80" />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <AnimatedElement>
+          <AnimatedElement variant="fade-down">
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Fine Dining</p>
             <h1 className="text-3xl md:text-4xl font-black text-foreground mb-5">Our Restaurant & Menu</h1>
             <p className="text-base text-muted-foreground max-w-2xl mx-auto font-light">
@@ -76,7 +76,7 @@ export default function Restaurant() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filtered.map((item, i) => (
-                <AnimatedElement key={item.name + i} delay={i * 80}>
+                <AnimatedElement key={item.name + i} delay={i * 80} variant="scale-in">
                   <div className="group bg-card rounded-[2rem] overflow-hidden border border-border/50 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_hsl(var(--accent)/0.2)] transition-all duration-500 flex flex-col h-full">
                     {item.image_url ? (
                       <div className="aspect-[4/3] overflow-hidden relative">

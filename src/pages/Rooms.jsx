@@ -49,7 +49,7 @@ export default function Rooms() {
           <div className="absolute inset-0 bg-background/80" />
         </div>
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <AnimatedElement>
+          <AnimatedElement variant="fade-down">
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Accommodations</p>
             <h1 className="text-3xl md:text-4xl font-black text-foreground mb-5">Our Rooms & Suites</h1>
             <p className="text-base text-muted-foreground max-w-2xl mx-auto font-light">
@@ -78,7 +78,7 @@ export default function Rooms() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filtered.map((room, i) => (
-                <AnimatedElement key={room.name + i} delay={i * 100}>
+                <AnimatedElement key={room.name + i} delay={i * 100} variant={i % 2 === 0 ? "fade-left" : "fade-right"}>
                   <div className="group rounded-[2rem] overflow-hidden bg-card border border-border/50 hover:-translate-y-3 hover:shadow-[0_30px_60px_-15px_hsl(var(--primary)/0.2)] transition-all duration-500 h-full flex flex-col">
                     <div className="relative aspect-[4/3] overflow-hidden">
                       <LazyImage src={room.image_url} alt={room.name} className="group-hover:scale-110 transition-transform duration-1000" skeletonClass="bg-card" />

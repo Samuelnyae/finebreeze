@@ -8,28 +8,31 @@ import { Link } from "react-router-dom";
 import PromotionWidget from "@/components/PromotionWidget";
 import MapSection from "@/components/MapSection";
 import LazyImage from "@/components/LazyImage";
+import ParallaxImage from "@/components/ParallaxImage";
 import { useCurrency } from "@/lib/CurrencyContext";
 import { useCachedEntity } from "@/hooks/useCachedEntity";
 
-const AnimatedElement = ({ children, className, delay = 0 }) => {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    if (rect.top < window.innerHeight) { setIsVisible(true); return; }
-    const fallback = setTimeout(() => setIsVisible(true), 800 + delay);
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) { clearTimeout(fallback); setTimeout(() => setIsVisible(true), delay); observer.unobserve(el); }
-    }, { threshold: 0.05, rootMargin: "0px 0px 200px 0px" });
-    observer.observe(el);
-    return () => { observer.disconnect(); clearTimeout(fallback); };
-  }, [delay]);
+const AnimatedElement = ({ children, className, delay = 0, variant = "fade-up" }) => {
+  const variants = {
+    "fade-up": { hidden: { opacity: 0, y: 60 }, visible: { opacity: 1, y: 0 } },
+    "fade-down": { hidden: { opacity: 0, y: -60 }, visible: { opacity: 1, y: 0 } },
+    "fade-left": { hidden: { opacity: 0, x: -80 }, visible: { opacity: 1, x: 0 } },
+    "fade-right": { hidden: { opacity: 0, x: 80 }, visible: { opacity: 1, x: 0 } },
+    "scale-in": { hidden: { opacity: 0, scale: 0.85 }, visible: { opacity: 1, scale: 1 } },
+    "blur-in": { hidden: { opacity: 0, filter: "blur(14px)" }, visible: { opacity: 1, filter: "blur(0px)" } },
+  };
+  const v = variants[variant] || variants["fade-up"];
   return (
-    <div ref={ref} className={`transition-all duration-1000 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"} ${className || ""}`}>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "0px 0px -80px 0px" }}
+      variants={v}
+      transition={{ duration: 0.7, delay: delay / 1000, ease: [0.22, 1, 0.36, 1] }}
+      className={className}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 };
 
@@ -164,7 +167,7 @@ function AmenitiesSection() {
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <AnimatedElement>
+        <AnimatedElement variant="fade-down">
           <div className="text-center mb-20">
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">World-Class Facilities</p>
             <h2 className="text-5xl md:text-6xl font-black text-foreground mb-6">Everything You Need</h2>
@@ -174,7 +177,7 @@ function AmenitiesSection() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {amenities.map((a, i) => (
-            <AnimatedElement key={a.label} delay={i * 100}>
+            <AnimatedElement key={a.label} delay={i * 100} variant={i % 3 === 0 ? "fade-left" : i % 3 === 1 ? "fade-right" : "scale-in"}>
               <div className="p-px rounded-3xl bg-gradient-to-br from-primary/20 via-transparent to-accent/20 hover:from-primary/50 hover:to-accent/40 transition-all duration-700 group h-full shadow-lg shadow-background/5">
                 <div className="rounded-[23px] bg-card/80 backdrop-blur-xl p-8 h-full hover:-translate-y-2 transition-transform duration-500 flex flex-col items-start border border-border/10">
                   <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-500 shadow-inner">
@@ -214,7 +217,7 @@ function RoomsSection() {
       <div className="absolute bottom-20 right-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[100px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <AnimatedElement>
+        <AnimatedElement variant="fade-left">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Accommodations</p>
@@ -230,7 +233,7 @@ function RoomsSection() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {items.map((room, i) => (
-            <AnimatedElement key={room.name} delay={i * 150}>
+            <AnimatedElement key={room.name} delay={i * 150} variant={i % 2 === 0 ? "fade-left" : "fade-right"}>
               <div className="group rounded-[2rem] overflow-hidden bg-card border border-border/50 hover:-translate-y-3 hover:shadow-[0_30px_60px_-15px_hsl(var(--primary)/0.2)] transition-all duration-500 h-full flex flex-col">
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
@@ -281,7 +284,7 @@ function RestaurantSection() {
       <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <AnimatedElement>
+        <AnimatedElement variant="fade-right">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Our Restaurant</p>
@@ -309,7 +312,7 @@ function RestaurantSection() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {items.map((item, i) => (
-            <AnimatedElement key={item.name} delay={i * 150}>
+            <AnimatedElement key={item.name} delay={i * 150} variant="scale-in">
               <div className="group bg-card rounded-[2rem] overflow-hidden border border-border/50 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_hsl(var(--accent)/0.2)] transition-all duration-500 flex flex-col h-full">
                 <div className="aspect-[4/3] overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent z-10 opacity-60" />
@@ -347,7 +350,7 @@ function AboutSection() {
             <div className="relative group">
               <div className="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               <div className="relative rounded-[2.5rem] overflow-hidden aspect-[4/3] border-4 border-background shadow-2xl">
-                <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png" alt="Fine Breeze Pool" className="group-hover:scale-105 transition-transform duration-1000" skeletonClass="bg-card" />
+                <ParallaxImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png" alt="Fine Breeze Pool" skeletonClass="bg-card" />
               </div>
               <div className="absolute -bottom-10 -right-4 md:-right-10 bg-card/90 backdrop-blur-xl border border-border/50 rounded-3xl p-8 shadow-2xl group-hover:-translate-y-4 transition-transform duration-500">
                 <div className="text-5xl font-black bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent mb-2">10+</div>
@@ -404,7 +407,7 @@ function TestimonialsSection() {
       <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[150px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <AnimatedElement>
+        <AnimatedElement variant="fade-down">
           <div className="text-center mb-20">
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Guest Experiences</p>
             <h2 className="text-5xl md:text-6xl font-black text-foreground">What Our Guests Say</h2>
@@ -469,14 +472,14 @@ function GallerySection() {
   return (
     <section className="py-20 md:py-20 md:py-32 bg-background relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <AnimatedElement>
+        <AnimatedElement variant="fade-down">
           <div className="text-center mb-16">
             <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Visual Tour</p>
             <h2 className="text-5xl md:text-6xl font-black text-foreground">A Glimpse of Paradise</h2>
           </div>
         </AnimatedElement>
         
-        <AnimatedElement>
+        <AnimatedElement variant="scale-in">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {items.map((img, i) => (
               <div key={img.title} onClick={() => setLightbox(img)} className={`group rounded-[2rem] overflow-hidden ${i === 0 ? "col-span-2 row-span-2" : ""} aspect-square relative shadow-lg cursor-pointer`}>
@@ -529,7 +532,7 @@ function CTASection() {
       <div className="absolute inset-0 bg-[radial-gradient(circle,_hsl(var(--primary-foreground))_1px,_transparent_1px)] bg-[length:32px_32px] opacity-[0.03]" />
       
       <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
-        <AnimatedElement>
+        <AnimatedElement variant="blur-in">
           <p className="text-sm font-bold uppercase tracking-[0.3em] text-primary-foreground/70 mb-6 drop-shadow-sm">Limited Availability</p>
           <h2 className="text-5xl md:text-7xl font-black text-primary-foreground mb-8 leading-[1.1] drop-shadow-lg">
             Ready for Your<br />Fine Breeze Experience?
