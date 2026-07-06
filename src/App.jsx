@@ -45,20 +45,21 @@ const AuthenticatedApp = () => {
   return (
     <Suspense fallback={<div className="fixed inset-0 flex items-center justify-center"><div className="w-8 h-8 border-4 border-muted border-t-foreground rounded-full animate-spin" /></div>}>
       <Routes>
-        <Route path="/Login" element={<Login />} />
-        <Route path="/Register" element={<Register />} />
-        <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/Login" replace />} />}>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/Rooms" element={<Rooms />} />
-            <Route path="/Restaurant" element={<Restaurant />} />
-            <Route path="/Gallery" element={<Gallery />} />
-            <Route path="/About" element={<About />} />
-            <Route path="/Booking" element={<Booking />} />
-            <Route path="/Contact" element={<Contact />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/Rooms" element={<Rooms />} />
+          <Route path="/Restaurant" element={<Restaurant />} />
+          <Route path="/Gallery" element={<Gallery />} />
+          <Route path="/About" element={<About />} />
+          <Route path="/Booking" element={<Booking />} />
+          <Route path="/Contact" element={<Contact />} />
+          {/* Admin-only routes — login required */}
+          <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/Login" replace />} />}>
             <Route path="/Admin" element={<Admin />} />
-            {/* Add your page Route elements here */}
           </Route>
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Register" element={<Register />} />
+          {/* Add your page Route elements here */}
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Routes>
