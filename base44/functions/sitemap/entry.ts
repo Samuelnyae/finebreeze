@@ -1,7 +1,6 @@
 Deno.serve(async (req) => {
   try {
-    const url = new URL(req.url);
-    const origin = `${url.protocol}//${url.host}`;
+    const origin = "https://finebreezevoi.info";
 
     const pages = [
       { path: "/", priority: "1.0", changefreq: "weekly" },
@@ -27,7 +26,7 @@ Deno.serve(async (req) => {
       .join("\n");
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="https://finebreezevoi.info">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls}
 </urlset>`;
 
