@@ -60,11 +60,13 @@ function HeroSection() {
   ];
   const [heroIdx, setHeroIdx] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setHeroIdx((i) => (i + 1) % heroImages.length), 5000);
+    const t = setInterval(() => setHeroIdx((i) => (i + 1) % heroImages.length), 6000);
     return () => clearInterval(t);
   }, [heroImages.length]);
+
   return (
     <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
+      {/* Full-bleed background photos */}
       <div className="absolute inset-0 z-0">
         {heroImages.map((src, i) => (
           <img
@@ -74,79 +76,89 @@ function HeroSection() {
             loading="eager"
             decoding="async"
             fetchpriority={i === 0 ? "high" : "auto"}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
-            style={{ opacity: i === heroIdx ? 1 : 0, animation: i === heroIdx ? "slowZoom 12s ease-in-out infinite alternate" : "none" }}
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms]"
+            style={{ opacity: i === heroIdx ? 1 : 0, animation: i === heroIdx ? "slowZoom 14s ease-in-out infinite alternate" : "none" }}
           />
         ))}
-        <div className="absolute inset-0 bg-background/80 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/60 to-background z-10" />
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-          {heroImages.map((_, i) => (
-            <button key={i} onClick={() => setHeroIdx(i)} className={`h-2 rounded-full transition-all ${i === heroIdx ? "w-8 bg-primary" : "w-2 bg-foreground/40"}`} />
-          ))}
-        </div>
+        {/* Dark moody overlay */}
+        <div className="absolute inset-0 bg-background/70 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/30 to-background z-10" />
+        {/* Cinematic vignette */}
+        <div className="absolute inset-0 z-10" style={{ background: "radial-gradient(ellipse at center, transparent 25%, hsl(var(--background) / 0.75) 100%)" }} />
       </div>
 
-      {/* 3D floating orbs */}
-      <div className="absolute top-[15%] left-[5%] w-[400px] h-[400px] bg-primary/20 rounded-full blur-[120px] pointer-events-none z-10" style={{ animation: "floatA 10s ease-in-out infinite" }} />
-      <div className="absolute bottom-[10%] right-[5%] w-[500px] h-[500px] bg-accent/20 rounded-full blur-[140px] pointer-events-none z-10" style={{ animation: "floatB 8s ease-in-out 2s infinite" }} />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-primary/10 rounded-full blur-[100px] pointer-events-none z-10" style={{ animation: "floatC 12s ease-in-out 1s infinite" }} />
+      {/* Subtle warm accent glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-primary/8 rounded-full blur-[150px] pointer-events-none z-10" />
 
-      <div className="relative z-20 text-center px-6 max-w-4xl mx-auto w-full pt-16">
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeOut" }}>
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-heading font-bold tracking-tight leading-[1.05] mb-6 drop-shadow-2xl">
-            <span className="block text-foreground">Experience Comfort</span>
-            <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-gradient-x">in the Heart of Voi</span>
+      {/* Content */}
+      <div className="relative z-20 text-center px-6 max-w-5xl mx-auto w-full">
+        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: "easeOut" }}>
+          {/* Luxury label with divider lines */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="flex items-center justify-center gap-4 mb-8"
+          >
+            <span className="h-px w-12 bg-primary/50" />
+            <span className="text-[11px] font-medium uppercase tracking-[0.4em] text-primary/90">Fine Breeze Hotel & Restaurant</span>
+            <span className="h-px w-12 bg-primary/50" />
+          </motion.div>
+
+          {/* Main headline */}
+          <h1 className="font-heading font-medium text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.1] mb-8 text-foreground">
+            <span className="block">Experience Comfort</span>
+            <span className="block text-primary/90 italic font-light">in the Heart of Voi</span>
           </h1>
-          
-          <p className="text-base sm:text-lg text-muted-foreground/90 max-w-2xl mx-auto mb-6 leading-relaxed font-light">
-            Luxury Rooms &bull; Restaurant &bull; Events
-          </p>
-          
-          <p className="text-sm text-muted-foreground/60 max-w-xl mx-auto mb-10 leading-relaxed font-light">
-            <MapPin className="w-3.5 h-3.5 inline mr-1.5 -translate-y-0.5" />Voi, Taita Taveta County, Kenya
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+
+          {/* Subtext */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.6 }}
+            className="text-base sm:text-lg text-muted-foreground/80 max-w-xl mx-auto mb-12 leading-relaxed font-light"
+          >
+            Where Kenyan warmth meets timeless luxury. Rooms, dining, and events crafted for the discerning traveller.
+          </motion.p>
+
+          {/* CTA buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.9 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          >
             <a
               href={`https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20would%20like%20to%20make%20a%20booking.`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full sm:w-auto"
             >
-              <Button size="lg" className="w-full sm:w-auto bg-accent/85 text-accent-foreground hover:bg-accent/75 font-semibold text-base px-8 py-6 shadow-lg shadow-accent/10 hover:scale-105 active:scale-95 transition-all duration-300 rounded-xl">
+              <Button size="lg" className="w-full sm:w-auto bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 py-6 shadow-2xl shadow-accent/20 hover:shadow-accent/40 hover:scale-[1.03] active:scale-95 transition-all duration-500 rounded-full tracking-wide">
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Book Your Stay
               </Button>
             </a>
             <Link to="/Rooms" className="w-full sm:w-auto">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto border-primary/40 text-primary hover:bg-primary/10 font-medium text-base px-8 py-6 backdrop-blur-md hover:scale-105 active:scale-95 transition-all duration-300 rounded-xl">
-                View Rooms <ArrowRight className="w-5 h-5 ml-2" />
+              <Button size="lg" variant="ghost" className="w-full sm:w-auto text-foreground hover:text-primary hover:bg-transparent font-medium text-base px-8 py-6 backdrop-blur-sm border border-foreground/20 hover:border-primary/40 transition-all duration-500 rounded-full tracking-wide">
+                Explore Rooms <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
-          </div>
-
-          <div className="flex items-center justify-center gap-6 sm:gap-16 mt-16 text-sm">
-            {[["4.9★", "Guest Rating"], ["50+", "Luxury Rooms"], ["15+", "Menu Items"]].map(([val, label], i) => (
-              <motion.div 
-                key={label} 
-                initial={{ opacity: 0, y: 20 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                transition={{ duration: 0.8, delay: 0.6 + (i * 0.2) }}
-                className="text-center group"
-              >
-                <div className="text-3xl sm:text-4xl font-black text-primary mb-2 group-hover:scale-110 transition-transform duration-300">{val}</div>
-                <div className="text-xs sm:text-sm tracking-widest uppercase text-muted-foreground font-medium">{label}</div>
-              </motion.div>
-            ))}
-          </div>
+          </motion.div>
         </motion.div>
       </div>
-      
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20">
-        <div style={{ animation: "bounce 2s infinite" }} className="w-7 h-12 border-2 border-primary/40 rounded-full flex justify-center pt-2 backdrop-blur-sm">
-          <div className="w-1.5 h-3 bg-primary rounded-full" />
-        </div>
+
+      {/* Minimal image indicators */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {heroImages.map((_, i) => (
+          <button key={i} onClick={() => setHeroIdx(i)} className={`h-1 rounded-full transition-all duration-500 ${i === heroIdx ? "w-10 bg-primary" : "w-1 bg-foreground/30"}`} />
+        ))}
+      </div>
+
+      {/* Vertical scroll indicator */}
+      <div className="absolute bottom-10 right-8 z-20 hidden md:flex flex-col items-center gap-3">
+        <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground/50 [writing-mode:vertical-rl]">Scroll</span>
+        <div className="w-px h-12 bg-gradient-to-b from-primary/50 to-transparent" />
       </div>
     </section>
   );
