@@ -51,6 +51,26 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // Vite dev server assets must never be cache-served — stale chunks cause
+  // duplicate React copies and "Cannot read properties of null (reading 'useState')"
+  const isViteDevAsset =
+    url.pathname.includes("/node_modules/.vite/") ||
+    url.pathname.includes("/@vite/") ||
+    url.pathname.includes("/@react-refresh") ||
+    url.pathname.startsWith("/src/");
+
+  if (isViteDevAsset) {
+    event.respondWith(
+      fetch(request).then((response) => {
+        // Still cache for offline, but always prefer network
+        const copy = response.clone();
+        caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
+        return response;
+      }).catch(() => caches.match(request).then((r) => r || new Response('', { status: 504 })))
+    );
+    return;
+  }
+
   // Cache-first for static assets (JS, CSS, fonts, images)
   event.respondWith(
     caches.match(request).then((cached) => {
