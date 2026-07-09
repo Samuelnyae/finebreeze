@@ -53,7 +53,6 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
         >
-          <p className="kemp-label text-white/70 mb-6">Fine Breeze Hotel & Restaurant</p>
           <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-[1.15] mb-8 text-white">
             Experience Comfort
             <span className="block italic font-light text-white/90">in the Heart of Voi</span>
