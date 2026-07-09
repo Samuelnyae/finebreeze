@@ -80,7 +80,7 @@ export default function Restaurant() {
                 >
                   {item.image_url ? (
                     <div className="relative aspect-[4/3] overflow-hidden mb-5">
-                      <LazyImage src={item.image_url} alt={item.name} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-muted" />
+                      <LazyImage src={item.image_url} alt={`${item.name} — ${item.category} at Fine Breeze Hotel Restaurant in Voi, Kenya`} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-muted" />
                     </div>
                   ) : (
                     <div className="aspect-[4/3] bg-secondary flex items-center justify-center mb-5">

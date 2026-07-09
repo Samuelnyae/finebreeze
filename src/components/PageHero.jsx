@@ -5,7 +5,7 @@ export default function PageHero({ image, label, title, titleAccent, subtitle, c
     <section className="relative min-h-[65vh] md:min-h-[70vh] flex items-end overflow-hidden">
       {image ? (
         <div className="absolute inset-0 z-0">
-          <img src={image} alt="" loading="eager" decoding="async" fetchpriority="high" className="w-full h-full object-cover" />
+          <img src={image} alt={title ? `${title} — Fine Breeze Hotel Voi, Kenya` : "Fine Breeze Hotel Voi, Kenya"} loading="eager" decoding="async" fetchpriority="high" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70 z-10" />
         </div>
       ) : (

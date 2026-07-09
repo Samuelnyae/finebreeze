@@ -80,7 +80,7 @@ export default function Rooms() {
                   className="group"
                 >
                   <div className="relative aspect-[3/4] overflow-hidden mb-5">
-                    <LazyImage src={room.image_url} alt={room.name} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-muted" />
+                    <LazyImage src={room.image_url} alt={`${room.name} — ${room.room_type} room at Fine Breeze Hotel in Voi, Kenya`} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-muted" />
                   </div>
                   <div className="flex items-center justify-between mb-2">
                     <p className="kemp-label text-primary">{room.room_type}</p>

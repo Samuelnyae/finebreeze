@@ -19,7 +19,7 @@ function HeroSection() {
   return (
     <section className="relative min-h-[70vh] flex items-end overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png" alt="Fine Breeze Hotel Voi" eager priority className="w-full h-full animate-slow-zoom" skeletonClass="bg-muted" />
+        <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png" alt="Fine Breeze Hotel swimming pool and grounds at sunset in Voi, Kenya" eager priority className="w-full h-full animate-slow-zoom" skeletonClass="bg-muted" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/70 z-10" />
       </div>
       <div className="relative z-20 w-full px-6 md:px-10 pb-14 md:pb-20 pt-32">
@@ -72,7 +72,7 @@ function StorySection() {
             transition={{ duration: 0.8, delay: 0.15 }}
             className="relative aspect-[4/3]"
           >
-            <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/dbd4a4e59_u.png" alt="Fine Breeze Hotel" eager className="w-full h-full" skeletonClass="bg-muted" />
+            <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/dbd4a4e59_u.png" alt="Fine Breeze Hotel & Restaurant building exterior in Voi, Taita Taveta County, Kenya" eager className="w-full h-full" skeletonClass="bg-muted" />
           </motion.div>
         </div>
       </div>
@@ -187,7 +187,7 @@ function CTASection() {
   return (
     <section className="relative py-24 md:py-40 overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/8061288ba_9.png" alt="Fine Breeze Hotel" loading="lazy" className="w-full h-full object-cover" />
+        <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/8061288ba_9.png" alt="Fine Breeze Hotel lobby and entrance in Voi, Kenya" loading="lazy" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/60 z-10" />
       </div>
       <div className="relative z-20 text-center px-6 max-w-3xl mx-auto">

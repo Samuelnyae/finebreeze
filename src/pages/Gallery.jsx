@@ -72,7 +72,7 @@ export default function Gallery() {
                   onClick={() => setLightbox(img)}
                   className={`group relative overflow-hidden cursor-pointer ${i === 0 ? "col-span-2 row-span-2 aspect-square" : "aspect-square"}`}
                 >
-                  <LazyImage src={img.image_url} alt={img.title} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-muted" />
+                  <LazyImage src={img.image_url} alt={`${img.title} — ${img.category} at Fine Breeze Hotel & Restaurant in Voi, Kenya`} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-muted" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5">
                     <div>
                       <p className="kemp-label text-white/70 mb-1">{img.category}</p>
@@ -92,7 +92,7 @@ export default function Gallery() {
             <X className="w-8 h-8" strokeWidth={1} />
           </button>
           <div className="max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
-            <LazyImage src={lightbox.image_url} alt={lightbox.title} eager className="max-h-[80vh] object-contain" skeletonClass="bg-muted" />
+            <LazyImage src={lightbox.image_url} alt={`${lightbox.title} — ${lightbox.category} at Fine Breeze Hotel & Restaurant in Voi, Kenya`} eager className="max-h-[80vh] object-contain" skeletonClass="bg-muted" />
             <div className="text-center mt-4">
               <p className="kemp-label text-white/50 mb-2">{lightbox.category}</p>
               <h3 className="font-heading text-white text-xl">{lightbox.title}</h3>

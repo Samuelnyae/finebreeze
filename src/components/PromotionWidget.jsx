@@ -30,7 +30,7 @@ export default function PromotionWidget() {
     <section className="relative overflow-hidden">
       <div className="relative h-[420px] md:h-[480px]">
         {promo.image_url ? (
-          <LazyImage src={promo.image_url} alt={promo.title} eager className="w-full h-full" skeletonClass="bg-muted" />
+          <LazyImage src={promo.image_url} alt={`Special offer: ${promo.title} at Fine Breeze Hotel in Voi, Kenya`} eager className="w-full h-full" skeletonClass="bg-muted" />
         ) : (
           <div className="w-full h-full bg-foreground" />
         )}

@@ -32,7 +32,7 @@ function Hero() {
           <img
             key={i}
             src={src}
-            alt="Fine Breeze Hotel Voi Kenya"
+            alt={`Fine Breeze Hotel & Restaurant exterior and interior views in Voi, Kenya — luxury accommodation slide ${i + 1}`}
             loading={i === 0 ? "eager" : "lazy"}
             decoding="async"
             fetchpriority={i === 0 ? "high" : "auto"}
@@ -149,7 +149,7 @@ function RoomsSection() {
           >
             <LazyImage
               src={items[0]?.image_url || "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/20788029e_generated_88f01059.png"}
-              alt="Fine Breeze Room"
+              alt="Luxury room interior at Fine Breeze Hotel in Voi, Kenya with premium bedding and modern amenities"
               eager
               className="w-full h-full"
               skeletonClass="bg-background/10"
@@ -211,7 +211,7 @@ function RestaurantSection() {
           >
             <LazyImage
               src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/c653ddfeb_generated_b1c83de0.png"
-              alt="Fine Breeze Restaurant"
+              alt="Fine Breeze Hotel restaurant dining area in Voi, Kenya serving Kenyan and international cuisine"
               eager
               className="w-full h-full"
               skeletonClass="bg-muted"
@@ -282,7 +282,7 @@ function AboutSection() {
           >
             <LazyImage
               src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png"
-              alt="Fine Breeze Pool"
+              alt="Fine Breeze Hotel swimming pool and outdoor facilities at sunset in Voi, Kenya"
               eager
               className="w-full h-full"
               skeletonClass="bg-muted"
@@ -462,7 +462,7 @@ function CTASection() {
       <div className="absolute inset-0 z-0">
         <img
           src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02cdb469c_8.png"
-          alt="Fine Breeze Hotel"
+          alt="Fine Breeze Hotel & Restaurant building exterior in Voi, Taita Taveta County, Kenya"
           loading="lazy"
           className="w-full h-full object-cover"
         />

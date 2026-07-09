@@ -8,7 +8,7 @@ const TikTokIcon = ({ className }) => (
   </svg>
 );
 
-const LOGO_URL = "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02538d30c_generated_image.png";
+const LOGO_URL = "https://media.base44.com/images/public/6a430e1bc280ec2de39f8442/cb3a27b7e_8b9dc6c2e_7f6d29a0-5114-49f7-85e3-4ef5bff90ac2.png";
 
 export default function Footer() {
   const { user } = useAuth();
@@ -19,7 +19,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-20">
         {/* Brand row */}
         <div className="flex flex-col items-center text-center mb-14 pb-14 border-b border-background/10">
-          <img src={LOGO_URL} alt="Fine Breeze Hotel" className="w-14 h-14 rounded-full object-cover mb-4" />
+          <img src={LOGO_URL} alt="Fine Breeze Hotel & Restaurant logo" className="w-14 h-14 rounded-full object-cover mb-4" />
           <h2 className="font-heading text-2xl mb-1">Fine Breeze</h2>
           <p className="text-[10px] uppercase tracking-[0.3em] text-background/50">Hotel & Restaurant · Voi, Kenya</p>
         </div>
