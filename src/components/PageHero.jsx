@@ -1,18 +1,25 @@
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
-export default function PageHero({ image, label, title, titleAccent, subtitle, children }) {
+export default function PageHero({ image, label, title, titleAccent, subtitle, children, fullScreen = false }) {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["-5%", "15%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
   return (
-    <section className="relative min-h-[65vh] md:min-h-[70vh] flex items-end overflow-hidden">
+    <section ref={ref} className={`relative ${fullScreen ? "min-h-[100dvh]" : "min-h-[65vh] md:min-h-[70vh]"} flex items-end overflow-hidden`}>
       {image ? (
-        <div className="absolute inset-0 z-0">
+        <motion.div style={fullScreen ? { y } : undefined} className={`absolute inset-0 z-0 ${fullScreen ? "scale-110" : ""}`}>
           <img src={image} alt={title ? `${title} — Fine Breeze Hotel Voi, Kenya` : "Fine Breeze Hotel Voi, Kenya"} loading="eager" decoding="async" fetchpriority="high" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70 z-10" />
-        </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 z-10" />
+        </motion.div>
       ) : (
         <div className="absolute inset-0 z-0 bg-foreground" />
       )}
 
-      <div className="relative z-20 w-full px-6 md:px-10 pb-14 md:pb-20 pt-32">
+      <motion.div style={fullScreen ? { opacity } : undefined} className="relative z-20 w-full px-6 md:px-10 pb-14 md:pb-20 pt-32">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -32,7 +39,7 @@ export default function PageHero({ image, label, title, titleAccent, subtitle, c
             {children}
           </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

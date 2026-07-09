@@ -39,6 +39,7 @@ export default function Restaurant() {
   return (
     <div className="bg-background min-h-screen">
       <PageHero
+        fullScreen
         image="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/db37a39df_generated_image.png"
         label="Fine Dining"
         title="Restaurant & Menu"
