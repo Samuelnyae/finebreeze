@@ -16,7 +16,7 @@ export default function StructuredData() {
       telephone: ["+254714447638", "+254701734251"],
       email: "fynbriz@gmail.com",
       url: window.location.origin,
-      image: "https://media.base44.com/images/public/6a430e1bc280ec2de39f8442/cb3a27b7e_8b9dc6c2e_7f6d29a0-5114-49f7-85e3-4ef5bff90ac2.png",
+      image: "https://media.base44.com/images/public/6a430e1bc280ec2de39f8442/b7041c0be_02538d30c_generated_image.png",
       priceRange: "KES",
       address: {
         "@type": "PostalAddress",
