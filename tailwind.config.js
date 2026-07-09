@@ -2,6 +2,7 @@
 module.exports = {
   darkMode: ['class'],
   content: [
+    './index.html',
     './src/**/*.{js,jsx,ts,tsx}',
     './components/**/*.{js,jsx,ts,tsx}',
     './pages/**/*.{js,jsx,ts,tsx}',
@@ -18,7 +19,7 @@ module.exports = {
 
       fontFamily: {
 
-        heading: ['"Helvetica Neue"', 'sans-serif'],
+        heading: ['"Playfair Display"', 'serif'],
 
 
         body: ['"Helvetica Neue"', 'sans-serif'],

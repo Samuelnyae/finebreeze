@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
 import AnimatedElement from "@/components/AnimatedElement";
 import LazyImage from "@/components/LazyImage";
+import PageHero from "@/components/PageHero";
 
 const staticFallback = [
   { title: "Infinity Pool at Sunset", category: "Facilities", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png" },
@@ -35,21 +36,13 @@ export default function Gallery() {
 
   return (
     <div className="bg-background min-h-screen">
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0">
-          <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/856595890_generated_image.png" alt="Our Rooms" eager className="w-full h-full" skeletonClass="bg-background" />
-          <div className="absolute inset-0 bg-background/80" />
-        </div>
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <AnimatedElement variant="fade-down">
-            <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Visual Tour</p>
-            <h1 className="text-3xl md:text-4xl font-black text-foreground mb-5">Gallery</h1>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto font-light">
-              A glimpse of paradise — explore our rooms, cuisine, and the breathtaking surroundings of Voi.
-            </p>
-          </AnimatedElement>
-        </div>
-      </section>
+      <PageHero
+        image="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/856595890_generated_image.png"
+        label="Visual Tour"
+        title="Gallery"
+        titleAccent="A Glimpse of Paradise"
+        subtitle="A glimpse of paradise — explore our rooms, cuisine, and the breathtaking surroundings of Voi."
+      />
 
       <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-6">

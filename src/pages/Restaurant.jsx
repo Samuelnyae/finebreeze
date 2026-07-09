@@ -5,6 +5,7 @@ import { Utensils, Wine, Coffee, Cake, Salad } from "lucide-react";
 import AnimatedElement from "@/components/AnimatedElement";
 import LazyImage from "@/components/LazyImage";
 import { useCurrency } from "@/lib/CurrencyContext";
+import PageHero from "@/components/PageHero";
 
 const staticFallback = [
   { name: "Nyama Choma Platter", description: "Tender slow-roasted goat meat with ugali and kachumbari salad.", price: 1200, category: "Main Course", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/0c40aa756_generated_454c8724.png", is_featured: true },
@@ -41,21 +42,13 @@ export default function Restaurant() {
 
   return (
     <div className="bg-background min-h-screen">
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0">
-          <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/db37a39df_generated_image.png" alt="Food & Drinks" eager className="w-full h-full" skeletonClass="bg-background" />
-          <div className="absolute inset-0 bg-background/80" />
-        </div>
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <AnimatedElement variant="fade-down">
-            <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Fine Dining</p>
-            <h1 className="text-3xl md:text-4xl font-black text-foreground mb-5">Our Restaurant & Menu</h1>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto font-light">
-              A culinary journey through Kenya — from coastal Swahili traditions to hearty Taita specialties, plus a curated minibar.
-            </p>
-          </AnimatedElement>
-        </div>
-      </section>
+      <PageHero
+        image="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/db37a39df_generated_image.png"
+        label="Fine Dining"
+        title="Restaurant & Menu"
+        titleAccent="A Taste of Kenya"
+        subtitle="A culinary journey through Kenya — from coastal Swahili traditions to hearty Taita specialties, plus a curated minibar."
+      />
 
       <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-6">

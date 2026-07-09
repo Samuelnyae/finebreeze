@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Phone, Mail, MapPin, MapPinned, CalendarCheck, Utensils, Send, Loader2, CheckCircle2, MessageCircle } from "lucide-react";
+import PageHero from "@/components/PageHero";
 
 const AnimatedElement = ({ children, className, delay = 0 }) => (
   <motion.div
@@ -43,21 +44,12 @@ export default function Contact() {
   return (
     <div className="bg-background min-h-screen">
       {/* Hero */}
-      <section className="relative py-24 md:py-36 bg-secondary overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[150px] pointer-events-none" />
-        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-          <Badge className="mb-6 bg-background/40 text-primary border-primary/30 uppercase tracking-widest px-5 py-2">
-            <MapPin className="w-4 h-4 mr-2" /> Voi, Kenya
-          </Badge>
-          <h1 className="text-4xl md:text-6xl font-black text-foreground mb-6 leading-tight">
-            Get in <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Touch</span>
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light">
-            Whether it's a reservation, an event, or a general inquiry — our team at Fine Breeze is ready to welcome you.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        label="Voi, Kenya"
+        title="Get in Touch"
+        titleAccent="We're Here to Help"
+        subtitle="Whether it's a reservation, an event, or a general inquiry — our team at Fine Breeze is ready to welcome you."
+      />
 
       {/* Direct Inquiry */}
       <section className="py-20 md:py-28">

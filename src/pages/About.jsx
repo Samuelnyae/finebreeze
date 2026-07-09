@@ -25,19 +25,23 @@ function AboutHero() {
     <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png" alt="Fine Breeze Hotel Voi" eager priority className="w-full h-full animate-slow-zoom" skeletonClass="bg-background" />
-        <div className="absolute inset-0 bg-background/80 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background z-10" />
+        <div className="absolute inset-0 bg-background/75 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/30 to-background z-10" />
+        <div className="absolute inset-0 z-10" style={{ background: "radial-gradient(ellipse at center, transparent 20%, hsl(var(--background) / 0.7) 100%)" }} />
       </div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/8 rounded-full blur-[150px] pointer-events-none z-10" />
       <div className="relative z-20 text-center px-6 max-w-4xl mx-auto pt-20">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-          <Badge className="mb-6 bg-background/40 text-primary border-primary/30 text-xs sm:text-sm uppercase tracking-widest px-6 py-2.5 backdrop-blur-md">
-            <MapPin className="w-4 h-4 mr-2" /> Voi, Taita Taveta County
-          </Badge>
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tighter leading-[0.95] mb-6">
-            <span className="block text-foreground">Our Story</span>
-            <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-gradient-x">Fine Breeze Hotel</span>
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeOut" }}>
+          <div className="flex items-center justify-center gap-4 mb-8">
+            <span className="h-px w-12 bg-primary/50" />
+            <span className="text-[11px] font-medium uppercase tracking-[0.4em] text-primary/90">Voi, Taita Taveta County</span>
+            <span className="h-px w-12 bg-primary/50" />
+          </div>
+          <h1 className="font-heading font-medium text-4xl sm:text-6xl md:text-7xl tracking-tight leading-[1.1] mb-8 text-foreground">
+            <span className="block">Our Story</span>
+            <span className="block text-primary/90 italic font-light">Fine Breeze Hotel</span>
           </h1>
-          <p className="text-lg sm:text-xl text-muted-foreground/90 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-lg sm:text-xl text-muted-foreground/80 max-w-2xl mx-auto font-light leading-relaxed">
             A sanctuary of Kenyan hospitality at the gateway to Tsavo, where the breeze of the Taita Hills meets world-class comfort.
           </p>
         </motion.div>

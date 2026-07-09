@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import AnimatedElement from "@/components/AnimatedElement";
 import LazyImage from "@/components/LazyImage";
 import { useCurrency } from "@/lib/CurrencyContext";
+import PageHero from "@/components/PageHero";
 
 const staticFallback = [
   { name: "Savanna Deluxe", description: "Spacious room with panoramic Taita Hills views, king-size bed, luxury linens, and a stunning marble bathroom.", price_per_night: 8500, capacity: 2, room_type: "Deluxe", amenities: "WiFi, AC, Smart TV, Room Service", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/8bc1a552c_generated_968f02a0.png" },
@@ -43,21 +44,13 @@ export default function Rooms() {
 
   return (
     <div className="bg-background min-h-screen">
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0">
-          <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/20788029e_generated_88f01059.png" alt="Executive Suite" eager className="w-full h-full" skeletonClass="bg-background" />
-          <div className="absolute inset-0 bg-background/80" />
-        </div>
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
-          <AnimatedElement variant="fade-down">
-            <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Accommodations</p>
-            <h1 className="text-3xl md:text-4xl font-black text-foreground mb-5">Our Rooms & Suites</h1>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto font-light">
-              Each room at Fine Breeze is a sanctuary of comfort, blending modern luxury with authentic Kenyan charm.
-            </p>
-          </AnimatedElement>
-        </div>
-      </section>
+      <PageHero
+        image="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/20788029e_generated_88f01059.png"
+        label="Accommodations"
+        title="Our Rooms & Suites"
+        titleAccent="Comfort Redefined"
+        subtitle="Each room at Fine Breeze is a sanctuary of comfort, blending modern luxury with authentic Kenyan charm."
+      />
 
       <section className="py-16 bg-background">
         <div className="max-w-7xl mx-auto px-6">
