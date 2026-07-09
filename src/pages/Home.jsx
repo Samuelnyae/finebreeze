@@ -234,20 +234,26 @@ function RestaurantSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="group"
+              className="group rounded-2xl overflow-hidden bg-[#1f2321]"
             >
-              <div className="relative aspect-[4/3] overflow-hidden mb-5">
+              <div className="relative aspect-[4/3] overflow-hidden">
                 <LazyImage
                   src={item.image_url}
                   alt={item.name}
                   className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out"
-                  skeletonClass="bg-muted"
+                  skeletonClass="bg-black/20"
                 />
+                <span className="absolute top-3 left-3 bg-black/70 text-white text-[10px] font-medium tracking-[0.15em] uppercase px-2.5 py-1 rounded">
+                  {item.category}
+                </span>
               </div>
-              <p className="kemp-label text-primary mb-2">{item.category}</p>
-              <h3 className="font-heading text-lg mb-2">{item.name}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 mb-3">{item.description}</p>
-              <p className="text-foreground text-sm font-medium">{formatPrice(item.price || 0)}</p>
+              <div className="p-5">
+                <h3 className="font-heading text-lg text-white mb-4">{item.name}</h3>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-medium tracking-[0.2em] uppercase text-[#8899a6]">Price</span>
+                  <span className="text-white font-bold text-sm">{formatPrice(item.price || 0)}</span>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
