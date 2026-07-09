@@ -16,6 +16,8 @@ const staticFallback = [
   { title: "Swahili Seafood Feast", category: "Cuisine", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/709942548_generated_71a76177.png" },
 ];
 
+const categoryOrder = ["All", "Property", "Facilities", "Rooms", "Restaurant", "Cuisine"];
+
 export default function Gallery() {
   const [images, setImages] = useState([]);
   const [filter, setFilter] = useState("All");
@@ -27,11 +29,12 @@ export default function Gallery() {
   }, []);
 
   const all = images.length > 0 ? images : staticFallback;
-  const categories = ["All", ...new Set(all.map((g) => g.category).filter(Boolean))];
+  const dynamicCategories = [...new Set(all.map((g) => g.category).filter(Boolean))];
+  const categories = ["All", ...dynamicCategories.sort((a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b))];
   const filtered = filter === "All" ? all : all.filter((g) => g.category === filter);
 
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-[#1a1d1d] min-h-screen">
       <PageHero
         image="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/856595890_generated_image.png"
         label="Visual Tour"
@@ -40,17 +43,17 @@ export default function Gallery() {
         subtitle="Explore our rooms, cuisine, and the breathtaking surroundings of Voi."
       />
 
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-16 md:py-24 bg-[#1a1d1d]">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="flex flex-wrap gap-2 justify-center mb-14">
+          <div className="flex flex-wrap gap-2.5 justify-center mb-14">
             {categories.map((c) => (
               <button
                 key={c}
                 onClick={() => setFilter(c)}
-                className={`px-6 py-2.5 text-[11px] font-medium tracking-[0.2em] uppercase transition-all duration-300 border ${
+                className={`px-5 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
                   filter === c
-                    ? "bg-foreground text-background border-foreground"
-                    : "bg-transparent text-muted-foreground border-border hover:border-foreground hover:text-foreground"
+                    ? "bg-[#e2c296] text-black"
+                    : "bg-[#2a2e2d] text-white hover:bg-[#3a3e3d]"
                 }`}
               >
                 {c}
@@ -59,9 +62,9 @@ export default function Gallery() {
           </div>
 
           {loading ? (
-            <div className="text-center py-20 text-muted-foreground">Loading gallery…</div>
+            <div className="text-center py-20 text-white/50">Loading gallery…</div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
               {filtered.map((img, i) => (
                 <motion.div
                   key={img.title + i}
@@ -70,9 +73,9 @@ export default function Gallery() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.04 }}
                   onClick={() => setLightbox(img)}
-                  className={`group relative overflow-hidden cursor-pointer ${i === 0 ? "col-span-2 row-span-2 aspect-square" : "aspect-square"}`}
+                  className="group relative overflow-hidden cursor-pointer rounded-2xl aspect-square"
                 >
-                  <LazyImage src={img.image_url} alt={`${img.title} — ${img.category} at Fine Breeze Hotel & Restaurant in Voi, Kenya`} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-muted" />
+                  <LazyImage src={img.image_url} alt={`${img.title} — ${img.category} at Fine Breeze Hotel & Restaurant in Voi, Kenya`} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-white/5" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5">
                     <div>
                       <p className="kemp-label text-white/70 mb-1">{img.category}</p>
@@ -92,7 +95,7 @@ export default function Gallery() {
             <X className="w-8 h-8" strokeWidth={1} />
           </button>
           <div className="max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
-            <LazyImage src={lightbox.image_url} alt={`${lightbox.title} — ${lightbox.category} at Fine Breeze Hotel & Restaurant in Voi, Kenya`} eager className="max-h-[80vh] object-contain" skeletonClass="bg-muted" />
+            <LazyImage src={lightbox.image_url} alt={`${lightbox.title} — ${lightbox.category} at Fine Breeze Hotel & Restaurant in Voi, Kenya`} eager className="max-h-[80vh] object-contain" skeletonClass="bg-white/5" />
             <div className="text-center mt-4">
               <p className="kemp-label text-white/50 mb-2">{lightbox.category}</p>
               <h3 className="font-heading text-white text-xl">{lightbox.title}</h3>
