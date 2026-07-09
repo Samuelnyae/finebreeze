@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { base44 } from "@/api/base44Client";
 import { Star, ArrowRight, ChevronLeft, ChevronRight, X, MessageCircle, Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -20,14 +20,18 @@ const WA_LINK = "https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20
 
 function Hero() {
   const [idx, setIdx] = useState(0);
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["-5%", "15%"]);
+
   useEffect(() => {
     const t = setInterval(() => setIdx((i) => (i + 1) % heroImages.length), 7000);
     return () => clearInterval(t);
   }, []);
 
   return (
-    <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 z-0">
+    <section ref={heroRef} className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
+      <motion.div style={{ y }} className="absolute inset-0 z-0 scale-110">
         {heroImages.map((src, i) => (
           <img
             key={i}
@@ -40,8 +44,8 @@ function Hero() {
             style={{ opacity: i === idx ? 1 : 0 }}
           />
         ))}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60 z-10" />
-      </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70 z-10" />
+      </motion.div>
 
       <div className="relative z-20 text-center px-6 max-w-4xl mx-auto">
         <motion.div
@@ -169,11 +173,11 @@ function RoomsSection() {
             >
               <Link to="/Booking" state={{ roomName: room.name, roomType: room.room_type, price: room.price_per_night }}>
                 <div className="group cursor-pointer">
-                  <div className="relative aspect-[3/4] overflow-hidden mb-5">
+                  <div className="relative aspect-[4/3] overflow-hidden mb-5">
                     <LazyImage
                       src={room.image_url}
                       alt={room.name}
-                      className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out"
+                      className="group-hover:scale-110 transition-transform duration-[1200ms] ease-out"
                       skeletonClass="bg-background/10"
                     />
                   </div>
@@ -207,13 +211,22 @@ function RestaurantSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative aspect-[4/3] md:aspect-[5/4] order-2 lg:order-1"
+            className="relative aspect-[4/3] md:aspect-square order-2 lg:order-1"
           >
+            {/* Colored offset shadow block */}
+            <div className="absolute -bottom-5 -right-5 w-full h-full bg-primary/20" aria-hidden="true" />
+            {/* Floating 5-Star badge */}
+            <div className="absolute -top-4 -left-4 z-10 bg-background px-4 py-2.5 flex items-center gap-1.5 shadow-xl">
+              {Array.from({ length: 5 }).map((_, s) => (
+                <Star key={s} className="w-3 h-3 fill-primary text-primary" />
+              ))}
+              <span className="text-xs font-medium tracking-wide ml-1.5 text-foreground">5-Star</span>
+            </div>
             <LazyImage
               src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/c653ddfeb_generated_b1c83de0.png"
               alt="Fine Breeze Hotel restaurant dining area in Voi, Kenya serving Kenyan and international cuisine"
               eager
-              className="w-full h-full"
+              className="relative w-full h-full"
               skeletonClass="bg-muted"
             />
           </motion.div>
@@ -278,15 +291,19 @@ function AboutSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="relative aspect-[4/3] md:aspect-[5/4]"
+            className="relative aspect-square md:aspect-[4/5]"
           >
-            <LazyImage
-              src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png"
-              alt="Fine Breeze Hotel swimming pool and outdoor facilities at sunset in Voi, Kenya"
-              eager
-              className="w-full h-full"
-              skeletonClass="bg-muted"
-            />
+            {/* Decorative offset glow */}
+            <div className="absolute -bottom-6 -right-6 w-full h-full bg-accent/25 blur-3xl rounded-full" aria-hidden="true" />
+            <div className="relative w-full h-full">
+              <LazyImage
+                src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png"
+                alt="Fine Breeze Hotel swimming pool and outdoor facilities at sunset in Voi, Kenya"
+                eager
+                className="w-full h-full"
+                skeletonClass="bg-muted"
+              />
+            </div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, x: 30 }}
@@ -460,13 +477,13 @@ function CTASection() {
   return (
     <section className="relative py-24 md:py-40 overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <img
-          src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02cdb469c_8.png"
-          alt="Fine Breeze Hotel & Restaurant building exterior in Voi, Taita Taveta County, Kenya"
-          loading="lazy"
-          className="w-full h-full object-cover"
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-fixed"
+          style={{ backgroundImage: "url('https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02cdb469c_8.png')" }}
+          role="img"
+          aria-label="Fine Breeze Hotel & Restaurant building exterior in Voi, Taita Taveta County, Kenya"
         />
-        <div className="absolute inset-0 bg-black/60 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent z-10" />
       </div>
       <div className="relative z-20 text-center px-6 max-w-3xl mx-auto">
         <motion.div
