@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { Star, ArrowRight, ChevronLeft, ChevronRight, X, MessageCircle, Mail, Phone } from "lucide-react";
+import { Star, ArrowRight, ChevronLeft, ChevronRight, X, MessageCircle, Mail, Phone, CalendarCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import PromotionWidget from "@/components/PromotionWidget";
 import MapSection from "@/components/MapSection";
@@ -62,11 +62,11 @@ function Hero() {
             Where Kenyan warmth meets timeless luxury. Rooms, dining, and events crafted for the discerning traveller.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
+            <Link to="/Booking">
               <span className="inline-flex items-center gap-2 bg-white text-foreground px-8 py-3.5 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-primary hover:text-primary-foreground transition-all duration-300">
-                <MessageCircle className="w-4 h-4" strokeWidth={1.5} /> Book Your Stay
+                <CalendarCheck className="w-4 h-4" strokeWidth={1.5} /> Book Your Stay
               </span>
-            </a>
+            </Link>
             <Link to="/Rooms">
               <span className="kemp-link text-white border border-white/30 px-8 py-3.5 hover:bg-white/10 transition-all">
                 Explore Rooms <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
