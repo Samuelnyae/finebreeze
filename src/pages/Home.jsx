@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import PromotionWidget from "@/components/PromotionWidget";
 import MapSection from "@/components/MapSection";
 import LazyImage from "@/components/LazyImage";
+import RoomCard from "@/components/RoomCard";
 import { useCurrency } from "@/lib/CurrencyContext";
 import { useCachedEntity } from "@/hooks/useCachedEntity";
 
@@ -163,32 +164,7 @@ function RoomsSection() {
         {/* Room cards row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {items.map((room, i) => (
-            <motion.div
-              key={room.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-            >
-              <Link to="/Booking" state={{ roomName: room.name, roomType: room.room_type, price: room.price_per_night }}>
-                <div className="group cursor-pointer">
-                  <div className="relative aspect-[4/3] overflow-hidden mb-5">
-                    <LazyImage
-                      src={room.image_url}
-                      alt={room.name}
-                      className="group-hover:scale-110 transition-transform duration-[1200ms] ease-out"
-                      skeletonClass="bg-background/10"
-                    />
-                  </div>
-                  <p className="kemp-label text-primary mb-2">{room.room_type}</p>
-                  <h3 className="font-heading text-xl mb-2">{room.name}</h3>
-                  <p className="text-background/50 text-sm leading-relaxed line-clamp-2 mb-3">{room.description}</p>
-                  <p className="text-background/80 text-sm font-medium">
-                    {formatPrice(room.price_per_night || 0)} <span className="text-background/40 text-xs">/ night</span>
-                  </p>
-                </div>
-              </Link>
-            </motion.div>
+            <RoomCard key={room.name} room={room} index={i} formatPrice={formatPrice} />
           ))}
         </div>
       </div>
