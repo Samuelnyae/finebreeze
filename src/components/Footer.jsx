@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, MessageCircle, Instagram, Facebook, Twitter } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/AuthContext";
 
 const TikTokIcon = ({ className }) => (
@@ -9,111 +8,99 @@ const TikTokIcon = ({ className }) => (
   </svg>
 );
 
+const LOGO_URL = "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02538d30c_generated_image.png";
+
 export default function Footer() {
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
 
   return (
     <footer className="bg-foreground text-background">
-      {/* Main footer */}
-      <div className="max-w-7xl mx-auto px-6 py-16">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 py-16 md:py-20">
+        {/* Brand row */}
+        <div className="flex flex-col items-center text-center mb-14 pb-14 border-b border-background/10">
+          <img src={LOGO_URL} alt="Fine Breeze Hotel" className="w-14 h-14 rounded-full object-cover mb-4" />
+          <h2 className="font-heading text-2xl mb-1">Fine Breeze</h2>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-background/50">Hotel & Restaurant · Voi, Kenya</p>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
-          {/* Brand */}
+          {/* About */}
           <div className="md:col-span-1">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg ring-2 ring-primary/30 flex-shrink-0">
-                <img src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02538d30c_generated_image.png" alt="Fine Breeze Hotel Logo" className="w-full h-full object-cover" />
-              </div>
-              <div>
-                <div className="font-black text-background text-lg leading-none">Fine Breeze</div>
-                <div className="text-xs text-background/60 leading-none mt-0.5">Hotel & Restaurant</div>
-              </div>
-            </div>
-            <p className="text-background/70 text-sm leading-relaxed mb-6">
+            <p className="text-background/60 text-sm leading-relaxed">
               Where luxury meets the spirit of Kenya. Experience world-class hospitality in the heart of Voi, Taita Taveta County.
             </p>
-            <div className="flex gap-3">
-              <a href="#" className="w-9 h-9 rounded-lg bg-background/10 hover:bg-primary/30 flex items-center justify-center transition-colors">
-                <Facebook className="w-4 h-4 text-background" />
-              </a>
-              <a href="#" className="w-9 h-9 rounded-lg bg-background/10 hover:bg-primary/30 flex items-center justify-center transition-colors">
-                <Instagram className="w-4 h-4 text-background" />
-              </a>
-              <a href="#" className="w-9 h-9 rounded-lg bg-background/10 hover:bg-primary/30 flex items-center justify-center transition-colors">
-                <Twitter className="w-4 h-4 text-background" />
-              </a>
-              <a href="#" className="w-9 h-9 rounded-lg bg-background/10 hover:bg-primary/30 flex items-center justify-center transition-colors">
-                <TikTokIcon className="w-4 h-4 text-background" />
-              </a>
+            <div className="flex gap-4 mt-6">
+              <a href="#" className="text-background/50 hover:text-primary transition-colors"><Facebook className="w-4 h-4" strokeWidth={1.5} /></a>
+              <a href="#" className="text-background/50 hover:text-primary transition-colors"><Instagram className="w-4 h-4" strokeWidth={1.5} /></a>
+              <a href="#" className="text-background/50 hover:text-primary transition-colors"><Twitter className="w-4 h-4" strokeWidth={1.5} /></a>
+              <a href="#" className="text-background/50 hover:text-primary transition-colors"><TikTokIcon className="w-4 h-4" /></a>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-bold text-background text-sm uppercase tracking-widest mb-5 after:block after:w-8 after:h-0.5 after:bg-primary after:mt-2">Quick Links</h4>
+            <h4 className="kemp-label text-background/40 mb-5">Explore</h4>
             <ul className="space-y-3">
               <li><Link to="/" className="text-background/70 text-sm hover:text-primary transition-colors">Home</Link></li>
               <li><Link to="/Rooms" className="text-background/70 text-sm hover:text-primary transition-colors">Rooms & Suites</Link></li>
+              <li><Link to="/Restaurant" className="text-background/70 text-sm hover:text-primary transition-colors">Restaurant & Menu</Link></li>
+              <li><Link to="/Gallery" className="text-background/70 text-sm hover:text-primary transition-colors">Gallery</Link></li>
               <li><Link to="/About" className="text-background/70 text-sm hover:text-primary transition-colors">About Us</Link></li>
-              <li><a href="#" className="text-background/70 text-sm hover:text-primary transition-colors">Restaurant & Menu</a></li>
-              <li><a href="#" className="text-background/70 text-sm hover:text-primary transition-colors">Gallery</a></li>
               {isAdmin && <li><Link to="/Admin" className="text-background/70 text-sm hover:text-primary transition-colors">Admin Dashboard</Link></li>}
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="font-bold text-background text-sm uppercase tracking-widest mb-5 after:block after:w-8 after:h-0.5 after:bg-primary after:mt-2">Contact Us</h4>
+            <h4 className="kemp-label text-background/40 mb-5">Contact</h4>
             <ul className="space-y-3">
               <li>
-                <a href="tel:0714447638" className="flex items-center gap-2 text-background/70 text-sm hover:text-primary transition-colors">
-                  <Phone className="w-3.5 h-3.5 text-primary flex-shrink-0" /> 0714 447 638
+                <a href="tel:0714447638" className="flex items-start gap-2.5 text-background/70 text-sm hover:text-primary transition-colors">
+                  <Phone className="w-3.5 h-3.5 mt-0.5 shrink-0" strokeWidth={1.5} /> 0714 447 638
                 </a>
               </li>
               <li>
-                <a href="tel:0701734251" className="flex items-center gap-2 text-background/70 text-sm hover:text-primary transition-colors">
-                  <Phone className="w-3.5 h-3.5 text-primary flex-shrink-0" /> 0701 734 251
+                <a href="tel:0701734251" className="flex items-start gap-2.5 text-background/70 text-sm hover:text-primary transition-colors">
+                  <Phone className="w-3.5 h-3.5 mt-0.5 shrink-0" strokeWidth={1.5} /> 0701 734 251
                 </a>
               </li>
               <li>
-                <a href="mailto:fynbriz@gmail.com" className="flex items-center gap-2 text-background/70 text-sm hover:text-primary transition-colors">
-                  <Mail className="w-3.5 h-3.5 text-primary flex-shrink-0" /> fynbriz@gmail.com
+                <a href="mailto:fynbriz@gmail.com" className="flex items-start gap-2.5 text-background/70 text-sm hover:text-primary transition-colors">
+                  <Mail className="w-3.5 h-3.5 mt-0.5 shrink-0" strokeWidth={1.5} /> fynbriz@gmail.com
                 </a>
               </li>
               <li>
-                <div className="flex items-start gap-2 text-background/70 text-sm">
-                  <MapPin className="w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5" />
-                  <span>Voi, Taita Taveta County<br />Kenya</span>
+                <div className="flex items-start gap-2.5 text-background/70 text-sm">
+                  <MapPin className="w-3.5 h-3.5 mt-0.5 shrink-0" strokeWidth={1.5} />
+                  <span>Voi, Taita Taveta County, Kenya</span>
                 </div>
               </li>
             </ul>
           </div>
 
-          {/* WhatsApp CTA */}
+          {/* Book Directly */}
           <div>
-            <h4 className="font-bold text-background text-sm uppercase tracking-widest mb-5 after:block after:w-8 after:h-0.5 after:bg-accent after:mt-2">Book Directly</h4>
-            <p className="text-background/70 text-sm mb-5 leading-relaxed">
+            <h4 className="kemp-label text-background/40 mb-5">Reservations</h4>
+            <p className="text-background/60 text-sm mb-5 leading-relaxed">
               Get instant confirmation and best rates when you book directly with us via WhatsApp.
             </p>
             <a
               href="https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20would%20like%20to%20make%20a%20booking."
               target="_blank"
               rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-accent transition-colors"
             >
-              <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 mb-3 relative overflow-hidden">
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/10 to-transparent animate-[shimmer_3s_ease-in-out_infinite] bg-[length:200%_100%]" />
-                <MessageCircle className="w-4 h-4 mr-2" /> Book Now on WhatsApp
-              </Button>
+              <MessageCircle className="w-4 h-4" strokeWidth={1.5} /> Book Now
             </a>
-            <p className="text-xs text-background/50 text-center">Available 24/7 for inquiries</p>
+            <p className="text-xs text-background/40 mt-4">Available 24/7 for inquiries</p>
           </div>
         </div>
       </div>
 
-      {/* Bottom bar */}
       <div className="border-t border-background/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-center">
-          <p className="text-background/50 text-xs">
+          <p className="text-background/40 text-xs">
             &copy; {new Date().getFullYear()} Fine Breeze Hotel & Restaurant, Voi, Kenya. All rights reserved.
           </p>
         </div>

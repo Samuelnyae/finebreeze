@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { Badge } from "@/components/ui/badge";
 import { X } from "lucide-react";
-import AnimatedElement from "@/components/AnimatedElement";
 import LazyImage from "@/components/LazyImage";
 import PageHero from "@/components/PageHero";
 
@@ -24,10 +23,7 @@ export default function Gallery() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    base44.entities.GalleryImage.list()
-      .then(setImages)
-      .catch(() => {})
-      .finally(() => setLoading(false));
+    base44.entities.GalleryImage.list().then(setImages).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   const all = images.length > 0 ? images : staticFallback;
@@ -41,17 +37,21 @@ export default function Gallery() {
         label="Visual Tour"
         title="Gallery"
         titleAccent="A Glimpse of Paradise"
-        subtitle="A glimpse of paradise — explore our rooms, cuisine, and the breathtaking surroundings of Voi."
+        subtitle="Explore our rooms, cuisine, and the breathtaking surroundings of Voi."
       />
 
-      <section className="py-16 bg-background">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap gap-3 justify-center mb-12">
+      <section className="py-16 md:py-24 bg-background">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          <div className="flex flex-wrap gap-2 justify-center mb-14">
             {categories.map((c) => (
               <button
                 key={c}
                 onClick={() => setFilter(c)}
-                className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${filter === c ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "bg-secondary text-muted-foreground hover:bg-primary/10 hover:text-primary"}`}
+                className={`px-6 py-2.5 text-[11px] font-medium tracking-[0.2em] uppercase transition-all duration-300 border ${
+                  filter === c
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-transparent text-muted-foreground border-border hover:border-foreground hover:text-foreground"
+                }`}
               >
                 {c}
               </button>
@@ -61,21 +61,25 @@ export default function Gallery() {
           {loading ? (
             <div className="text-center py-20 text-muted-foreground">Loading gallery…</div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
               {filtered.map((img, i) => (
-                <AnimatedElement key={img.title + i} delay={i * 60} variant="scale-in">
-                  <div
-                    onClick={() => setLightbox(img)}
-                    className="group rounded-2xl overflow-hidden cursor-pointer aspect-square relative shadow-lg hover:shadow-2xl transition-all duration-500"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <LazyImage src={img.image_url} alt={img.title} className="group-hover:scale-110 transition-transform duration-1000" skeletonClass="bg-card" />
-                    <div className="absolute bottom-0 left-0 p-5 z-20 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                      <Badge className="bg-primary/90 text-primary-foreground border-0 mb-2">{img.category}</Badge>
-                      <h3 className="text-white font-bold text-lg">{img.title}</h3>
+                <motion.div
+                  key={img.title + i}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.04 }}
+                  onClick={() => setLightbox(img)}
+                  className={`group relative overflow-hidden cursor-pointer ${i === 0 ? "col-span-2 row-span-2 aspect-square" : "aspect-square"}`}
+                >
+                  <LazyImage src={img.image_url} alt={img.title} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-muted" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5">
+                    <div>
+                      <p className="kemp-label text-white/70 mb-1">{img.category}</p>
+                      <h3 className="font-heading text-white text-lg">{img.title}</h3>
                     </div>
                   </div>
-                </AnimatedElement>
+                </motion.div>
               ))}
             </div>
           )}
@@ -83,15 +87,15 @@ export default function Gallery() {
       </section>
 
       {lightbox && (
-        <div className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-6" onClick={() => setLightbox(null)}>
-          <button className="absolute top-6 right-6 text-white/80 hover:text-white" onClick={() => setLightbox(null)}>
-            <X className="w-8 h-8" />
+        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6 md:p-10" onClick={() => setLightbox(null)}>
+          <button className="absolute top-6 right-6 text-white/70 hover:text-white" onClick={() => setLightbox(null)}>
+            <X className="w-8 h-8" strokeWidth={1} />
           </button>
           <div className="max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
-            <LazyImage src={lightbox.image_url} alt={lightbox.title} eager className="max-h-[80vh] object-contain rounded-2xl" skeletonClass="bg-muted" />
+            <LazyImage src={lightbox.image_url} alt={lightbox.title} eager className="max-h-[80vh] object-contain" skeletonClass="bg-muted" />
             <div className="text-center mt-4">
-              <Badge className="bg-primary text-primary-foreground border-0 mb-2">{lightbox.category}</Badge>
-              <h3 className="text-white font-bold text-xl">{lightbox.title}</h3>
+              <p className="kemp-label text-white/50 mb-2">{lightbox.category}</p>
+              <h3 className="font-heading text-white text-xl">{lightbox.title}</h3>
             </div>
           </div>
         </div>

@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { Badge } from "@/components/ui/badge";
 import { Utensils, Wine, Coffee, Cake, Salad } from "lucide-react";
-import AnimatedElement from "@/components/AnimatedElement";
 import LazyImage from "@/components/LazyImage";
 import { useCurrency } from "@/lib/CurrencyContext";
 import PageHero from "@/components/PageHero";
@@ -31,10 +30,7 @@ export default function Restaurant() {
   const { formatPrice } = useCurrency();
 
   useEffect(() => {
-    base44.entities.MenuItem.list()
-      .then(setItems)
-      .catch(() => {})
-      .finally(() => setLoading(false));
+    base44.entities.MenuItem.list().then(setItems).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   const all = items.length > 0 ? items : staticFallback;
@@ -50,16 +46,21 @@ export default function Restaurant() {
         subtitle="A culinary journey through Kenya — from coastal Swahili traditions to hearty Taita specialties, plus a curated minibar."
       />
 
-      <section className="py-16 bg-background">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap gap-3 justify-center mb-12">
+      <section className="py-16 md:py-24 bg-background">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          {/* Category filter */}
+          <div className="flex flex-wrap gap-2 justify-center mb-14">
             {categories.map((c) => (
               <button
                 key={c.key}
                 onClick={() => setFilter(c.key)}
-                className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${filter === c.key ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "bg-secondary text-muted-foreground hover:bg-primary/10 hover:text-primary"}`}
+                className={`flex items-center gap-2 px-6 py-2.5 text-[11px] font-medium tracking-[0.2em] uppercase transition-all duration-300 border ${
+                  filter === c.key
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-transparent text-muted-foreground border-border hover:border-foreground hover:text-foreground"
+                }`}
               >
-                <c.icon className="w-4 h-4" /> {c.label}
+                <c.icon className="w-3.5 h-3.5" strokeWidth={1.5} /> {c.label}
               </button>
             ))}
           </div>
@@ -67,31 +68,32 @@ export default function Restaurant() {
           {loading ? (
             <div className="text-center py-20 text-muted-foreground">Loading menu…</div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
               {filtered.map((item, i) => (
-                <AnimatedElement key={item.name + i} delay={i * 80} variant="scale-in">
-                  <div className="group bg-card rounded-[2rem] overflow-hidden border border-border/50 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_hsl(var(--accent)/0.2)] transition-all duration-500 flex flex-col h-full">
-                    {item.image_url ? (
-                      <div className="aspect-[4/3] overflow-hidden relative">
-                        <LazyImage src={item.image_url} alt={item.name} className="group-hover:scale-110 transition-transform duration-1000" skeletonClass="bg-card" />
-                        <Badge className="absolute top-4 left-4 z-20 bg-background/80 backdrop-blur-md text-foreground border-0 px-3 py-1">{item.category}</Badge>
-                      </div>
-                    ) : (
-                      <div className="aspect-[4/3] bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center relative">
-                        <Wine className="w-16 h-16 text-primary/30" />
-                        <Badge className="absolute top-4 left-4 z-20 bg-background/80 backdrop-blur-md text-foreground border-0 px-3 py-1">{item.category}</Badge>
-                      </div>
-                    )}
-                    <div className="p-6 flex flex-col flex-1">
-                      <h3 className="text-xl font-black text-card-foreground mb-2">{item.name}</h3>
-                      <p className="text-muted-foreground text-sm mb-4 leading-relaxed flex-1">{item.description}</p>
-                      <div className="flex items-center justify-between pt-4 border-t border-border/30">
-                        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Price</span>
-                        <span className="text-2xl font-black text-primary">{formatPrice(item.price || 0)}</span>
-                      </div>
+                <motion.div
+                  key={item.name + i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: i * 0.08 }}
+                  className="group"
+                >
+                  {item.image_url ? (
+                    <div className="relative aspect-[4/3] overflow-hidden mb-5">
+                      <LazyImage src={item.image_url} alt={item.name} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-muted" />
                     </div>
+                  ) : (
+                    <div className="aspect-[4/3] bg-secondary flex items-center justify-center mb-5">
+                      <Wine className="w-12 h-12 text-muted-foreground/30" strokeWidth={1} />
+                    </div>
+                  )}
+                  <p className="kemp-label text-primary mb-2">{item.category}</p>
+                  <div className="flex items-baseline justify-between gap-4 mb-3">
+                    <h3 className="font-heading text-xl">{item.name}</h3>
+                    <span className="font-heading text-lg text-foreground shrink-0">{formatPrice(item.price || 0)}</span>
                   </div>
-                </AnimatedElement>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+                </motion.div>
               ))}
             </div>
           )}

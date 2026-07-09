@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { MessageCircle, Users, ArrowRight, Wifi, Wind, Car, Coffee } from "lucide-react";
+import { ArrowRight, MessageCircle, Users, Wifi, Wind, Car, Coffee } from "lucide-react";
 import { Link } from "react-router-dom";
-import AnimatedElement from "@/components/AnimatedElement";
 import LazyImage from "@/components/LazyImage";
 import { useCurrency } from "@/lib/CurrencyContext";
 import PageHero from "@/components/PageHero";
@@ -22,10 +20,7 @@ export default function Rooms() {
   const { formatPrice } = useCurrency();
 
   useEffect(() => {
-    base44.entities.Room.list()
-      .then(setRooms)
-      .catch(() => {})
-      .finally(() => setLoading(false));
+    base44.entities.Room.list().then(setRooms).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   const items = rooms.length > 0 ? rooms : staticFallback;
@@ -47,19 +42,24 @@ export default function Rooms() {
       <PageHero
         image="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/20788029e_generated_88f01059.png"
         label="Accommodations"
-        title="Our Rooms & Suites"
+        title="Rooms & Suites"
         titleAccent="Comfort Redefined"
         subtitle="Each room at Fine Breeze is a sanctuary of comfort, blending modern luxury with authentic Kenyan charm."
       />
 
-      <section className="py-16 bg-background">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap gap-3 justify-center mb-12">
+      <section className="py-16 md:py-24 bg-background">
+        <div className="max-w-7xl mx-auto px-6 md:px-10">
+          {/* Filter tabs */}
+          <div className="flex flex-wrap gap-2 justify-center mb-14">
             {types.map((t) => (
               <button
                 key={t}
                 onClick={() => setFilter(t)}
-                className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${filter === t ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" : "bg-secondary text-muted-foreground hover:bg-primary/10 hover:text-primary"}`}
+                className={`px-6 py-2.5 text-[11px] font-medium tracking-[0.2em] uppercase transition-all duration-300 border ${
+                  filter === t
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-transparent text-muted-foreground border-border hover:border-foreground hover:text-foreground"
+                }`}
               >
                 {t}
               </button>
@@ -69,43 +69,44 @@ export default function Rooms() {
           {loading ? (
             <div className="text-center py-20 text-muted-foreground">Loading rooms…</div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
               {filtered.map((room, i) => (
-                <AnimatedElement key={room.name + i} delay={i * 100} variant={i % 2 === 0 ? "fade-left" : "fade-right"}>
-                  <div className="group rounded-[2rem] overflow-hidden bg-card border border-border/50 hover:-translate-y-3 hover:shadow-[0_30px_60px_-15px_hsl(var(--primary)/0.2)] transition-all duration-500 h-full flex flex-col">
-                    <div className="relative aspect-[4/3] overflow-hidden">
-                      <LazyImage src={room.image_url} alt={room.name} className="group-hover:scale-110 transition-transform duration-1000" skeletonClass="bg-card" />
-                      <div className="absolute top-4 right-4 z-20">
-                        <Badge className="bg-background/80 backdrop-blur-md text-foreground border-0 px-4 py-1.5 text-sm font-bold">{room.room_type}</Badge>
-                      </div>
-                    </div>
-                    <div className="p-8 flex flex-col flex-1 relative">
-                      <div className="absolute -top-8 right-8 z-20 bg-primary text-primary-foreground font-black px-6 py-3 rounded-xl shadow-xl">
-                        {formatPrice(room.price_per_night || 0)} <span className="text-xs font-normal opacity-80">/night</span>
-                      </div>
-                      <h3 className="text-2xl font-black text-card-foreground mb-3 pr-24">{room.name}</h3>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                        <Users className="w-4 h-4 text-primary" /> {room.capacity ? `Sleeps ${room.capacity}` : "Capacity varies"}
-                      </div>
-                      <p className="text-muted-foreground mb-5 leading-relaxed line-clamp-3 flex-1">{room.description}</p>
-                      <div className="flex items-center gap-3 mb-6 text-primary">
-                        {amenityIcons(room.amenities).map((a, j) => <a.icon key={j} className="w-5 h-5" />)}
-                      </div>
-                      <div className="flex gap-3 mt-auto">
-                        <Link to="/Booking" state={{ roomName: room.name, roomType: room.room_type, price: room.price_per_night }} className="flex-1">
-                          <Button className="w-full bg-primary hover:bg-primary/90 h-12 rounded-xl font-bold">
-                            Book Now <ArrowRight className="w-4 h-4 ml-2" />
-                          </Button>
-                        </Link>
-                        <a href={`https://wa.me/254714447638?text=Hello%2C%20I%20would%20like%20to%20book%20the%20${encodeURIComponent(room.name)}%20room.`} target="_blank" rel="noopener noreferrer">
-                          <Button className="bg-accent text-accent-foreground hover:bg-accent/90 h-12 px-4 rounded-xl">
-                            <MessageCircle className="w-5 h-5" />
-                          </Button>
-                        </a>
-                      </div>
-                    </div>
+                <motion.div
+                  key={room.name + i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: i * 0.1 }}
+                  className="group"
+                >
+                  <div className="relative aspect-[3/4] overflow-hidden mb-5">
+                    <LazyImage src={room.image_url} alt={room.name} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-muted" />
                   </div>
-                </AnimatedElement>
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="kemp-label text-primary">{room.room_type}</p>
+                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Users className="w-3.5 h-3.5" strokeWidth={1.5} /> {room.capacity || "—"}
+                    </span>
+                  </div>
+                  <h3 className="font-heading text-2xl mb-3">{room.name}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-4 line-clamp-3">{room.description}</p>
+                  <div className="flex items-center gap-4 mb-5 text-muted-foreground">
+                    {amenityIcons(room.amenities).map((a, j) => (
+                      <a.icon key={j} className="w-4 h-4" strokeWidth={1.5} />
+                    ))}
+                  </div>
+                  <div className="flex items-center justify-between pt-5 border-t border-border">
+                    <span className="font-heading text-xl text-foreground">
+                      {formatPrice(room.price_per_night || 0)}
+                      <span className="text-xs text-muted-foreground font-body ml-1">/ night</span>
+                    </span>
+                    <Link to="/Booking" state={{ roomName: room.name, roomType: room.room_type, price: room.price_per_night }}>
+                      <span className="kemp-link">
+                        Book <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      </span>
+                    </Link>
+                  </div>
+                </motion.div>
               ))}
             </div>
           )}

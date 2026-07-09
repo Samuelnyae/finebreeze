@@ -1,207 +1,114 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Star, MapPin, Phone, Mail, Wifi, Coffee, Utensils, Car, Wind, Tv, ChevronRight, ChevronLeft, ArrowRight, MessageCircle, Quote, X, Images } from "lucide-react";
+import { Star, ArrowRight, ChevronLeft, ChevronRight, X, MessageCircle, Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import PromotionWidget from "@/components/PromotionWidget";
 import MapSection from "@/components/MapSection";
 import LazyImage from "@/components/LazyImage";
-import ParallaxImage from "@/components/ParallaxImage";
 import { useCurrency } from "@/lib/CurrencyContext";
 import { useCachedEntity } from "@/hooks/useCachedEntity";
 
-const AnimatedElement = ({ children, className, delay = 0, variant = "fade-up" }) => {
-  const variants = {
-    "fade-up": { hidden: { opacity: 0, y: 60 }, visible: { opacity: 1, y: 0 } },
-    "fade-down": { hidden: { opacity: 0, y: -60 }, visible: { opacity: 1, y: 0 } },
-    "fade-left": { hidden: { opacity: 0, x: -80 }, visible: { opacity: 1, x: 0 } },
-    "fade-right": { hidden: { opacity: 0, x: 80 }, visible: { opacity: 1, x: 0 } },
-    "scale-in": { hidden: { opacity: 0, scale: 0.85 }, visible: { opacity: 1, scale: 1 } },
-    "blur-in": { hidden: { opacity: 0, filter: "blur(14px)" }, visible: { opacity: 1, filter: "blur(0px)" } },
-  };
-  const v = variants[variant] || variants["fade-up"];
-  return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "0px 0px -80px 0px" }}
-      variants={v}
-      transition={{ duration: 0.7, delay: delay / 1000, ease: [0.22, 1, 0.36, 1] }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
+const heroImages = [
+  "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/dbd4a4e59_u.png",
+  "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/8061288ba_9.png",
+  "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fef98d97e_7.png",
+  "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02cdb469c_8.png",
+];
 
-function GlobalStyles() {
-  return (
-    <style>{`
-      @keyframes floatA { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-25px) rotate(4deg); } }
-      @keyframes floatB { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(-3deg); } }
-      @keyframes floatC { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -52%) scale(1.05); } }
-      @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-      @keyframes gradient-x { 0%, 100% { background-size: 200% 200%; background-position: left center; } 50% { background-size: 200% 200%; background-position: right center; } }
-      @keyframes slowZoom { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
-      @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-12px); } 60% { transform: translateY(-6px); } }
-      .text-glow { text-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
-    `}</style>
-  );
-}
+const WA_LINK = "https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20would%20like%20to%20make%20a%20booking.";
 
-function HeroSection() {
-  const heroImages = [
-    "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/dbd4a4e59_u.png",
-    "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/8061288ba_9.png",
-    "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fef98d97e_7.png",
-    "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02cdb469c_8.png",
-  ];
-  const [heroIdx, setHeroIdx] = useState(0);
+function Hero() {
+  const [idx, setIdx] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setHeroIdx((i) => (i + 1) % heroImages.length), 6000);
+    const t = setInterval(() => setIdx((i) => (i + 1) % heroImages.length), 7000);
     return () => clearInterval(t);
-  }, [heroImages.length]);
+  }, []);
 
   return (
     <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
-      {/* Full-bleed background photos */}
       <div className="absolute inset-0 z-0">
         {heroImages.map((src, i) => (
           <img
             key={i}
             src={src}
             alt="Fine Breeze Hotel Voi Kenya"
-            loading="eager"
+            loading={i === 0 ? "eager" : "lazy"}
             decoding="async"
             fetchpriority={i === 0 ? "high" : "auto"}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms]"
-            style={{ opacity: i === heroIdx ? 1 : 0, animation: i === heroIdx ? "slowZoom 14s ease-in-out infinite alternate" : "none" }}
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms]"
+            style={{ opacity: i === idx ? 1 : 0 }}
           />
         ))}
-        {/* Dark moody overlay */}
-        <div className="absolute inset-0 bg-background/70 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/30 to-background z-10" />
-        {/* Cinematic vignette */}
-        <div className="absolute inset-0 z-10" style={{ background: "radial-gradient(ellipse at center, transparent 25%, hsl(var(--background) / 0.75) 100%)" }} />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60 z-10" />
       </div>
 
-      {/* Subtle warm accent glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-primary/8 rounded-full blur-[150px] pointer-events-none z-10" />
-
-      {/* Content */}
-      <div className="relative z-20 text-center px-6 max-w-5xl mx-auto w-full">
-        <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease: "easeOut" }}>
-          {/* Luxury label with divider lines */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="flex items-center justify-center gap-4 mb-8"
-          >
-            <span className="h-px w-12 bg-primary/50" />
-            <span className="text-[11px] font-medium uppercase tracking-[0.4em] text-primary/90">Fine Breeze Hotel & Restaurant</span>
-            <span className="h-px w-12 bg-primary/50" />
-          </motion.div>
-
-          {/* Main headline */}
-          <h1 className="font-heading font-medium text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] tracking-tight leading-[1.1] mb-8 text-foreground">
-            <span className="block">Experience Comfort</span>
-            <span className="block text-primary/90 italic font-light">in the Heart of Voi</span>
+      <div className="relative z-20 text-center px-6 max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
+        >
+          <p className="kemp-label text-white/70 mb-6">Fine Breeze Hotel & Restaurant</p>
+          <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-[1.15] mb-8 text-white">
+            Experience Comfort
+            <span className="block italic font-light text-white/90">in the Heart of Voi</span>
           </h1>
-
-          {/* Subtext */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.6 }}
-            className="text-base sm:text-lg text-muted-foreground/80 max-w-xl mx-auto mb-12 leading-relaxed font-light"
-          >
+          <p className="text-base md:text-lg text-white/70 max-w-xl mx-auto mb-10 font-light leading-relaxed">
             Where Kenyan warmth meets timeless luxury. Rooms, dining, and events crafted for the discerning traveller.
-          </motion.p>
-
-          {/* CTA buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.9 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          >
-            <a
-              href={`https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20would%20like%20to%20make%20a%20booking.`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto"
-            >
-              <Button size="lg" className="w-full sm:w-auto bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-base px-10 py-6 shadow-2xl shadow-accent/20 hover:shadow-accent/40 hover:scale-[1.03] active:scale-95 transition-all duration-500 rounded-full tracking-wide">
-                <MessageCircle className="w-5 h-5 mr-2" />
-                Book Your Stay
-              </Button>
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
+              <span className="inline-flex items-center gap-2 bg-white text-foreground px-8 py-3.5 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-primary hover:text-primary-foreground transition-all duration-300">
+                <MessageCircle className="w-4 h-4" strokeWidth={1.5} /> Book Your Stay
+              </span>
             </a>
-            <Link to="/Rooms" className="w-full sm:w-auto">
-              <Button size="lg" variant="ghost" className="w-full sm:w-auto text-foreground hover:text-primary hover:bg-transparent font-medium text-base px-8 py-6 backdrop-blur-sm border border-foreground/20 hover:border-primary/40 transition-all duration-500 rounded-full tracking-wide">
-                Explore Rooms <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
+            <Link to="/Rooms">
+              <span className="kemp-link text-white border border-white/30 px-8 py-3.5 hover:bg-white/10 transition-all">
+                Explore Rooms <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+              </span>
             </Link>
-          </motion.div>
+          </div>
         </motion.div>
       </div>
 
-      {/* Minimal image indicators */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+      {/* Image indicators */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
         {heroImages.map((_, i) => (
-          <button key={i} onClick={() => setHeroIdx(i)} className={`h-1 rounded-full transition-all duration-500 ${i === heroIdx ? "w-10 bg-primary" : "w-1 bg-foreground/30"}`} />
+          <button
+            key={i}
+            onClick={() => setIdx(i)}
+            className={`h-[2px] transition-all duration-500 ${i === idx ? "w-10 bg-white" : "w-5 bg-white/30"}`}
+          />
         ))}
-      </div>
-
-      {/* Vertical scroll indicator */}
-      <div className="absolute bottom-10 right-8 z-20 hidden md:flex flex-col items-center gap-3">
-        <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground/50 [writing-mode:vertical-rl]">Scroll</span>
-        <div className="w-px h-12 bg-gradient-to-b from-primary/50 to-transparent" />
       </div>
     </section>
   );
 }
 
-function AmenitiesSection() {
-  const amenities = [
-    { icon: Wifi, label: "High-Speed WiFi", desc: "Seamless connectivity throughout the entire property." },
-    { icon: Utensils, label: "Fine Restaurant", desc: "Authentic Kenyan & International cuisine crafted daily." },
-    { icon: Wind, label: "Climate Control", desc: "Premium AC and natural ventilation in every room." },
-    { icon: Coffee, label: "Room Service", desc: "24/7 in-room dining for your absolute convenience." },
-    { icon: Car, label: "Free Parking", desc: "Secure, monitored on-site parking for all our guests." },
-    { icon: Tv, label: "Smart Entertainment", desc: "Premium screens with international streaming services." },
-  ];
+function IntroSection() {
   return (
-    <section className="py-20 md:py-32 bg-secondary relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <AnimatedElement variant="fade-down">
-          <div className="text-center mb-20">
-            <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">World-Class Facilities</p>
-            <h2 className="text-5xl md:text-6xl font-black text-foreground mb-6">Everything You Need</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light">Every detail thoughtfully crafted for your ultimate comfort and pleasure during your stay in Voi.</p>
-          </div>
-        </AnimatedElement>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {amenities.map((a, i) => (
-            <AnimatedElement key={a.label} delay={i * 100} variant={i % 3 === 0 ? "fade-left" : i % 3 === 1 ? "fade-right" : "scale-in"}>
-              <div className="p-px rounded-3xl bg-gradient-to-br from-primary/20 via-transparent to-accent/20 hover:from-primary/50 hover:to-accent/40 transition-all duration-700 group h-full shadow-lg shadow-background/5">
-                <div className="rounded-[23px] bg-card/80 backdrop-blur-xl p-8 h-full hover:-translate-y-2 transition-transform duration-500 flex flex-col items-start border border-border/10">
-                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 group-hover:scale-110 transition-all duration-500 shadow-inner">
-                    <a.icon className="w-8 h-8 text-primary group-hover:text-accent transition-colors duration-500" />
-                  </div>
-                  <h3 className="text-xl font-bold text-card-foreground mb-3">{a.label}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{a.desc}</p>
-                </div>
-              </div>
-            </AnimatedElement>
-          ))}
-        </div>
+    <section className="py-20 md:py-32 bg-background">
+      <div className="max-w-3xl mx-auto px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="kemp-label text-primary mb-6">Voi · Taita Taveta County</p>
+          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-normal leading-[1.3] mb-8">
+            Explore the city in style and comfort by staying at the best luxury hotel in Voi.
+            Offering the perfect fusion of European luxury and Kenyan hospitality,
+            the hotel is a unique destination for both business and leisure.
+          </h2>
+          <p className="text-base text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
+            Enjoy our elegant rooms and suites, exceptional restaurant, and warm hospitality — all at the gateway to Tsavo.
+          </p>
+          <Link to="/About" className="kemp-link">
+            Hotel Details <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
@@ -212,72 +119,73 @@ function RoomsSection() {
   const { formatPrice } = useCurrency();
   const items = rooms.slice(0, 3);
 
-  const amenityIcons = (amenities) => {
-    const list = (amenities || "").toLowerCase();
-    return [
-      { icon: Wifi, show: list.includes("wifi") },
-      { icon: Wind, show: list.includes("ac") || list.includes("air") },
-      { icon: Coffee, show: list.includes("minibar") || list.includes("room service") },
-      { icon: Car, show: list.includes("parking") },
-      { icon: Tv, show: list.includes("tv") || list.includes("smart") },
-    ].filter((a) => a.show);
-  };
-
   return (
-    <section className="py-20 md:py-32 bg-background relative overflow-hidden">
-      <div className="absolute top-20 left-0 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-20 right-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[100px] pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <AnimatedElement variant="fade-left">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Accommodations</p>
-              <h2 className="text-5xl md:text-6xl font-black text-foreground">Our Rooms & Suites</h2>
-            </div>
-            <Link to="/Rooms">
-              <Button size="lg" variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 hover:scale-105 active:scale-95 transition-all duration-300 rounded-xl px-8">
-                View All Rooms <ChevronRight className="w-5 h-5 ml-2" />
-              </Button>
+    <section className="bg-foreground text-background py-20 md:py-32 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <p className="kemp-label text-primary mb-5">Accommodations</p>
+            <h2 className="font-heading text-4xl md:text-5xl font-normal mb-6 leading-[1.2]">
+              Rooms & Suites
+            </h2>
+            <p className="text-background/60 text-base md:text-lg leading-relaxed mb-8 max-w-lg">
+              Each room at Fine Breeze is a sanctuary of comfort, blending modern luxury with authentic Kenyan charm. Enjoy beautifully designed spaces with premium amenities and stunning views.
+            </p>
+            <Link to="/Rooms" className="kemp-link text-background">
+              Discover More <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
             </Link>
-          </div>
-        </AnimatedElement>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.15 }}
+            className="relative aspect-[4/5] md:aspect-[3/4]"
+          >
+            <LazyImage
+              src={items[0]?.image_url || "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/20788029e_generated_88f01059.png"}
+              alt="Fine Breeze Room"
+              eager
+              className="w-full h-full"
+              skeletonClass="bg-background/10"
+            />
+          </motion.div>
+        </div>
+
+        {/* Room cards row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {items.map((room, i) => (
-            <AnimatedElement key={room.name} delay={i * 150} variant={i % 2 === 0 ? "fade-left" : "fade-right"}>
-              <div className="group rounded-[2rem] overflow-hidden bg-card border border-border/50 hover:-translate-y-3 hover:shadow-[0_30px_60px_-15px_hsl(var(--primary)/0.2)] transition-all duration-500 h-full flex flex-col">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
-                  <LazyImage src={room.image_url} alt={room.name} className="group-hover:scale-110 transition-transform duration-1000 ease-out" skeletonClass="bg-card" />
-                  <div className="absolute top-4 right-4 z-20">
-                    <Badge className="bg-background/80 backdrop-blur-md text-foreground border-0 px-4 py-1.5 text-sm font-bold shadow-xl">
-                      {room.room_type}
-                    </Badge>
+            <motion.div
+              key={room.name}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+            >
+              <Link to="/Booking" state={{ roomName: room.name, roomType: room.room_type, price: room.price_per_night }}>
+                <div className="group cursor-pointer">
+                  <div className="relative aspect-[3/4] overflow-hidden mb-5">
+                    <LazyImage
+                      src={room.image_url}
+                      alt={room.name}
+                      className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out"
+                      skeletonClass="bg-background/10"
+                    />
                   </div>
+                  <p className="kemp-label text-primary mb-2">{room.room_type}</p>
+                  <h3 className="font-heading text-xl mb-2">{room.name}</h3>
+                  <p className="text-background/50 text-sm leading-relaxed line-clamp-2 mb-3">{room.description}</p>
+                  <p className="text-background/80 text-sm font-medium">
+                    {formatPrice(room.price_per_night || 0)} <span className="text-background/40 text-xs">/ night</span>
+                  </p>
                 </div>
-                <div className="p-8 flex flex-col flex-1 relative">
-                  <div className="absolute -top-8 right-8 z-20 bg-primary text-primary-foreground font-black px-6 py-3 rounded-xl shadow-xl shadow-primary/30 group-hover:scale-110 transition-transform duration-500">
-                    {formatPrice(room.price_per_night || 0)} <span className="text-xs font-normal opacity-80">/night</span>
-                  </div>
-                  
-                  <h3 className="text-2xl font-black text-card-foreground mb-3 pr-24">{room.name}</h3>
-                  <p className="text-muted-foreground mb-4 leading-relaxed line-clamp-3 flex-1">{room.description}</p>
-                  {room.amenities && (
-                    <div className="flex items-center gap-3 mb-6 text-primary">
-                      {amenityIcons(room.amenities).map((a, j) => <a.icon key={j} className="w-5 h-5" />)}
-                    </div>
-                  )}
-                  
-                  <a href={`https://wa.me/254714447638?text=Hello%2C%20I%20would%20like%20to%20book%20the%20${encodeURIComponent(room.name)}%20room.`} target="_blank" rel="noopener noreferrer" className="mt-auto">
-                    <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 relative overflow-hidden h-14 rounded-xl text-base font-bold group/btn shadow-lg shadow-accent/20">
-                      <span className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/20 to-transparent animate-[shimmer_3s_ease-in-out_infinite] bg-[length:200%_100%]" />
-                      <MessageCircle className="w-5 h-5 mr-2 group-hover/btn:scale-110 transition-transform" /> Reserve Now
-                    </Button>
-                  </a>
-                </div>
-              </div>
-            </AnimatedElement>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -288,61 +196,71 @@ function RoomsSection() {
 function RestaurantSection() {
   const { items: menuItems } = useCachedEntity("MenuItem");
   const { formatPrice } = useCurrency();
-  const items = menuItems.filter(m => m.is_featured).slice(0, 3);
+  const items = menuItems.filter((m) => m.is_featured).slice(0, 3);
 
   return (
-    <section className="py-20 md:py-32 bg-muted relative overflow-hidden">
-      <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <AnimatedElement variant="fade-right">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Our Restaurant</p>
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-foreground mb-8 leading-[1.1]">
-                A Culinary Journey<br />
-                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-gradient-x">Through Kenya</span>
-              </h2>
-              <p className="text-xl text-muted-foreground leading-relaxed mb-10 font-light border-l-4 border-primary/50 pl-6">
-                Our kitchen celebrates the rich tapestry of Kenyan flavours — from the coastal Swahili traditions to the hearty Taita region specialties. Every dish tells a story of heritage, crafted with the freshest local ingredients.
-              </p>
-              <Link to="/Restaurant">
-                <Button size="lg" variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 hover:scale-105 active:scale-95 transition-all duration-300 rounded-xl px-10 h-14 text-lg">
-                  Explore Full Menu <ArrowRight className="w-5 h-5 ml-3" />
-                </Button>
-              </Link>
-            </div>
-            <div className="relative group">
-              <div className="absolute -inset-4 bg-gradient-to-tr from-primary/30 to-accent/30 rounded-[2.5rem] blur-2xl opacity-50 group-hover:opacity-80 transition-opacity duration-700" />
-              <div className="relative rounded-[2rem] overflow-hidden aspect-[4/3] border border-border/50 shadow-2xl">
-                <LazyImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/c653ddfeb_generated_b1c83de0.png" alt="Fine Breeze Restaurant" className="group-hover:scale-105 transition-transform duration-1000 ease-out" skeletonClass="bg-card" />
-              </div>
-            </div>
-          </div>
-        </AnimatedElement>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <section className="py-20 md:py-32 bg-background">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="relative aspect-[4/3] md:aspect-[5/4] order-2 lg:order-1"
+          >
+            <LazyImage
+              src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/c653ddfeb_generated_b1c83de0.png"
+              alt="Fine Breeze Restaurant"
+              eager
+              className="w-full h-full"
+              skeletonClass="bg-muted"
+            />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.15 }}
+            className="order-1 lg:order-2"
+          >
+            <p className="kemp-label text-primary mb-5">Restaurant & Bar</p>
+            <h2 className="font-heading text-4xl md:text-5xl font-normal mb-6 leading-[1.2]">
+              A Culinary Journey<br />Through Kenya
+            </h2>
+            <p className="text-muted-foreground text-base md:text-lg leading-relaxed mb-8 max-w-lg">
+              Our kitchen celebrates the rich tapestry of Kenyan flavours — from coastal Swahili traditions to hearty Taita region specialties. Every dish tells a story of heritage, crafted with the freshest local ingredients.
+            </p>
+            <Link to="/Restaurant" className="kemp-link">
+              Explore Full Menu <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Featured dishes */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {items.map((item, i) => (
-            <AnimatedElement key={item.name} delay={i * 150} variant="scale-in">
-              <div className="group bg-card rounded-[2rem] overflow-hidden border border-border/50 hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_hsl(var(--accent)/0.2)] transition-all duration-500 flex flex-col h-full">
-                <div className="aspect-[4/3] overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent z-10 opacity-60" />
-                  <LazyImage src={item.image_url} alt={item.name} className="group-hover:scale-110 transition-transform duration-1000 ease-out" skeletonClass="bg-card" />
-                  <Badge className="absolute top-4 left-4 z-20 bg-background/80 backdrop-blur-md text-foreground border-0 px-3 py-1 font-semibold">
-                    {item.category}
-                  </Badge>
-                </div>
-                <div className="p-8 flex flex-col flex-1 relative z-20 -mt-6 bg-card rounded-t-[2rem]">
-                  <h3 className="text-2xl font-black text-card-foreground mb-3">{item.name}</h3>
-                  <p className="text-muted-foreground mb-6 leading-relaxed flex-1">{item.description}</p>
-                  <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/30">
-                    <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Price</span>
-                    <span className="text-2xl font-black text-primary">{formatPrice(item.price || 0)}</span>
-                  </div>
-                </div>
+            <motion.div
+              key={item.name}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="group"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden mb-5">
+                <LazyImage
+                  src={item.image_url}
+                  alt={item.name}
+                  className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out"
+                  skeletonClass="bg-muted"
+                />
               </div>
-            </AnimatedElement>
+              <p className="kemp-label text-primary mb-2">{item.category}</p>
+              <h3 className="font-heading text-lg mb-2">{item.name}</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2 mb-3">{item.description}</p>
+              <p className="text-foreground text-sm font-medium">{formatPrice(item.price || 0)}</p>
+            </motion.div>
           ))}
         </div>
       </div>
@@ -352,56 +270,54 @@ function RestaurantSection() {
 
 function AboutSection() {
   return (
-    <section className="py-20 md:py-32 bg-background relative overflow-hidden">
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27/%3E%3C/svg%3E")' }} />
-      <div className="absolute top-1/4 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px] pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          <AnimatedElement>
-            <div className="relative group">
-              <div className="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <div className="relative rounded-[2.5rem] overflow-hidden aspect-[4/3] border-4 border-background shadow-2xl">
-                <ParallaxImage src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png" alt="Fine Breeze Pool" skeletonClass="bg-card" />
-              </div>
-              <div className="absolute -bottom-10 -right-4 md:-right-10 bg-card/90 backdrop-blur-xl border border-border/50 rounded-3xl p-8 shadow-2xl group-hover:-translate-y-4 transition-transform duration-500">
-                <div className="text-5xl font-black bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent mb-2">10+</div>
-                <div className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Years of Excellence</div>
-              </div>
+    <section className="py-20 md:py-32 bg-secondary">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="relative aspect-[4/3] md:aspect-[5/4]"
+          >
+            <LazyImage
+              src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/fa1737901_generated_a9007a29.png"
+              alt="Fine Breeze Pool"
+              eager
+              className="w-full h-full"
+              skeletonClass="bg-muted"
+            />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.15 }}
+          >
+            <p className="kemp-label text-primary mb-5">Our Story</p>
+            <h2 className="font-heading text-4xl md:text-5xl font-normal mb-6 leading-[1.2]">
+              Born from the<br />Spirit of Voi
+            </h2>
+            <p className="text-muted-foreground text-base leading-relaxed mb-5">
+              Nestled at the gateway to Tsavo, in the heart of Taita Taveta County, Fine Breeze Hotel & Restaurant was conceived as a beacon of excellence in Voi. Our story is one of passion for Kenya's remarkable natural beauty and deep respect for its cultural heritage.
+            </p>
+            <p className="text-muted-foreground text-base leading-relaxed mb-8">
+              From the sweeping Taita Hills views to our carefully curated menu of local and international dishes, every experience at Fine Breeze is designed to connect you with the soul of Kenya while surrounding you with uncompromising comfort.
+            </p>
+            <div className="grid grid-cols-3 gap-6 pt-8 border-t border-border">
+              {[["10+", "Years"], ["5k+", "Happy Guests"], ["4.9★", "Rating"]].map(([val, label]) => (
+                <div key={label}>
+                  <div className="font-heading text-2xl md:text-3xl text-primary mb-1">{val}</div>
+                  <div className="kemp-label text-muted-foreground">{label}</div>
+                </div>
+              ))}
             </div>
-          </AnimatedElement>
-          
-          <AnimatedElement delay={200}>
-            <div className="pl-0 lg:pl-10 mt-16 lg:mt-0">
-              <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Our Story</p>
-              <h2 className="text-5xl md:text-6xl font-black text-foreground mb-8 leading-[1.1]">
-                Born from the Spirit<br />of Voi
-              </h2>
-              
-              <div className="relative mb-10">
-                <Quote className="absolute -top-4 -left-4 w-12 h-12 text-primary/20 -z-10" />
-                <p className="text-2xl italic text-foreground/90 font-light leading-relaxed pl-6 border-l-4 border-primary">
-                  "We built Fine Breeze to be a sanctuary where the warmth of Kenyan hospitality meets world-class luxury."
-                </p>
-              </div>
-              
-              <p className="text-lg text-muted-foreground leading-relaxed mb-6 font-light">
-                Nestled at the gateway to Tsavo, in the heart of Taita Taveta County, Fine Breeze Hotel & Restaurant was conceived as a beacon of excellence in Voi. Our story is one of passion for Kenya's remarkable natural beauty and deep respect for its cultural heritage.
-              </p>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-12 font-light">
-                From the sweeping Taita Hills views to our carefully curated menu of local and international dishes, every experience at Fine Breeze is designed to connect you with the soul of Kenya while surrounding you with uncompromising comfort.
-              </p>
-              
-              <div className="grid grid-cols-3 gap-6">
-                {[["5k+", "Happy Guests"], ["24/7", "Premium Service"], ["4.9★", "Average Rating"]].map(([val, label], i) => (
-                  <div key={label} className="text-center p-6 bg-secondary/50 rounded-2xl border border-border/30 hover:bg-secondary transition-colors duration-300 hover:-translate-y-1">
-                    <div className="text-2xl md:text-3xl font-black text-primary">{val}</div>
-                    <div className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-muted-foreground mt-2">{label}</div>
-                  </div>
-                ))}
-              </div>
+            <div className="mt-8">
+              <Link to="/About" className="kemp-link">
+                Read Our Story <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+              </Link>
             </div>
-          </AnimatedElement>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -410,80 +326,67 @@ function AboutSection() {
 
 function TestimonialsSection() {
   const { items: testimonials } = useCachedEntity("Testimonial");
-  const items = testimonials;
+  const items = testimonials.length > 0 ? testimonials : [
+    { guest_name: "Sarah K.", review: "An absolutely wonderful stay. The rooms were immaculate, the food was incredible, and the staff went above and beyond. The perfect base for our Tsavo safari.", rating: 5, country: "United Kingdom", stay_type: "Deluxe Room" },
+    { guest_name: "James M.", review: "Fine Breeze exceeded all expectations. The Nyama Choma was the best I've had in Kenya, and the views of the Taita Hills are breathtaking.", rating: 5, country: "Kenya", stay_type: "Suite" },
+    { guest_name: "Emma L.", review: "A hidden gem in Voi. The hospitality is warm and genuine, the rooms are comfortable and beautifully designed. We'll definitely be back.", rating: 5, country: "Australia", stay_type: "Garden Twin" },
+  ];
   const [reviewIdx, setReviewIdx] = useState(0);
 
   return (
-    <section className="py-20 md:py-32 bg-secondary relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[150px] pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <AnimatedElement variant="fade-down">
-          <div className="text-center mb-20">
-            <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Guest Experiences</p>
-            <h2 className="text-5xl md:text-6xl font-black text-foreground">What Our Guests Say</h2>
-            <p className="text-sm text-muted-foreground mt-3">Swipe to browse reviews →</p>
-          </div>
-        </AnimatedElement>
-        
+    <section className="py-20 md:py-32 bg-foreground text-background">
+      <div className="max-w-4xl mx-auto px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="kemp-label text-primary mb-6">Guest Experiences</p>
+          <h2 className="font-heading text-3xl md:text-5xl font-normal mb-16">What Our Guests Say</h2>
+        </motion.div>
+
         <div className="relative">
           {reviewIdx > 0 && (
-            <button onClick={() => setReviewIdx((i) => Math.max(0, i - 1))} className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-30 w-12 h-12 rounded-full bg-card border border-border/50 shadow-xl items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 active:scale-95">
-              <ChevronLeft className="w-6 h-6" />
+            <button onClick={() => setReviewIdx((i) => i - 1)} className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 text-background/40 hover:text-primary transition-colors">
+              <ChevronLeft className="w-8 h-8" strokeWidth={1} />
             </button>
           )}
           {reviewIdx < items.length - 1 && (
-            <button onClick={() => setReviewIdx((i) => Math.min(items.length - 1, i + 1))} className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-30 w-12 h-12 rounded-full bg-card border border-border/50 shadow-xl items-center justify-center text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:scale-110 active:scale-95">
-              <ChevronRight className="w-6 h-6" />
+            <button onClick={() => setReviewIdx((i) => i + 1)} className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 text-background/40 hover:text-primary transition-colors">
+              <ChevronRight className="w-8 h-8" strokeWidth={1} />
             </button>
           )}
 
-          <div className="overflow-hidden cursor-grab active:cursor-grabbing">
-            <motion.div
-              className="flex"
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.16}
-              onDragEnd={(_, { offset, velocity }) => {
-                const swipe = offset.x < -50 || velocity.x < -300 ? 1 : offset.x > 50 || velocity.x > 300 ? -1 : 0;
-                if (swipe !== 0) setReviewIdx((i) => Math.max(0, Math.min(items.length - 1, i + swipe)));
-              }}
-              animate={{ x: `-${reviewIdx * 100}%` }}
-              transition={{ type: "spring", stiffness: 260, damping: 28 }}
-            >
-              {items.map((t, i) => (
-                <div key={i} className="min-w-full px-4">
-                  <div className="p-px rounded-[2rem] bg-gradient-to-br from-primary/30 via-transparent to-accent/20">
-                    <div className="bg-card/90 backdrop-blur-xl rounded-[31px] p-10 md:p-14 flex flex-col border border-border/30 max-w-2xl mx-auto">
-                      <div className="flex mb-8 gap-1">
-                        {Array.from({ length: Math.round(t.rating || 5) }).map((_, j) => (
-                          <Star key={j} className="w-5 h-5 fill-primary text-primary drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]" />
-                        ))}
-                      </div>
-                      <Quote className="w-10 h-10 text-primary/20 mb-6" />
-                      <p className="text-foreground/80 text-lg md:text-2xl leading-relaxed flex-1 mb-10 font-light italic">"{t.review}"</p>
-                      <div className="border-t border-border/50 pt-6 flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-black text-lg">
-                          {t.guest_name.charAt(0)}
-                        </div>
-                        <div>
-                          <div className="font-bold text-card-foreground text-base mb-1">{t.guest_name}</div>
-                          <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t.stay_type} · {t.country}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+          <motion.div
+            key={reviewIdx}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="flex justify-center gap-1 mb-8">
+              {Array.from({ length: Math.round(items[reviewIdx]?.rating || 5) }).map((_, j) => (
+                <Star key={j} className="w-4 h-4 fill-primary text-primary" />
               ))}
-            </motion.div>
-          </div>
+            </div>
+            <p className="font-heading text-xl md:text-3xl font-normal italic leading-relaxed mb-10 text-background/90">
+              "{items[reviewIdx]?.review}"
+            </p>
+            <div>
+              <p className="font-medium text-base mb-1">{items[reviewIdx]?.guest_name}</p>
+              <p className="kemp-label text-background/40">{items[reviewIdx]?.stay_type} · {items[reviewIdx]?.country}</p>
+            </div>
+          </motion.div>
+        </div>
 
-          <div className="flex justify-center gap-2 mt-8">
-            {items.map((_, i) => (
-              <button key={i} onClick={() => setReviewIdx(i)} className={`h-2.5 rounded-full transition-all ${i === reviewIdx ? "w-8 bg-primary" : "w-2.5 bg-muted-foreground/40"}`} />
-            ))}
-          </div>
+        <div className="flex justify-center gap-2 mt-12">
+          {items.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setReviewIdx(i)}
+              className={`h-[2px] transition-all duration-300 ${i === reviewIdx ? "w-8 bg-primary" : "w-4 bg-background/20"}`}
+            />
+          ))}
         </div>
       </div>
     </section>
@@ -492,56 +395,59 @@ function TestimonialsSection() {
 
 function GallerySection() {
   const { items: gallery } = useCachedEntity("GalleryImage");
-  const items = gallery.slice(0, 5);
+  const items = gallery.slice(0, 6);
   const [lightbox, setLightbox] = useState(null);
 
   return (
-    <section className="py-20 md:py-20 md:py-32 bg-background relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        <AnimatedElement variant="fade-down">
-          <div className="text-center mb-16">
-            <p className="text-sm font-bold uppercase tracking-[0.3em] text-accent mb-4">Visual Tour</p>
-            <h2 className="text-5xl md:text-6xl font-black text-foreground">A Glimpse of Paradise</h2>
-          </div>
-        </AnimatedElement>
-        
-        <AnimatedElement variant="scale-in">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {items.map((img, i) => (
-              <div key={img.title} onClick={() => setLightbox(img)} className={`group rounded-[2rem] overflow-hidden ${i === 0 ? "col-span-2 row-span-2" : ""} aspect-square relative shadow-lg cursor-pointer`}>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <LazyImage src={img.image_url} alt={img.title} className="group-hover:scale-110 transition-transform duration-1000 ease-out" skeletonClass="bg-card" />
-                <div className="absolute bottom-0 left-0 p-8 z-20 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
-                  <Badge className="bg-primary/90 text-primary-foreground border-0 mb-3 backdrop-blur-md">{img.category}</Badge>
-                  <h3 className="text-white font-bold text-xl md:text-2xl">{img.title}</h3>
+    <section className="py-20 md:py-32 bg-background">
+      <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-14"
+        >
+          <p className="kemp-label text-primary mb-5">Visual Tour</p>
+          <h2 className="font-heading text-4xl md:text-5xl font-normal mb-6">A Glimpse of Paradise</h2>
+          <Link to="/Gallery" className="kemp-link">
+            View Full Gallery <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+          </Link>
+        </motion.div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+          {items.map((img, i) => (
+            <motion.div
+              key={img.title + i}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: i * 0.05 }}
+              onClick={() => setLightbox(img)}
+              className={`group relative overflow-hidden cursor-pointer ${i === 0 ? "col-span-2 row-span-2 aspect-square" : "aspect-square"}`}
+            >
+              <LazyImage src={img.image_url} alt={img.title} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-muted" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-5">
+                <div>
+                  <p className="kemp-label text-white/70 mb-1">{img.category}</p>
+                  <h3 className="font-heading text-white text-lg">{img.title}</h3>
                 </div>
               </div>
-            ))}
-          </div>
-        </AnimatedElement>
-
-        <AnimatedElement>
-          <div className="text-center mt-12">
-            <Link to="/Gallery">
-              <Button size="lg" variant="outline" className="border-primary/40 text-primary hover:bg-primary/10 hover:scale-105 active:scale-95 transition-all duration-300 rounded-xl px-8">
-                <Images className="w-5 h-5 mr-2" /> View Full Gallery <ChevronRight className="w-5 h-5 ml-2" />
-              </Button>
-            </Link>
-          </div>
-        </AnimatedElement>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       {lightbox && (
-        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 md:p-8" onClick={() => setLightbox(null)}>
-          <button className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors" onClick={(e) => { e.stopPropagation(); setLightbox(null); }}>
-            <X className="w-6 h-6" />
+        <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6 md:p-10" onClick={() => setLightbox(null)}>
+          <button className="absolute top-6 right-6 text-white/70 hover:text-white" onClick={() => setLightbox(null)}>
+            <X className="w-8 h-8" strokeWidth={1} />
           </button>
           <div className="max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
-            <LazyImage src={lightbox.image_url} alt={lightbox.title} eager className="max-h-[80vh] object-contain rounded-2xl" skeletonClass="bg-muted" />
+            <LazyImage src={lightbox.image_url} alt={lightbox.title} eager className="max-h-[80vh] object-contain" skeletonClass="bg-muted" />
             <div className="text-center mt-4">
-              <Badge className="bg-primary/90 text-primary-foreground border-0 mb-2">{lightbox.category}</Badge>
-              <h3 className="text-white font-bold text-2xl">{lightbox.title}</h3>
-              {lightbox.description && <p className="text-white/70 mt-2">{lightbox.description}</p>}
+              <p className="kemp-label text-white/50 mb-2">{lightbox.category}</p>
+              <h3 className="font-heading text-white text-xl">{lightbox.title}</h3>
             </div>
           </div>
         </div>
@@ -552,41 +458,51 @@ function GallerySection() {
 
 function CTASection() {
   return (
-    <section className="py-20 md:py-32 bg-primary relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/30 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-background/20 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle,_hsl(var(--primary-foreground))_1px,_transparent_1px)] bg-[length:32px_32px] opacity-[0.03]" />
-      
-      <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
-        <AnimatedElement variant="blur-in">
-          <p className="text-sm font-bold uppercase tracking-[0.3em] text-primary-foreground/70 mb-6 drop-shadow-sm">Limited Availability</p>
-          <h2 className="text-5xl md:text-7xl font-black text-primary-foreground mb-8 leading-[1.1] drop-shadow-lg">
-            Ready for Your<br />Fine Breeze Experience?
+    <section className="relative py-24 md:py-40 overflow-hidden">
+      <div className="absolute inset-0 z-0">
+        <img
+          src="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/02cdb469c_8.png"
+          alt="Fine Breeze Hotel"
+          loading="lazy"
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black/60 z-10" />
+      </div>
+      <div className="relative z-20 text-center px-6 max-w-3xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="kemp-label text-white/70 mb-6">Ready for Your Stay?</p>
+          <h2 className="font-heading text-4xl md:text-6xl font-normal text-white mb-6 leading-[1.2]">
+            Experience the<br />Fine Breeze Difference
           </h2>
-          <p className="text-primary-foreground/90 text-xl mb-12 max-w-3xl mx-auto font-light leading-relaxed">
-            Book directly via WhatsApp for the best rates and instant confirmation. Our hospitality team is available around the clock to tailor your perfect stay.
+          <p className="text-white/70 text-lg mb-12 max-w-xl mx-auto font-light leading-relaxed">
+            Book directly via WhatsApp for the best rates and instant confirmation. Our hospitality team is available around the clock.
           </p>
-          
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a href="https://wa.me/254714447638?text=Hello%20Fine%20Breeze%2C%20I%20would%20like%20to%20make%20a%20booking." target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto relative overflow-hidden bg-accent text-accent-foreground hover:bg-accent/90 font-black px-12 py-8 text-xl rounded-2xl hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_20px_50px_-15px_hsl(var(--accent))]">
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-foreground/20 to-transparent animate-[shimmer_3s_ease-in-out_infinite] bg-[length:200%_100%]" />
-                <MessageCircle className="w-6 h-6 mr-3" /> WhatsApp: 0714 447 638
-              </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href={WA_LINK} target="_blank" rel="noopener noreferrer">
+              <span className="inline-flex items-center gap-2 bg-white text-foreground px-8 py-3.5 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-primary hover:text-primary-foreground transition-all duration-300">
+                <MessageCircle className="w-4 h-4" strokeWidth={1.5} /> WhatsApp: 0714 447 638
+              </span>
             </a>
-            <a href="mailto:fynbriz@gmail.com" className="w-full sm:w-auto">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground hover:text-primary px-12 py-8 text-xl font-bold rounded-2xl hover:scale-105 active:scale-95 transition-all duration-300 backdrop-blur-sm">
-                <Mail className="w-6 h-6 mr-3" /> Email Us
-              </Button>
+            <a href="mailto:fynbriz@gmail.com">
+              <span className="inline-flex items-center gap-2 border border-white/30 text-white px-8 py-3.5 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-white/10 transition-all duration-300">
+                <Mail className="w-4 h-4" strokeWidth={1.5} /> Email Us
+              </span>
             </a>
           </div>
-          
-          <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-primary-foreground/80 text-sm font-semibold tracking-wider uppercase">
-            <span className="flex items-center gap-2 bg-primary-foreground/5 px-4 py-2 rounded-lg backdrop-blur-md border border-primary-foreground/10"><Phone className="w-4 h-4" /> 0714 447 638</span>
-            <span className="flex items-center gap-2 bg-primary-foreground/5 px-4 py-2 rounded-lg backdrop-blur-md border border-primary-foreground/10"><Phone className="w-4 h-4" /> 0701 734 251</span>
-            <span className="flex items-center gap-2 bg-primary-foreground/5 px-4 py-2 rounded-lg backdrop-blur-md border border-primary-foreground/10"><Mail className="w-4 h-4" /> fynbriz@gmail.com</span>
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-white/50 text-sm">
+            <a href="tel:0714447638" className="flex items-center gap-2 hover:text-white transition-colors">
+              <Phone className="w-3.5 h-3.5" strokeWidth={1.5} /> 0714 447 638
+            </a>
+            <a href="tel:0701734251" className="flex items-center gap-2 hover:text-white transition-colors">
+              <Phone className="w-3.5 h-3.5" strokeWidth={1.5} /> 0701 734 251
+            </a>
           </div>
-        </AnimatedElement>
+        </motion.div>
       </div>
     </section>
   );
@@ -594,11 +510,10 @@ function CTASection() {
 
 export default function Home() {
   return (
-    <div className="bg-background min-h-screen selection:bg-primary selection:text-primary-foreground">
-      <GlobalStyles />
-      <HeroSection />
+    <div className="bg-background min-h-screen">
+      <Hero />
       <PromotionWidget />
-      <AmenitiesSection />
+      <IntroSection />
       <RoomsSection />
       <RestaurantSection />
       <AboutSection />

@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Calendar, Users, CheckCircle2, MessageCircle, Loader2 } from "lucide-react";
-import AnimatedElement from "@/components/AnimatedElement";
-import { useCurrency } from "@/lib/CurrencyContext";
 import PageHero from "@/components/PageHero";
+import { useCurrency } from "@/lib/CurrencyContext";
 
 export default function Booking() {
   const location = useLocation();
@@ -72,31 +71,34 @@ export default function Booking() {
   if (success) {
     return (
       <div className="bg-background min-h-screen flex items-center justify-center px-6 py-32">
-        <AnimatedElement>
-          <div className="max-w-lg w-full bg-card rounded-3xl border border-border/50 shadow-2xl p-10 text-center">
-            <div className="w-20 h-20 rounded-full bg-primary/15 flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="w-12 h-12 text-primary" />
-            </div>
-            <h1 className="text-3xl font-black text-foreground mb-3">Booking Received!</h1>
-            <p className="text-muted-foreground mb-8">
-              Thank you, {success.guest_name}. We've received your booking request for <strong>{success.room_name}</strong> ({success.nights} night{success.nights !== 1 ? "s" : ""}). Our team will confirm shortly.
-            </p>
-            <div className="bg-secondary rounded-2xl p-6 mb-8 text-left space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">Check-in</span><span className="font-semibold">{success.check_in}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Check-out</span><span className="font-semibold">{success.check_out}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">Guests</span><span className="font-semibold">{success.guests}</span></div>
-              <div className="flex justify-between border-t border-border pt-2 mt-2"><span className="text-muted-foreground">Estimated Total</span><span className="font-black text-primary text-lg">{formatPrice(success.total_price || 0)}</span></div>
-            </div>
-            <a href={`https://wa.me/254714447638?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer">
-              <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90 h-12 mb-3">
-                <MessageCircle className="w-5 h-5 mr-2" /> Confirm on WhatsApp
-              </Button>
-            </a>
-            <Button variant="outline" className="w-full" onClick={() => { setSuccess(null); setForm({ guest_name: "", email: "", phone: "", check_in: "", check_out: "", room_name: "", guests: 2, special_requests: "" }); }}>
-              Make Another Booking
-            </Button>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="max-w-lg w-full bg-card border border-border p-10 md:p-12 text-center"
+        >
+          <div className="w-20 h-20 border border-primary flex items-center justify-center mx-auto mb-6">
+            <CheckCircle2 className="w-10 h-10 text-primary" strokeWidth={1.5} />
           </div>
-        </AnimatedElement>
+          <h1 className="font-heading text-3xl mb-3">Booking Received!</h1>
+          <p className="text-muted-foreground mb-8 leading-relaxed">
+            Thank you, {success.guest_name}. We've received your booking request for <strong>{success.room_name}</strong> ({success.nights} night{success.nights !== 1 ? "s" : ""}). Our team will confirm shortly.
+          </p>
+          <div className="bg-secondary p-6 mb-8 text-left space-y-2 text-sm">
+            <div className="flex justify-between"><span className="text-muted-foreground">Check-in</span><span className="font-medium">{success.check_in}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Check-out</span><span className="font-medium">{success.check_out}</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Guests</span><span className="font-medium">{success.guests}</span></div>
+            <div className="flex justify-between border-t border-border pt-2 mt-2"><span className="font-medium">Estimated Total</span><span className="font-heading text-xl text-primary">{formatPrice(success.total_price || 0)}</span></div>
+          </div>
+          <a href={`https://wa.me/254714447638?text=${encodeURIComponent(waText)}`} target="_blank" rel="noopener noreferrer" className="block mb-3">
+            <span className="inline-flex items-center justify-center gap-2 w-full bg-primary text-primary-foreground px-6 py-3.5 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-accent transition-all">
+              <MessageCircle className="w-4 h-4" strokeWidth={1.5} /> Confirm on WhatsApp
+            </span>
+          </a>
+          <button onClick={() => { setSuccess(null); setForm({ guest_name: "", email: "", phone: "", check_in: "", check_out: "", room_name: "", guests: 2, special_requests: "" }); }} className="kemp-link">
+            Make Another Booking
+          </button>
+        </motion.div>
       </div>
     );
   }
@@ -111,70 +113,74 @@ export default function Booking() {
         subtitle="Reserve directly through our website for instant confirmation, or complete your booking via WhatsApp."
       />
 
-      <section className="py-16 bg-background">
+      <section className="py-16 md:py-24 bg-background">
         <div className="max-w-3xl mx-auto px-6">
-          <AnimatedElement>
-            <form onSubmit={handleSubmit} className="bg-card rounded-3xl border border-border/50 shadow-xl p-8 md:p-10 space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="guest_name">Full Name *</Label>
-                  <Input id="guest_name" required value={form.guest_name} onChange={(e) => update("guest_name", e.target.value)} placeholder="John Doe" className="h-12" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number *</Label>
-                  <Input id="phone" required value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="0712 345 678" className="h-12" />
-                </div>
+          <motion.form
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            onSubmit={handleSubmit}
+            className="bg-card border border-border p-8 md:p-10 space-y-6"
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="guest_name">Full Name *</Label>
+                <Input id="guest_name" required value={form.guest_name} onChange={(e) => update("guest_name", e.target.value)} placeholder="John Doe" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email *</Label>
-                <Input id="email" type="email" required value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="you@example.com" className="h-12" />
+                <Label htmlFor="phone">Phone Number *</Label>
+                <Input id="phone" required value={form.phone} onChange={(e) => update("phone", e.target.value)} placeholder="0712 345 678" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email *</Label>
+              <Input id="email" type="email" required value={form.email} onChange={(e) => update("email", e.target.value)} placeholder="you@example.com" />
+            </div>
+            <div className="space-y-2">
+              <Label>Room / Suite</Label>
+              <Select value={form.room_name} onValueChange={(v) => update("room_name", v)}>
+                <SelectTrigger><SelectValue placeholder="Select a room" /></SelectTrigger>
+                <SelectContent>
+                  {(rooms.length > 0 ? rooms : [{ name: "Savanna Deluxe", price_per_night: 8500 }, { name: "Taita Hills Suite", price_per_night: 15000 }, { name: "Garden Twin", price_per_night: 5500 }]).map((r) => (
+                    <SelectItem key={r.name} value={r.name}>{r.name} — {formatPrice(r.price_per_night || 0)}/night</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="check_in" className="flex items-center gap-2"><Calendar className="w-4 h-4" strokeWidth={1.5} /> Check-in *</Label>
+                <Input id="check_in" type="date" required value={form.check_in} onChange={(e) => update("check_in", e.target.value)} />
               </div>
               <div className="space-y-2">
-                <Label>Room / Suite</Label>
-                <Select value={form.room_name} onValueChange={(v) => update("room_name", v)}>
-                  <SelectTrigger className="h-12"><SelectValue placeholder="Select a room" /></SelectTrigger>
-                  <SelectContent>
-                    {(rooms.length > 0 ? rooms : [{ name: "Savanna Deluxe", price_per_night: 8500 }, { name: "Taita Hills Suite", price_per_night: 15000 }, { name: "Garden Twin", price_per_night: 5500 }]).map((r) => (
-                      <SelectItem key={r.name} value={r.name}>{r.name} — {formatPrice(r.price_per_night || 0)}/night</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="check_out" className="flex items-center gap-2"><Calendar className="w-4 h-4" strokeWidth={1.5} /> Check-out *</Label>
+                <Input id="check_out" type="date" required value={form.check_out} onChange={(e) => update("check_out", e.target.value)} />
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="check_in" className="flex items-center gap-2"><Calendar className="w-4 h-4" /> Check-in *</Label>
-                  <Input id="check_in" type="date" required value={form.check_in} onChange={(e) => update("check_in", e.target.value)} className="h-12" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="check_out" className="flex items-center gap-2"><Calendar className="w-4 h-4" /> Check-out *</Label>
-                  <Input id="check_out" type="date" required value={form.check_out} onChange={(e) => update("check_out", e.target.value)} className="h-12" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="guests" className="flex items-center gap-2"><Users className="w-4 h-4" /> Number of Guests</Label>
-                <Input id="guests" type="number" min="1" max="10" value={form.guests} onChange={(e) => update("guests", e.target.value)} className="h-12" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="special_requests">Special Requests</Label>
-                <Textarea id="special_requests" value={form.special_requests} onChange={(e) => update("special_requests", e.target.value)} placeholder="Airport pickup, dietary needs, early check-in, etc." rows={3} />
-              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="guests" className="flex items-center gap-2"><Users className="w-4 h-4" strokeWidth={1.5} /> Number of Guests</Label>
+              <Input id="guests" type="number" min="1" max="10" value={form.guests} onChange={(e) => update("guests", e.target.value)} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="special_requests">Special Requests</Label>
+              <Textarea id="special_requests" value={form.special_requests} onChange={(e) => update("special_requests", e.target.value)} placeholder="Airport pickup, dietary needs, early check-in, etc." rows={3} />
+            </div>
 
-              {nights > 0 && selectedRoom && (
-                <div className="bg-primary/5 rounded-2xl p-5 border border-primary/20">
-                  <div className="flex justify-between text-sm mb-1"><span className="text-muted-foreground">Nights</span><span className="font-semibold">{nights}</span></div>
-                  <div className="flex justify-between text-sm mb-2"><span className="text-muted-foreground">Rate</span><span className="font-semibold">{formatPrice(selectedRoom.price_per_night || 0)}/night</span></div>
-                  <div className="flex justify-between border-t border-primary/20 pt-2"><span className="font-bold">Estimated Total</span><span className="font-black text-primary text-xl">{formatPrice(total)}</span></div>
-                </div>
-              )}
+            {nights > 0 && selectedRoom && (
+              <div className="bg-secondary p-5 border-l-2 border-primary">
+                <div className="flex justify-between text-sm mb-1"><span className="text-muted-foreground">Nights</span><span className="font-medium">{nights}</span></div>
+                <div className="flex justify-between text-sm mb-2"><span className="text-muted-foreground">Rate</span><span className="font-medium">{formatPrice(selectedRoom.price_per_night || 0)}/night</span></div>
+                <div className="flex justify-between border-t border-border pt-2"><span className="font-medium">Estimated Total</span><span className="font-heading text-xl text-primary">{formatPrice(total)}</span></div>
+              </div>
+            )}
 
-              <Button type="submit" disabled={submitting} className="w-full h-14 text-lg font-bold bg-primary hover:bg-primary/90 rounded-xl">
-                {submitting ? <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Submitting…</> : "Confirm Booking"}
-              </Button>
-              <p className="text-center text-xs text-muted-foreground">
-                By submitting, you'll receive a confirmation. You can also confirm instantly via WhatsApp.
-              </p>
-            </form>
-          </AnimatedElement>
+            <button type="submit" disabled={submitting} className="w-full inline-flex items-center justify-center gap-2 bg-foreground text-background px-6 py-4 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-primary hover:text-primary-foreground transition-all disabled:opacity-50">
+              {submitting ? <><Loader2 className="w-4 h-4 animate-spin" strokeWidth={1.5} /> Submitting…</> : "Confirm Booking"}
+            </button>
+            <p className="text-center text-xs text-muted-foreground">
+              By submitting, you'll receive a confirmation. You can also confirm instantly via WhatsApp.
+            </p>
+          </motion.form>
         </div>
       </section>
     </div>

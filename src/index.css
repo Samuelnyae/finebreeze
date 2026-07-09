@@ -1,76 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
-
-    --accent: 94.2 54.7% 51.6%;
-
-    --accent-foreground: 222.2 84% 4.9%;
-
-    --background: 160 10.3% 11.4%;
-
-    --border: 165 5.9% 26.7%;
-
-    --card: 162.9 9.9% 13.9%;
-
-    --card-foreground: 210 40% 98%;
-
+    --background: 40 5.3% 97%;
+    --foreground: 20 10% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 10% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 10% 10%;
+    --primary: 38 30% 38%;
+    --primary-foreground: 40 5.3% 97%;
+    --secondary: 40 5.3% 93%;
+    --secondary-foreground: 20 10% 10%;
+    --muted: 40 5.3% 93%;
+    --muted-foreground: 20 5% 42%;
+    --accent: 38 32% 50%;
+    --accent-foreground: 40 5.3% 97%;
     --destructive: 0 62.8% 30.6%;
-
-    --destructive-foreground: 210 40% 98%;
-
-    --font-body: 'Helvetica Neue', system-ui, sans-serif;
-
+    --destructive-foreground: 40 5.3% 97%;
+    --border: 40 5.3% 88%;
+    --input: 40 5.3% 90%;
+    --ring: 38 30% 38%;
+    --radius: 0;
+    --font-body: 'Inter', 'Helvetica Neue', system-ui, sans-serif;
     --font-heading: 'Playfair Display', 'Didot', 'Bodoni MT', Georgia, serif;
-
-    --foreground: 46.7 12.7% 86.1%;
-
-    --input: 217.2 32.6% 17.5%;
-
-    --muted: 160 6.7% 17.6%;
-
-    --muted-foreground: 210 40% 65%;
-
-    --popover: 160 10.3% 11.4%;
-
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 38.6 41.8% 73.7%;
-
-    --primary-foreground: 160 10.3% 11.4%;
-
-    --radius: 0.25rem;
-
-    --ring: 94.2 54.7% 51.6%;
-
-    --secondary: 160 8.1% 14.5%;
-
-    --secondary-foreground: 210 40% 98%;
-
   }
 }
-
 
 @layer base {
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body) !important;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading) !important;
   }
 }
 
-
-body { font-family: var(--font-body) !important; }
-h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading) !important; }
-
-/* Inter font for Admin Dashboard — geometric sans-serif */
+/* Admin Dashboard — Inter sans-serif */
 .admin-dashboard, .admin-dashboard h1, .admin-dashboard h2, .admin-dashboard h3,
 .admin-dashboard h4, .admin-dashboard h5, .admin-dashboard h6,
 .admin-dashboard p, .admin-dashboard span, .admin-dashboard label,
@@ -80,173 +55,59 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading) !important; }
   letter-spacing: -0.01em;
 }
 
+/* ── Animations ── */
+@keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes fade-in-down { 0% { opacity: 0; transform: translate3d(0, -30%, 0); } 100% { opacity: 1; transform: none; } }
+@keyframes fade-in-up { 0% { opacity: 0; transform: translate3d(0, 30%, 0); } 100% { opacity: 1; transform: none; } }
+@keyframes slowZoom { 0% { transform: scale(1); } 100% { transform: scale(1.08); } }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@keyframes marquee { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
 
+.animate-slow-zoom { animation: slowZoom 15s ease-in-out infinite alternate; }
+.animate-marquee { animation: marquee 30s linear infinite; display: flex; width: max-content; }
+.animate-marquee:hover { animation-play-state: paused; }
 
-/* Fine Breeze Hotel & Restaurant — Custom Animations */
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: hsl(var(--background)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--primary) / 0.4); }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary)); }
 
-/* ── Original site keyframes ── */
-@keyframes background-flash {
-  0% { background-color: transparent; }
-  50% { background-color: hsl(var(--primary) / 0.15); }
-  100% { background-color: transparent; }
-}
+::selection { background: hsl(var(--primary) / 0.2); color: hsl(var(--foreground)); }
 
-@keyframes fade-in-out {
-  0% { opacity: 0; }
-  50% { opacity: 1; }
-  100% { opacity: 0; }
-}
+html { scroll-behavior: smooth; }
 
-@keyframes fade-in {
-  0% { opacity: 0; }
-  1% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-@keyframes fade-in-down {
-  0% { opacity: 0; transform: translate3d(0, -50%, 0); }
-  100% { opacity: 1; transform: none; }
-}
-
-@keyframes fade-in-up {
-  0% { opacity: 0; transform: translate3d(0, 50%, 0); }
-  100% { opacity: 1; transform: none; }
-}
-
-@keyframes fade-out {
-  0% { opacity: 1; }
-  99% { opacity: 0; }
-  100% { opacity: 0; }
-}
-
-@keyframes move-from-left {
-  0% { transform: translateX(-50px); }
-  100% { transform: translateX(0); }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-5px); }
-  40% { transform: translateX(5px); }
-  60% { transform: translateX(-5px); }
-  80% { transform: translateX(5px); }
-}
-
-/* ── 3D floating decorative elements ── */
-@keyframes floatA {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(3deg); }
-}
-
-@keyframes floatB {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-15px) rotate(-2deg); }
-}
-
-@keyframes floatC {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-25px) rotate(2deg); }
-}
-
-/* ── Shimmer button sweep ── */
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-/* ── Gradient text animation ── */
-@keyframes gradient-x {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-
-.animate-gradient-x {
-  animation: gradient-x 6s ease infinite;
-  background-size: 200% auto;
-}
-
-/* ── Bounce ── */
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-10px); }
-  60% { transform: translateY(-5px); }
-}
-
-/* ── Marquee ticker ── */
-@keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-marquee {
-  animation: marquee 25s linear infinite;
-  display: flex;
-  width: max-content;
-}
-
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-/* ── Slow zoom for hero ── */
-@keyframes slowZoom {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.06); }
-}
-
-.animate-slow-zoom {
-  animation: slowZoom 12s ease-in-out infinite alternate;
-}
-
-/* ── 3D perspective card tilt (CSS only) ── */
-.card-3d {
-  transform-style: preserve-3d;
-  transition: transform 0.5s ease;
-}
-
-.card-3d:hover {
-  transform: perspective(800px) rotateX(3deg) rotateY(-3deg) translateZ(10px);
-}
-
-/* ── Glassmorphism utility ── */
-.glass {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  background: hsl(var(--card) / 0.7);
-  border: 1px solid hsl(var(--border) / 0.5);
-}
-
-/* ── Scrollbar styling ── */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: hsl(var(--background));
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--primary) / 0.5);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary));
-}
-
-/* ── Selection color ── */
-::selection {
-  background: hsl(var(--primary) / 0.3);
+/* ── Kempinski-style utilities ── */
+.kemp-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   color: hsl(var(--foreground));
+  transition: gap 0.3s ease;
 }
-
-/* ── Smooth scroll ── */
-html {
-  scroll-behavior: smooth;
+.kemp-link:hover { gap: 0.85rem; }
+.kemp-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: hsl(var(--primary));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
 }
+.kemp-link:hover::after { transform: scaleX(1); }
 
-/* ── Progress bar accent ── */
-.progress-bar-accent [role="progressbar"] {
-  background: hsl(var(--accent));
+.kemp-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
 }

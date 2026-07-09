@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Sparkles, ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight, MessageCircle, Sparkles } from "lucide-react";
 import LazyImage from "@/components/LazyImage";
 
 export default function PromotionWidget() {
@@ -29,59 +27,41 @@ export default function PromotionWidget() {
   const isWhatsApp = ctaLink.includes("wa.me");
 
   return (
-    <section className="py-12 md:py-16 bg-background relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="relative rounded-[2rem] overflow-hidden border border-primary/30 shadow-2xl shadow-primary/10"
-        >
-          {promo.image_url ? (
-            <div className="relative">
-              <LazyImage src={promo.image_url} alt={promo.title} eager className="h-[280px] md:h-[340px]" skeletonClass="bg-muted" />
-              <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
-              <div className="absolute inset-0 flex items-center">
-                <div className="p-8 md:p-14 max-w-xl">
-                  {promo.badge_label && (
-                    <Badge className="mb-4 bg-accent/20 text-accent border border-accent/30 backdrop-blur-md uppercase tracking-wider text-xs font-bold">
-                      <Sparkles className="w-3 h-3 mr-1.5" /> {promo.badge_label}
-                    </Badge>
-                  )}
-                  <h2 className="text-3xl md:text-5xl font-black text-foreground mb-4 leading-tight">{promo.title}</h2>
-                  {promo.description && (
-                    <p className="text-base md:text-lg text-muted-foreground mb-6 leading-relaxed">{promo.description}</p>
-                  )}
-                  <a href={ctaLink} target="_blank" rel="noopener noreferrer">
-                    <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-bold px-8 h-13 rounded-xl hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-accent/20">
-                      {isWhatsApp ? <MessageCircle className="w-5 h-5 mr-2" /> : null}
-                      {promo.cta_text || "Claim Offer"} <ArrowRight className="w-5 h-5 ml-2" />
-                    </Button>
-                  </a>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="bg-gradient-to-br from-primary/20 via-accent/10 to-secondary p-8 md:p-14">
+    <section className="relative overflow-hidden">
+      <div className="relative h-[420px] md:h-[480px]">
+        {promo.image_url ? (
+          <LazyImage src={promo.image_url} alt={promo.title} eager className="w-full h-full" skeletonClass="bg-muted" />
+        ) : (
+          <div className="w-full h-full bg-foreground" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+        <div className="absolute inset-0 flex items-center">
+          <div className="px-6 md:px-10 max-w-7xl mx-auto w-full">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="max-w-lg"
+            >
               {promo.badge_label && (
-                <Badge className="mb-4 bg-accent/20 text-accent border border-accent/30 uppercase tracking-wider text-xs font-bold">
-                  <Sparkles className="w-3 h-3 mr-1.5" /> {promo.badge_label}
-                </Badge>
+                <p className="kemp-label text-primary mb-4 flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5" strokeWidth={1.5} /> {promo.badge_label}
+                </p>
               )}
-              <h2 className="text-3xl md:text-5xl font-black text-foreground mb-4 leading-tight">{promo.title}</h2>
+              <h2 className="font-heading text-3xl md:text-5xl font-normal text-white mb-5 leading-[1.2]">{promo.title}</h2>
               {promo.description && (
-                <p className="text-base md:text-lg text-muted-foreground mb-6 max-w-xl leading-relaxed">{promo.description}</p>
+                <p className="text-white/70 text-base md:text-lg mb-8 leading-relaxed">{promo.description}</p>
               )}
               <a href={ctaLink} target="_blank" rel="noopener noreferrer">
-                <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-bold px-8 h-13 rounded-xl hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg shadow-accent/20">
-                  {isWhatsApp ? <MessageCircle className="w-5 h-5 mr-2" /> : null}
-                  {promo.cta_text || "Claim Offer"} <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
+                <span className="inline-flex items-center gap-2 bg-white text-foreground px-7 py-3 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-primary hover:text-primary-foreground transition-all duration-300">
+                  {isWhatsApp ? <MessageCircle className="w-4 h-4" strokeWidth={1.5} /> : null}
+                  {promo.cta_text || "View Offer"} <ArrowRight className="w-4 h-4" strokeWidth={1.5} />
+                </span>
               </a>
-            </div>
-          )}
-        </motion.div>
+            </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );

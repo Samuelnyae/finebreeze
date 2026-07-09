@@ -18,13 +18,9 @@ module.exports = {
     extend: {
 
       fontFamily: {
-
         heading: ['"Playfair Display"', 'serif'],
-
-
-        body: ['"Helvetica Neue"', 'sans-serif'],
-        sans: ['"Helvetica Neue"', 'sans-serif'],
-
+        body: ['"Inter"', '"Helvetica Neue"', 'sans-serif'],
+        sans: ['"Inter"', '"Helvetica Neue"', 'sans-serif'],
       },
 
       colors: {
