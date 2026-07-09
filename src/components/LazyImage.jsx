@@ -30,6 +30,7 @@ export default function LazyImage({ src, alt, className, style, eager = false, p
         loading={eager ? "eager" : "lazy"}
         decoding="async"
         fetchpriority={priority ? "high" : "auto"}
+        referrerPolicy="no-referrer-when-downgrade"
         onLoad={() => setLoaded(true)}
         onError={() => setError(true)}
         className={`w-full h-full object-cover transition-opacity duration-700 ${loaded ? "opacity-100" : "opacity-0"}`}

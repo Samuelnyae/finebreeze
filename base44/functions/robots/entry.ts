@@ -1,13 +1,19 @@
 Deno.serve(async (req) => {
   try {
-    const url = new URL(req.url);
-    const origin = `${url.protocol}//${url.host}`;
+    const origin = "https://finebreezevoi.info";
 
     const body = `User-agent: *
 Allow: /
 Disallow: /Admin
 Disallow: /Login
 Disallow: /Register
+
+# Allow image crawling
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
 
 Sitemap: ${origin}/api/functions/sitemap
 `;
