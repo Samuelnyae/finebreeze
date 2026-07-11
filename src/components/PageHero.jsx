@@ -10,8 +10,8 @@ export default function PageHero({ image, label, title, titleAccent, subtitle, c
   return (
     <section ref={ref} className={`relative ${fullScreen ? "min-h-[100dvh]" : "min-h-[65vh] md:min-h-[70vh]"} flex items-end overflow-hidden`}>
       {image ? (
-        <motion.div style={fullScreen ? { y } : undefined} className={`absolute inset-0 z-0 ${fullScreen ? "scale-110" : ""}`}>
-          <img src={image} alt={title ? `${title} — Fine Breeze Hotel Voi, Kenya` : "Fine Breeze Hotel Voi, Kenya"} loading="eager" decoding="async" fetchpriority="high" className="w-full h-full object-cover" />
+        <motion.div style={fullScreen ? { y } : undefined} className="absolute inset-0 z-0 bg-black">
+          <img src={image} alt={title ? `${title} — Fine Breeze Hotel Voi, Kenya` : "Fine Breeze Hotel Voi, Kenya"} loading="eager" decoding="async" fetchpriority="high" className="w-full h-full object-contain" />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70 z-10" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 z-10" />
         </motion.div>
