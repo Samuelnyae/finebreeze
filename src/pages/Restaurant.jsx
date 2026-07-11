@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { Utensils, Wine, Coffee, Cake, Salad } from "lucide-react";
-import LazyImage from "@/components/LazyImage";
+import { Utensils, Wine, Cake, Salad } from "lucide-react";
 import { useCurrency } from "@/lib/CurrencyContext";
 import PageHero from "@/components/PageHero";
+import MenuCard from "@/components/MenuCard";
 
 const staticFallback = [
   { name: "Nyama Choma Platter", description: "Tender slow-roasted goat meat with ugali and kachumbari salad.", price: 1200, category: "Main Course", image_url: "https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/0c40aa756_generated_454c8724.png", is_featured: true },
@@ -37,7 +36,7 @@ export default function Restaurant() {
   const filtered = filter === "All" ? all : all.filter((m) => m.category === filter);
 
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-[#000000] min-h-screen">
       <PageHero
         fullScreen
         image="https://media.base44.com/images/public/6a3fb7584615cfecc7584e35/db37a39df_generated_image.png"
@@ -47,7 +46,7 @@ export default function Restaurant() {
         subtitle="A culinary journey through Kenya — from coastal Swahili traditions to hearty Taita specialties, plus a curated minibar."
       />
 
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-16 md:py-24 bg-[#000000]">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
           {/* Category filter */}
           <div className="flex flex-wrap gap-2 justify-center mb-14">
@@ -55,10 +54,10 @@ export default function Restaurant() {
               <button
                 key={c.key}
                 onClick={() => setFilter(c.key)}
-                className={`flex items-center gap-2 px-6 py-2.5 text-[11px] font-medium tracking-[0.2em] uppercase transition-all duration-300 border ${
+                className={`flex items-center gap-2 px-5 py-2.5 text-[11px] font-medium tracking-[0.2em] uppercase transition-all duration-300 rounded-full ${
                   filter === c.key
-                    ? "bg-foreground text-background border-foreground"
-                    : "bg-transparent text-muted-foreground border-border hover:border-foreground hover:text-foreground"
+                    ? "bg-[#c5b69c] text-black"
+                    : "bg-[#1a1a1a] text-white/60 hover:text-white"
                 }`}
               >
                 <c.icon className="w-3.5 h-3.5" strokeWidth={1.5} /> {c.label}
@@ -67,34 +66,11 @@ export default function Restaurant() {
           </div>
 
           {loading ? (
-            <div className="text-center py-20 text-muted-foreground">Loading menu…</div>
+            <div className="text-center py-20 text-white/40">Loading menu…</div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {filtered.map((item, i) => (
-                <motion.div
-                  key={item.name + i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: i * 0.08 }}
-                  className="group"
-                >
-                  {item.image_url ? (
-                    <div className="relative aspect-[4/3] overflow-hidden mb-5">
-                      <LazyImage src={item.image_url} alt={`${item.name} — ${item.category} at Fine Breeze Hotel Restaurant in Voi, Kenya`} className="group-hover:scale-105 transition-transform duration-[1200ms] ease-out" skeletonClass="bg-muted" />
-                    </div>
-                  ) : (
-                    <div className="aspect-[4/3] bg-secondary flex items-center justify-center mb-5">
-                      <Wine className="w-12 h-12 text-muted-foreground/30" strokeWidth={1} />
-                    </div>
-                  )}
-                  <p className="kemp-label text-primary mb-2">{item.category}</p>
-                  <div className="flex items-baseline justify-between gap-4 mb-3">
-                    <h3 className="font-heading text-xl">{item.name}</h3>
-                    <span className="font-heading text-lg text-foreground shrink-0">{formatPrice(item.price || 0)}</span>
-                  </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
-                </motion.div>
+                <MenuCard key={item.name + i} item={item} index={i} formatPrice={formatPrice} />
               ))}
             </div>
           )}
