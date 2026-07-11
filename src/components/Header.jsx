@@ -22,6 +22,7 @@ export default function Header() {
     { to: "/Gallery", label: "Gallery" },
     { to: "/About", label: "About" },
     { to: "/Contact", label: "Contact" },
+    ...(isAdmin ? [{ to: "/Admin", label: "Admin" }] : []),
   ];
 
   const mobileNavItems = [
@@ -38,11 +39,11 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-white/10">
       <div className="px-6 md:px-10 flex items-center justify-between h-16 md:h-20">
-        {/* Left: Hamburger (mobile) + Logo */}
+        {/* Left: Logo */}
         <div className="flex items-center gap-3">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <button className="lg:hidden flex items-center gap-2 text-white">
+              <button className="hidden">
                 <Menu className="w-5 h-5" strokeWidth={1.5} />
               </button>
             </SheetTrigger>
@@ -118,7 +119,7 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Right: Book Stay button */}
+        {/* Right: Book Stay button + Hamburger menu */}
         <div className="flex items-center gap-3">
           <Link
             to="/Booking"
@@ -126,6 +127,13 @@ export default function Header() {
           >
             <CalendarCheck className="w-4 h-4" strokeWidth={1.5} /> Book Stay
           </Link>
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <button className="flex items-center gap-2 text-white">
+                <Menu className="w-5 h-5" strokeWidth={1.5} />
+              </button>
+            </SheetTrigger>
+          </Sheet>
         </div>
       </div>
     </header>
