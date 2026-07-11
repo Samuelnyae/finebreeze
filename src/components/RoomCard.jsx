@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { MessageCircle, Wifi, Tv, Wind } from "lucide-react";
+import { MessageCircle, Wifi, Tv, Wind, CalendarCheck } from "lucide-react";
+import { Link } from "react-router-dom";
 import LazyImage from "@/components/LazyImage";
 
 export default function RoomCard({ room, index = 0, formatPrice }) {
@@ -39,14 +40,22 @@ export default function RoomCard({ room, index = 0, formatPrice }) {
           <p className="text-[#8bb3cf] text-sm mb-4">{room.amenities}</p>
         )}
         <Icon className="w-5 h-5 text-[#8bb3cf] mb-4" strokeWidth={1.5} />
-        <a
-          href={waLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-auto flex items-center justify-center gap-2 w-full bg-[#82c91e] text-black font-semibold text-sm py-3 rounded-lg hover:bg-[#74b816] transition-colors"
-        >
-          <MessageCircle className="w-4 h-4" strokeWidth={2} /> Reserve Now
-        </a>
+        <div className="mt-auto flex gap-2">
+          <a
+            href={waLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 flex items-center justify-center gap-1.5 bg-[#82c91e] text-black font-semibold text-sm py-3 rounded-lg hover:bg-[#74b816] transition-colors"
+          >
+            <MessageCircle className="w-4 h-4" strokeWidth={2} /> WhatsApp
+          </a>
+          <Link
+            to="/Booking"
+            className="flex-1 flex items-center justify-center gap-1.5 bg-white/10 text-white font-semibold text-sm py-3 rounded-lg hover:bg-white/20 transition-colors"
+          >
+            <CalendarCheck className="w-4 h-4" strokeWidth={2} /> Book Online
+          </Link>
+        </div>
       </div>
     </motion.div>
   );
