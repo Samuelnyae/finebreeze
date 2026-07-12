@@ -464,7 +464,7 @@ function CTASection() {
           role="img"
           aria-label="Fine Breeze Hotel & Restaurant building exterior in Voi, Taita Taveta County, Kenya"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent z-10" />
+
       </div>
       <div className="relative z-20 text-center px-6 max-w-3xl mx-auto">
         <motion.div
