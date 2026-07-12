@@ -129,7 +129,7 @@ export default function Header() {
           </Link>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <button className="flex items-center gap-2 text-white">
+              <button className="lg:hidden flex items-center gap-2 text-white">
                 <Menu className="w-5 h-5" strokeWidth={1.5} />
               </button>
             </SheetTrigger>

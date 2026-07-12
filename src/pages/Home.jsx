@@ -45,7 +45,7 @@ function Hero() {
             style={{ opacity: i === idx ? 1 : 0 }}
           />
         ))}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70 z-10" />
+
       </motion.div>
 
       <div className="relative z-20 text-center px-6 max-w-4xl mx-auto">
