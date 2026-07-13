@@ -32,7 +32,7 @@ function Hero() {
 
   return (
     <section ref={heroRef} className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
-      <motion.div style={{ y }} className="absolute inset-0 z-0 bg-black">
+      <motion.div style={{ y }} className="absolute inset-0 z-0">
         {heroImages.map((src, i) => (
           <img
             key={i}
@@ -41,7 +41,7 @@ function Hero() {
             loading={i === 0 ? "eager" : "lazy"}
             decoding="async"
             fetchpriority={i === 0 ? "high" : "auto"}
-            className="absolute inset-0 w-full h-full object-contain transition-opacity duration-[2000ms]"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[2000ms]"
             style={{ opacity: i === idx ? 1 : 0 }}
           />
         ))}
