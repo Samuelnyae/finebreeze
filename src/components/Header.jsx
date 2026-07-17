@@ -48,13 +48,13 @@ export default function Header() {
               </button>
             </SheetTrigger>
             <SheetContent side="left" className="bg-black border-r border-white/10 w-full sm:w-[420px] p-0 flex flex-col">
-              <div className="flex items-center gap-3 px-8 h-16 md:h-20 border-b border-white/10">
+              <Link to="/" onClick={() => setOpen(false)} className="flex items-center gap-3 px-8 h-16 md:h-20 border-b border-white/10 hover:bg-white/5 transition-colors">
                 <img src={LOGO_URL} alt="Fine Breeze Hotel & Restaurant logo" className="w-12 h-12 rounded-full object-cover" />
                 <div>
                   <div className="font-heading text-lg leading-none text-white">Fine Breeze</div>
                   <div className="text-[9px] uppercase tracking-[0.25em] text-white/40 mt-0.5">Hotel & Restaurant</div>
                 </div>
-              </div>
+              </Link>
               <nav className="flex-1 overflow-y-auto px-8 py-8">
                 <p className="kemp-label text-white/40 mb-6">Navigation</p>
                 <div className="space-y-1">
