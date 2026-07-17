@@ -177,9 +177,19 @@ export default function Booking() {
             <button type="submit" disabled={submitting} className="w-full inline-flex items-center justify-center gap-2 bg-foreground text-background px-6 py-4 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-primary hover:text-primary-foreground transition-all disabled:opacity-50">
               {submitting ? <><Loader2 className="w-4 h-4 animate-spin" strokeWidth={1.5} /> Submitting…</> : "Confirm Booking"}
             </button>
-            <p className="text-center text-xs text-muted-foreground">
-              By submitting, you'll receive a confirmation. You can also confirm instantly via WhatsApp.
-            </p>
+            <div className="flex items-center gap-4 py-2">
+              <div className="flex-1 h-px bg-border" />
+              <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">or</span>
+              <div className="flex-1 h-px bg-border" />
+            </div>
+            <a
+              href={`https://wa.me/254714447638?text=${encodeURIComponent("Hello Fine Breeze, I would like to make a booking.")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full inline-flex items-center justify-center gap-2 border border-green-600/40 text-green-700 bg-green-50 px-6 py-4 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-green-100 transition-all"
+            >
+              <MessageCircle className="w-4 h-4" strokeWidth={1.5} /> Book via WhatsApp
+            </a>
           </motion.form>
         </div>
       </section>

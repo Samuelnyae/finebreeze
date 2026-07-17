@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
-import { LayoutDashboard, BedDouble, Utensils, CalendarCheck, Plus, Pencil, Trash2, X, Loader2, Image as ImageIcon, Star, Megaphone, ShieldAlert, Lock } from "lucide-react";
+import { LayoutDashboard, BedDouble, Utensils, CalendarCheck, Plus, Pencil, Trash2, X, Loader2, Image as ImageIcon, Star, Megaphone, ShieldAlert, Lock, MailQuestion } from "lucide-react";
 import ImageUpload from "@/components/ImageUpload";
 import { useAuth } from "@/lib/AuthContext";
 
@@ -62,6 +62,7 @@ export default function Admin() {
     { key: "rooms", label: "Rooms", icon: BedDouble },
     { key: "menu", label: "Menu Items", icon: Utensils },
     { key: "bookings", label: "Bookings", icon: CalendarCheck },
+    { key: "inquiries", label: "Inquiries", icon: MailQuestion },
     { key: "gallery", label: "Gallery", icon: ImageIcon },
     { key: "reviews", label: "Reviews", icon: Star },
     { key: "promotions", label: "Promotions", icon: Megaphone },
@@ -87,6 +88,7 @@ export default function Admin() {
         {tab === "rooms" && <RoomsManager />}
         {tab === "menu" && <MenuManager />}
         {tab === "bookings" && <BookingsManager />}
+        {tab === "inquiries" && <InquiriesManager />}
         {tab === "gallery" && <GalleryManager />}
         {tab === "reviews" && <ReviewsManager />}
         {tab === "promotions" && <PromotionsManager />}
@@ -532,6 +534,46 @@ function PromotionForm({ initial, onSave }) {
       <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!data.is_active} onChange={(e) => set("is_active", e.target.checked)} /> Active (show on homepage)</label>
       <Button type="submit" disabled={saving} className="w-full">{saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : "Save Promotion"}</Button>
     </form>
+  );
+}
+
+function InquiriesManager() {
+  const { items: messages, loading, invalidate } = useEntityList("ContactMessage", { sort: "-created_date" });
+
+  const updateStatus = async (id, status) => { await base44.entities.ContactMessage.update(id, { status }); invalidate(); };
+
+  if (loading) return <p className="text-muted-foreground">Loading inquiries…</p>;
+  if (messages.length === 0) return <p className="text-muted-foreground">No inquiries yet.</p>;
+
+  return (
+    <div>
+      <h2 className="text-2xl font-black mb-6">Inquiries ({messages.length})</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {messages.map((m) => (
+          <div key={m.id} className="bg-card rounded-2xl border border-border/50 p-5">
+            <div className="flex justify-between items-start mb-3">
+              <div>
+                <h3 className="font-bold">{m.name}</h3>
+                <p className="text-xs text-muted-foreground">{m.email}</p>
+                {m.phone && <p className="text-xs text-muted-foreground">{m.phone}</p>}
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge className={m.status === "read" ? "bg-accent text-accent-foreground" : ""}>{m.status === "read" ? "Read" : "New"}</Badge>
+                <Select value={m.status || "new"} onValueChange={(v) => updateStatus(m.id, v)}>
+                  <SelectTrigger className="w-28 h-8"><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="new">New</SelectItem>
+                    <SelectItem value="read">Read</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            {m.category && <Badge variant="outline" className="mb-2">{m.category}</Badge>}
+            <p className="text-sm text-muted-foreground mt-2">{m.message}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
