@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { Utensils, Wine, Cake, Salad } from "lucide-react";
+import { Utensils, Wine, Cake, Salad, Smartphone } from "lucide-react";
 import { useCurrency } from "@/lib/CurrencyContext";
 import PageHero from "@/components/PageHero";
 import MenuCard from "@/components/MenuCard";
@@ -44,7 +44,16 @@ export default function Restaurant() {
         title="Restaurant & Menu"
         titleAccent="A Taste of Kenya"
         subtitle="A culinary journey through Kenya — from coastal Swahili traditions to hearty Taita specialties, plus a curated minibar."
-      />
+      >
+        <a
+          href="https://fynbriz.base44.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-[#c5b69c] text-black px-6 py-3 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-[#b5a68c] transition-all mt-2"
+        >
+          <Smartphone className="w-4 h-4" strokeWidth={1.5} /> View Digital Menu
+        </a>
+      </PageHero>
 
       <section className="py-16 md:py-24 bg-[#000000]">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
