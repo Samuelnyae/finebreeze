@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { base44 } from "@/api/base44Client";
-import { Star, ArrowRight, ChevronLeft, ChevronRight, X, MessageCircle, Mail, Phone, CalendarCheck } from "lucide-react";
+import { Star, ArrowRight, ChevronLeft, ChevronRight, X, MessageCircle, Mail, Phone, CalendarCheck, Smartphone } from "lucide-react";
 import { Link } from "react-router-dom";
 import PromotionWidget from "@/components/PromotionWidget";
 import MapSection from "@/components/MapSection";
@@ -259,6 +259,18 @@ function RestaurantSection() {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* Digital Menu CTA */}
+        <div className="text-center mt-12">
+          <a
+            href="https://fynbriz.base44.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-primary/90 transition-all duration-300"
+          >
+            <Smartphone className="w-4 h-4" strokeWidth={1.5} /> View Digital Menu
+          </a>
         </div>
       </div>
     </section>
