@@ -269,7 +269,7 @@ function RestaurantSection() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-3.5 text-[11px] font-medium tracking-[0.2em] uppercase hover:bg-primary/90 transition-all duration-300"
           >
-            <Smartphone className="w-4 h-4" strokeWidth={1.5} /> View Digital Menu
+            <Smartphone className="w-4 h-4" strokeWidth={1.5} /> Visit Our Menu
           </a>
         </div>
       </div>
